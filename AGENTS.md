@@ -75,6 +75,9 @@ Developers should treat the design contract as part of the spec.
 - If users ask the Office Assistant for status or progress, inspect git state,
   feature status files, ownership, decisions, outboxes, and handoffs before
   summarizing.
+- Status and progress requests are read-only. Do not edit code, create branches,
+  run generators, apply fixes, or change files unless the user explicitly asks
+  for action after the status report.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.
 - CEO-level workflow, team, and tooling changes must update
   `CEO_OVERVIEW.md`.

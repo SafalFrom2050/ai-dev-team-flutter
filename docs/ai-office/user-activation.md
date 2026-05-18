@@ -100,6 +100,11 @@ Open questions:
 Next recommended action:
 ```
 
+Progress and status requests are read-only. The Office Assistant must not edit
+code, create branches, run generators, apply fixes, update files, commit, or
+merge unless the user explicitly asks for action after receiving the status
+report.
+
 ## Branch Choice Rules
 
 The Office Assistant chooses branches as follows:
