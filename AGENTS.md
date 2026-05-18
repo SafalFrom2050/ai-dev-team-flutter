@@ -72,6 +72,9 @@ Developers should treat the design contract as part of the spec.
 
 - Users do not need to specify branches, packets, or workflows. If they call the
   Office Assistant with a task, orient from the repo and choose the workflow.
+- If users ask the Office Assistant for status or progress, inspect git state,
+  feature status files, ownership, decisions, outboxes, and handoffs before
+  summarizing.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.
 - CEO-level workflow, team, and tooling changes must update
   `CEO_OVERVIEW.md`.
