@@ -30,12 +30,18 @@ decision history.
 ```mermaid
 flowchart TD
     CEO["CEO\nHuman + Codex building the office"]
+    Assistant["Office Assistant\nTriage, routing, packets"]
 
+    CEO --> Assistant
     CEO --> ProductLead["Product Lead\nProblem, scope, acceptance criteria"]
     CEO --> Designer["UI/UX Designer\nFlows, states, tokens, accessibility"]
     CEO --> ProductEngineer["Product Engineer\nArchitecture, slices, tradeoffs"]
     CEO --> ReleaseEngineer["Release Engineer\nMain branch, CI, release readiness"]
 
+    Assistant --> ProductLead
+    Assistant --> Designer
+    Assistant --> ProductEngineer
+    Assistant --> QA
     ProductLead --> Designer
     ProductLead --> ProductEngineer
     Designer --> SeniorFlutter["Senior Flutter Engineer\nPatterns, hard UI, state, platform risk"]
@@ -56,6 +62,7 @@ The CEO owns the shape of this system. The agents own their specialist work.
 ```mermaid
 sequenceDiagram
     participant CEO
+    participant Assistant as Office Assistant
     participant Product as Product Lead
     participant Design as UI/UX Designer
     participant Arch as Product Engineer
@@ -65,6 +72,8 @@ sequenceDiagram
     participant Release as Release Engineer
     participant Main as main
 
+    CEO->>Assistant: Ask who should handle the task
+    Assistant->>Product: Route product idea or unclear scope
     CEO->>Product: Define product direction and constraints
     Product->>Design: Hand off scoped brief
     Design->>Arch: Hand off design contract
@@ -344,6 +353,29 @@ Updated:
 - `docs/ai-office/README.md`
 - `docs/ai-office/workflow.md`
 - `docs/ai-office/async-agent-runtime.md`
+
+### 2026-05-18: Add Office Assistant Role
+
+Decision: add Office Assistant as the front-desk role for task triage, routing,
+packet creation, status coordination, and escalation.
+
+Why: users may know the task but not the right specialist role. The Office
+Assistant lets the office start from natural requests without forcing the user to
+choose Product Lead, Designer, Engineer, QA, Review, or Release manually.
+
+Created:
+
+- `docs/ai-office/task-triage.md`
+
+Updated:
+
+- `README.md`
+- `AGENTS.md`
+- `CEO_OVERVIEW.md`
+- `docs/ai-office/README.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/templates/agent-session-packet.md`
 
 ### 2026-05-18: Materialize Office Baseline
 

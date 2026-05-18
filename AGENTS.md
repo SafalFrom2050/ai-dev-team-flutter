@@ -14,15 +14,17 @@ through review.
 
 0. CEO defines the office direction, records decisions in `CEO_OVERVIEW.md`, and
    keeps the team structure coherent.
-1. Product Lead turns the idea into a scoped feature brief.
-2. UI/UX Designer turns the brief into flows, states, copy, design tokens, and
+1. Office Assistant triages unclear incoming tasks and routes them to the right
+   role or role sequence.
+2. Product Lead turns the idea into a scoped feature brief.
+3. UI/UX Designer turns the brief into flows, states, copy, design tokens, and
    acceptance criteria.
-3. Product Engineer or Architect turns the brief and design contract into a
+4. Product Engineer or Architect turns the brief and design contract into a
    technical plan.
-4. Flutter developers implement from the technical plan on scoped branches.
-5. QA/Test Engineer verifies behavior, edge cases, and regressions.
-6. Code Reviewer blocks risky or unclear changes before merge.
-7. Release Engineer merges the integration branch into `main` only after all
+5. Flutter developers implement from the technical plan on scoped branches.
+6. QA/Test Engineer verifies behavior, edge cases, and regressions.
+7. Code Reviewer blocks risky or unclear changes before merge.
+8. Release Engineer merges the integration branch into `main` only after all
    gates pass.
 
 ## Branch Model

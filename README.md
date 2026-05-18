@@ -18,6 +18,7 @@ project treats AI as a team.
 Each role has a job:
 
 - The CEO keeps the office coherent.
+- The Office Assistant routes unclear tasks to the right specialist.
 - The Product Lead clarifies what is worth building.
 - The UI/UX Designer makes the experience implementable.
 - The Product Engineer turns intent into architecture.
@@ -39,6 +40,7 @@ flowchart TB
     Table(("AI Flutter Office\nRound Table"))
 
     CEO["CEO\nVision, governance,\ndecision history"]
+    Assistant["Office Assistant\nTriage, routing,\nagent packets"]
     Product["Product Lead\nProblem, users,\nacceptance criteria"]
     Design["UI/UX Designer\nFlows, states,\ntokens, accessibility"]
     Architect["Product Engineer\nArchitecture, data flow,\nwork slicing"]
@@ -50,6 +52,7 @@ flowchart TB
     Main["main\nProduction code"]
 
     CEO --- Table
+    Assistant --- Table
     Product --- Table
     Design --- Table
     Architect --- Table
@@ -59,6 +62,11 @@ flowchart TB
     Review --- Table
     Release --- Table
 
+    CEO --> Assistant
+    Assistant --> Product
+    Assistant --> Design
+    Assistant --> Architect
+    Assistant --> QA
     Product --> Design
     Product --> Architect
     Design --> Senior
@@ -171,6 +179,13 @@ their hashes recorded in `skills-lock.json`.
 
 ## How To Fire Up The Office
 
+If you know the task but do not know the role, start here:
+
+```text
+Office Assistant: triage this task and route it to the right role sequence:
+<task>
+```
+
 Start with a CEO kickoff:
 
 ```text
@@ -242,6 +257,7 @@ Start here if you are visiting:
 - `docs/ai-office/org-branch-model.md`: how the company structure stays stable
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
+- `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
 - `docs/ai-office/workflow.md`: branch and handoff model.
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
