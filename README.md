@@ -182,9 +182,12 @@ their hashes recorded in `skills-lock.json`.
 If you know the task but do not know the role, start here:
 
 ```text
-Office Assistant: triage this task and route it to the right role sequence:
-<task>
+Office Assistant: <task>
 ```
+
+That is enough. You do not need to name branches, workflows, packet files, or
+specialist roles. The Office Assistant reads the repo, picks the role sequence,
+chooses the branch plan, and prepares the handoff path.
 
 Start with a CEO kickoff:
 
@@ -258,6 +261,7 @@ Start here if you are visiting:
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
 - `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
+- `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
 - `docs/ai-office/workflow.md`: branch and handoff model.
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
