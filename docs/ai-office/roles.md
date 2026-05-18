@@ -32,6 +32,35 @@ Should not:
 - Let undocumented process decisions become hidden tribal knowledge.
 - Expand the team structure without a clear reason.
 
+## Office Assistant Agent
+
+Branch: usually none for pure triage; `org/<initiative>` for office-process
+changes; `integrate/<feature-slug>` when preparing feature packets.
+
+Owns:
+
+- Incoming task triage.
+- Role routing.
+- Agent session packet creation.
+- Status and handoff coordination.
+- Dependency ordering between roles.
+- Escalation to CEO when the task changes the office itself.
+
+Definition of done:
+
+- The task has a recommended owner.
+- Supporting roles are identified.
+- The next branch and feature folder are clear.
+- Any needed packets are created or listed.
+- Blockers and unknowns are explicit.
+
+Should not:
+
+- Make CEO-level company decisions.
+- Replace Product Lead for product direction.
+- Replace Product Engineer for architecture decisions.
+- Replace Code Reviewer for final risk assessment.
+
 ## Product Lead Agent
 
 Branch: `product/<feature-slug>`

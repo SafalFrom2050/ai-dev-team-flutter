@@ -52,6 +52,8 @@ design close to implementation without pretending design is only code.
 
 - CEO: owns the office vision, team structure, decision history, and
   `CEO_OVERVIEW.md`.
+- Office Assistant: triages incoming tasks and routes work to the right role
+  sequence.
 - Product Lead: decides what problem is worth solving.
 - UI/UX Designer: defines how the experience should feel and behave.
 - Product Engineer: bridges product/design intent into buildable architecture.
@@ -68,6 +70,10 @@ The CEO-level map lives at the repository root in `CEO_OVERVIEW.md`.
 For stable company-structure branching, use:
 
 - `org-branch-model.md`
+
+For task triage, use:
+
+- `task-triage.md`
 
 For Flutter-specific behavior, start with:
 

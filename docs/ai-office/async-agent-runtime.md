@@ -59,7 +59,8 @@ docs/features/<feature-slug>/
     status.md
     ownership.md
     decisions.md
-    packets/
+      packets/
+      office-assistant.md
       product-lead.md
       ui-ux-designer.md
       product-engineer.md
@@ -68,7 +69,8 @@ docs/features/<feature-slug>/
       qa-test-engineer.md
       code-reviewer.md
       release-engineer.md
-    outbox/
+      outbox/
+      office-assistant.md
       product-lead.md
       ui-ux-designer.md
       product-engineer.md
@@ -132,6 +134,7 @@ are clear.
 ```mermaid
 flowchart LR
     CEO["CEO kickoff"]
+    Assistant["Office Assistant"]
     Product["Product Lead"]
     Design["UI/UX Designer"]
     Arch["Product Engineer"]
@@ -142,6 +145,11 @@ flowchart LR
     Review["Code Reviewer"]
     Release["Release Engineer"]
 
+    CEO --> Assistant
+    Assistant --> Product
+    Assistant --> Design
+    Assistant --> Arch
+    Assistant --> QAPlan
     CEO --> Product
     Product --> Design
     Product --> Arch
