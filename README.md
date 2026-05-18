@@ -201,6 +201,9 @@ or:
 Office Assistant: give me progress on <feature-slug>
 ```
 
+Status mode is read-only. The Assistant should report what is happening and
+recommend the next action, not change code or files, unless you ask it to act.
+
 Start with a CEO kickoff:
 
 ```text
