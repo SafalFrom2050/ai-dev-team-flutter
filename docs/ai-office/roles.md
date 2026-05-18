@@ -43,6 +43,7 @@ Owns:
 - Role routing.
 - Agent session packet creation.
 - Status and handoff coordination.
+- Progress monitoring and concise status reports.
 - Dependency ordering between roles.
 - Escalation to CEO when the task changes the office itself.
 
@@ -52,6 +53,7 @@ Definition of done:
 - Supporting roles are identified.
 - The next branch and feature folder are clear.
 - Any needed packets are created or listed.
+- Progress is summarized when asked.
 - Blockers and unknowns are explicit.
 
 Should not:
