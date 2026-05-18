@@ -70,6 +70,8 @@ Developers should treat the design contract as part of the spec.
 
 ## Collaboration Rules
 
+- Users do not need to specify branches, packets, or workflows. If they call the
+  Office Assistant with a task, orient from the repo and choose the workflow.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.
 - CEO-level workflow, team, and tooling changes must update
   `CEO_OVERVIEW.md`.

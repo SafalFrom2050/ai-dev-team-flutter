@@ -377,6 +377,26 @@ Updated:
 - `docs/ai-office/async-agent-runtime.md`
 - `docs/ai-office/templates/agent-session-packet.md`
 
+### 2026-05-18: Add User Activation Contract
+
+Decision: define a user-facing activation contract where the user can simply say
+`Office Assistant: <task>` in any compatible AI coding tool.
+
+Why: users should not have to remember branches, role order, packet paths, or
+workflow documents. The Office Assistant should read the repo, inspect branch
+state, choose the right role sequence, and prepare the branch or packet plan.
+
+Created:
+
+- `docs/ai-office/user-activation.md`
+
+Updated:
+
+- `README.md`
+- `AGENTS.md`
+- `docs/ai-office/README.md`
+- `docs/ai-office/task-triage.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
