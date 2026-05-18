@@ -27,6 +27,8 @@ Use the Office Assistant for:
 - Handoff collection.
 - Dependency ordering.
 - Escalation to CEO when the task changes the office or product direction.
+- Progress monitoring across feature folders, async outboxes, branch status, and
+  open blockers.
 
 ## What The Office Assistant Does Not Own
 
@@ -104,6 +106,48 @@ docs/features/<feature-slug>/async/packets/
 
 If the work is not ready, it asks the minimum useful clarification or routes to
 Product Lead.
+
+## Progress Monitoring
+
+The Office Assistant can also be called for status:
+
+```text
+Office Assistant: status
+```
+
+or:
+
+```text
+Office Assistant: give me progress on <feature-slug>
+```
+
+For progress requests, the Office Assistant should inspect:
+
+- `git status --short --branch`
+- `git branch --list -v`
+- `docs/features/<feature-slug>/async/status.md`
+- `docs/features/<feature-slug>/async/ownership.md`
+- `docs/features/<feature-slug>/async/decisions.md`
+- `docs/features/<feature-slug>/async/outbox/*.md`
+- `docs/features/<feature-slug>/handoff.md`
+- recent commits when useful
+
+Then report:
+
+```text
+Feature:
+Current branch:
+Overall state:
+Role progress:
+Completed:
+In progress:
+Blocked:
+Open questions:
+Next recommended action:
+```
+
+The progress report should be concise. It should not dump every file or commit
+unless the user asks for details.
 
 ## One-Line Activation
 

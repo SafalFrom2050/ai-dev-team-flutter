@@ -189,6 +189,18 @@ That is enough. You do not need to name branches, workflows, packet files, or
 specialist roles. The Office Assistant reads the repo, picks the role sequence,
 chooses the branch plan, and prepares the handoff path.
 
+You can also ask for progress:
+
+```text
+Office Assistant: status
+```
+
+or:
+
+```text
+Office Assistant: give me progress on <feature-slug>
+```
+
 Start with a CEO kickoff:
 
 ```text

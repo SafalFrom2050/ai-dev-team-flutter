@@ -397,6 +397,24 @@ Updated:
 - `docs/ai-office/README.md`
 - `docs/ai-office/task-triage.md`
 
+### 2026-05-18: Add Assistant Progress Monitoring
+
+Decision: extend the Office Assistant role so users can ask for status or
+progress without knowing branch names, async folders, outbox paths, or handoff
+files.
+
+Why: a real office needs a front desk that can answer "where are we?" The user
+should be able to ask the Assistant for progress, and the Assistant should read
+git state plus feature status files before summarizing.
+
+Updated:
+
+- `README.md`
+- `AGENTS.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/roles.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

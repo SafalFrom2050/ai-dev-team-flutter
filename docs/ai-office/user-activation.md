@@ -29,6 +29,14 @@ role and prepare the next steps.
 Office Assistant: Add onboarding to the app.
 ```
 
+```text
+Office Assistant: status
+```
+
+```text
+Office Assistant: give me progress on the onboarding feature.
+```
+
 ## What The User Does Not Need To Specify
 
 The user does not need to specify:
@@ -43,6 +51,9 @@ The user does not need to specify:
   work.
 
 The Office Assistant figures that out from the repo.
+
+The user can also ask for progress without knowing where status files, outboxes,
+or branches live.
 
 ## What The Office Assistant Must Do First
 
@@ -75,6 +86,19 @@ Clarification needed:
 ```
 
 If no clarification is needed, it should proceed.
+
+For progress requests, the Office Assistant should respond with:
+
+```text
+Feature or scope:
+Current branch:
+Overall state:
+Completed:
+In progress:
+Blocked:
+Open questions:
+Next recommended action:
+```
 
 ## Branch Choice Rules
 
