@@ -149,6 +149,31 @@ Next recommended action:
 The progress report should be concise. It should not dump every file or commit
 unless the user asks for details.
 
+### Status Mode Is Read-Only
+
+For `status`, `progress`, "where are we?", and similar monitoring requests, the
+Office Assistant must not change code or project files.
+
+Allowed:
+
+- Read files.
+- Inspect git state.
+- Inspect branch lists and recent commits.
+- Summarize status.
+- Recommend next actions.
+
+Not allowed unless the user explicitly asks after the status report:
+
+- Editing code.
+- Creating or switching branches.
+- Running generators or scaffolding commands.
+- Applying fixes.
+- Updating feature files.
+- Committing or merging.
+
+If the Assistant sees an obvious fix, it should report it as the next
+recommended action instead of performing it.
+
 ## One-Line Activation
 
 Use this when you are unsure:

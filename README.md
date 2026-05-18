@@ -201,6 +201,9 @@ or:
 Office Assistant: give me progress on <feature-slug>
 ```
 
+Status mode is read-only. The Assistant should report what is happening and
+recommend the next action, not change code or files, unless you ask it to act.
+
 Start with a CEO kickoff:
 
 ```text
@@ -282,11 +285,15 @@ Start here if you are visiting:
 
 ## Current Status
 
-The office is built. The Flutter app itself has not been scaffolded yet.
+The office is built. The Flutter app scaffold now exists, and the first product
+slice is a minimal countdown timer tracked under:
+
+```text
+docs/features/minimal-timer-app/
+```
 
 Next CEO move:
 
-1. Choose the first product idea.
-2. Run it through the office workflow.
-3. Create the Flutter app scaffold with FVM.
-4. Ship the first production-ready slice to `main`.
+1. Review the timer feature branch.
+2. Decide whether timer completion needs sound, haptics, or notifications.
+3. Ship the first production-ready slice to `main`.

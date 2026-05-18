@@ -415,6 +415,25 @@ Updated:
 - `docs/ai-office/user-activation.md`
 - `docs/ai-office/roles.md`
 
+### 2026-05-18: Make Assistant Status Read-Only
+
+Decision: status and progress requests to the Office Assistant are read-only.
+
+Why: during testing, the Assistant started doing code work when asked only for
+status. Monitoring should report state and recommend next actions, not mutate
+the project.
+
+Rule: for `Office Assistant: status` or similar progress checks, do not edit
+files, create branches, run generators, apply fixes, commit, or merge unless the
+user explicitly asks for action after the report.
+
+Updated:
+
+- `AGENTS.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/roles.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

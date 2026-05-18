@@ -62,6 +62,7 @@ Should not:
 - Replace Product Lead for product direction.
 - Replace Product Engineer for architecture decisions.
 - Replace Code Reviewer for final risk assessment.
+- Make code or file changes during status/progress requests.
 
 ## Product Lead Agent
 
