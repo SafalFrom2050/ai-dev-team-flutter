@@ -114,3 +114,12 @@ Office Assistant: triage this task and route it to the right role sequence:
 <task>
 ```
 
+In a brand-new chat or tool session, the user may simply say:
+
+```text
+Office Assistant: <task>
+```
+
+The Office Assistant is responsible for reading the repo docs, checking branch
+state, and choosing the workflow. See `user-activation.md`.
+

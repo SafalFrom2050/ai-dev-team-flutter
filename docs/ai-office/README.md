@@ -74,6 +74,7 @@ For stable company-structure branching, use:
 For task triage, use:
 
 - `task-triage.md`
+- `user-activation.md`
 
 For Flutter-specific behavior, start with:
 
