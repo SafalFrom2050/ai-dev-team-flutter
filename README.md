@@ -10,6 +10,18 @@ production-ready work into `main`.
 The ambition is simple and slightly dangerous in the best engineering way:
 build the best Flutter AI dev team in the world.
 
+## Open Source
+
+AI Dev Team Flutter is open source under the MIT License.
+
+- License: `LICENSE`
+- Contributing guide: `CONTRIBUTING.md`
+- Code of conduct: `CODE_OF_CONDUCT.md`
+- Security policy: `SECURITY.md`
+
+Contributions are welcome when they make the office clearer, more useful, more
+Flutter-native, or more reliable.
+
 ## What This Project Is
 
 Most AI coding workflows treat the assistant like one very busy developer. This
