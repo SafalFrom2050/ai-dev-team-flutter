@@ -27,3 +27,11 @@
 ## Release Notes
 
 <!-- User-visible changes, if any. -->
+
+## Checklist
+
+- [ ] I used a Conventional Commit-style title or commit message.
+- [ ] I updated docs, handoffs, or status files when project state changed.
+- [ ] I ran the relevant checks or explained why they were not run.
+- [ ] I confirmed the contribution follows `CONTRIBUTING.md`.
+- [ ] I did not include secrets, credentials, private data, or unlicensed assets.

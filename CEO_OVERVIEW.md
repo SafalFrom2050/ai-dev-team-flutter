@@ -674,6 +674,31 @@ Updated:
 - `README.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-19: Open Source The Project
+
+Decision: publish the project with a standard MIT License and add the baseline
+open-source contributor docs.
+
+Why: public users need clear permission to use, modify, and share the project.
+Contributors also need expectations for setup, branch workflow, PR evidence,
+conduct, and security reporting.
+
+Created:
+
+- `LICENSE`
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
+- `SECURITY.md`
+- `.github/ISSUE_TEMPLATE/bug_report.md`
+- `.github/ISSUE_TEMPLATE/feature_request.md`
+- `.github/ISSUE_TEMPLATE/config.yml`
+
+Updated:
+
+- `README.md`
+- `.github/PULL_REQUEST_TEMPLATE.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
