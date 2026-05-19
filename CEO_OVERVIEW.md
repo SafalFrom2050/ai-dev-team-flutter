@@ -466,6 +466,36 @@ Updated:
 - `docs/ai-office/mcp-and-skills.md`
 - `docs/ai-office/async-agent-runtime.md`
 
+### 2026-05-19: Add Role Activation Banners
+
+Decision: every role must announce a visible activation banner before doing
+task work in chat.
+
+Why: users should not need to infer which specialist is speaking or what scope
+the agent is taking. A clear banner keeps fresh sessions understandable across
+Codex, Gemini CLI, Cursor, Claude Code, and other tools.
+
+Rule: the first visible line from an activated role must follow:
+
+```text
+<Role> Activated: I am your <plain-language role> and responsible for <primary responsibility>.
+```
+
+Created:
+
+- `docs/ai-office/role-activation.md`
+
+Updated:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/ai-office/README.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/templates/agent-session-packet.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
