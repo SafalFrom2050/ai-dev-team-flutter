@@ -699,6 +699,23 @@ Updated:
 - `.github/PULL_REQUEST_TEMPLATE.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-19: Add CEO Activation Screenshot
+
+Decision: show the CEO activation banner in `README.md` alongside the Office
+Assistant activation examples.
+
+Why: visitors should see that the office activation contract applies to
+governance roles too, not only task-routing assistants.
+
+Created:
+
+- `docs/assets/readme/ceo-activation.png`
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
