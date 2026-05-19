@@ -1,28 +1,35 @@
 # Feature Status Index
 
-This file is the Office Assistant's first stop for progress checks. Product
-branches should keep it current so status requests do not require reading the
-whole app or relying on hidden chat history.
+This file is the Office Assistant's first stop for progress checks. Keep it
+current so status requests do not require reading the whole app or relying on
+hidden chat history.
 
-## How To Update
+## Minimal Timer App
 
-Add one entry per active or recently shipped feature. Keep entries short and
-link to the detailed feature folder.
+- Slug: `minimal-timer-app`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `main`
+- Historical branch: `integrate/minimal-timer-app`
+- State: `shipped to main`
+- Last quality gates: `fvm flutter pub get`, `fvm dart format --set-exit-if-changed .`, `fvm flutter analyze`, and `fvm flutter test` were recorded as passing in `docs/features/minimal-timer-app/handoff.md`
+- Manual QA: `partial`; web server smoke was recorded, but interactive emulator/browser QA was not completed in the original handoff
+- Current owner: `Release Engineer`
+- Open risks: background timing and persistence were out of scope for the original minimal timer slice
+- Docs: `docs/features/minimal-timer-app/`
+- Handoff: `docs/features/minimal-timer-app/handoff.md`
+- Last updated: `2026-05-19 by CEO`
 
-```text
-## <Feature Name>
+## Android Background Timer
 
-- Slug: `<feature-slug>`
-- App workspace: `work/<app-slug>/`
-- Source of truth: `<branch-name>`
-- State: `<idea | planned | in progress | review | ready | shipped | blocked>`
-- Last quality gates: `<commands and result, or unknown>`
-- Manual QA: `<not started | partial | done | not applicable>`
-- Current owner: `<role or branch>`
-- Open risks: `<short list>`
-- Docs: `docs/features/<feature-slug>/`
-- Handoff: `docs/features/<feature-slug>/handoff.md`
-- Last updated: `<YYYY-MM-DD> by <role>`
-```
-
-If an entry is stale, update it before asking another role for status.
+- Slug: `android-background-timer`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `main`
+- Historical branch: `feat/android-background-timer/impl`
+- State: `implemented on main; needs verification pass`
+- Last quality gates: `unknown from docs`; run the Flutter quality gates before release claims
+- Manual QA: `not started`; physical device or Android emulator background behavior still needs validation
+- Current owner: `QA/Test Engineer`
+- Open risks: Android foreground-service policy, notification permission flow, isolate communication, and battery/background behavior
+- Docs: `docs/features/android-background-timer/`
+- Handoff: `missing`; create or update `docs/features/android-background-timer/handoff.md`
+- Last updated: `2026-05-19 by CEO`

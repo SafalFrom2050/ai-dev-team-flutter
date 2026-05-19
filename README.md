@@ -324,16 +324,18 @@ Start here if you are visiting:
 
 ## Current Status
 
-The office is built. The Flutter app scaffold now exists, and the first product
-slice is a minimal countdown timer tracked under:
+The office is built, and the current product branch contains a Minimal Timer
+Flutter app tracked under:
 
 ```text
 docs/features/minimal-timer-app/
 work/minimal-timer-app/
 ```
 
-Next CEO move:
+Current product state:
 
-1. Review the timer feature branch.
-2. Decide whether timer completion needs sound, haptics, or notifications.
-3. Ship the first production-ready slice to `main`.
+1. `minimal-timer-app` is shipped to `main`.
+2. `android-background-timer` is implemented on `main` and needs a verification
+   pass, especially Android emulator/device background behavior.
+3. `docs/features/status-index.md` is the lightweight source for progress
+   checks.
