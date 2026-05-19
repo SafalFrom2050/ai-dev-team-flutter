@@ -78,6 +78,8 @@ Developers should treat the design contract as part of the spec.
 - Status and progress requests are read-only. Do not edit code, create branches,
   run generators, apply fixes, or change files unless the user explicitly asks
   for action after the status report.
+- Keep the repository root as the office. New Flutter app scaffolds belong under
+  `work/<app-slug>/`, not at the root.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.
 - CEO-level workflow, team, and tooling changes must update
   `CEO_OVERVIEW.md`.

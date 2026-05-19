@@ -23,6 +23,7 @@ Every role session should be able to start from:
 - `AGENTS.md`
 - The relevant files in `docs/ai-office/`
 - The current feature folder under `docs/features/<feature-slug>/`
+- The relevant app workspace under `work/<app-slug>/`, when code exists
 - Its own agent session packet
 
 If an agent needs context that is not in those files, the CEO or orchestrator
@@ -238,6 +239,7 @@ Use for product, design, architecture, and normal implementation:
 - Relevant `docs/ai-office/` files
 - Feature folder
 - Relevant source files
+- Relevant `work/<app-slug>/` files
 
 ### Large Packet
 

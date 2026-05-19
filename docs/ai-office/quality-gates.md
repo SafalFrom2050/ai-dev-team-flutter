@@ -16,17 +16,21 @@ Before anything merges to `main`:
 Recommended commands once the Flutter app exists:
 
 ```powershell
+Push-Location work/<app-slug>
 fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+Pop-Location
 ```
 
 Add platform build checks as the app matures:
 
 ```powershell
+Push-Location work/<app-slug>
 fvm flutter build web
 fvm flutter build apk --debug
+Pop-Location
 ```
 
 ## PR Review Gate
