@@ -47,6 +47,7 @@ Keep durable office structure here:
 - `docs/features/README.md`
 - `skills-lock.json`
 - `.fvmrc`
+- `work/README.md`
 - shared templates and scripts for starting features
 
 These files describe the company, not one product feature.
@@ -55,16 +56,17 @@ These files describe the company, not one product feature.
 
 Avoid product-specific implementation:
 
-- `lib/`
-- `test/`
-- `integration_test/`
-- `android/`
-- `ios/`
-- `web/`
+- `work/<app-slug>/lib/`
+- `work/<app-slug>/test/`
+- `work/<app-slug>/integration_test/`
+- `work/<app-slug>/android/`
+- `work/<app-slug>/ios/`
+- `work/<app-slug>/web/`
 - product-specific assets
 - feature-specific app code
 
-Product code belongs on product `main` and its feature branches.
+Product code belongs under `work/<app-slug>/` on product `main` and its feature
+branches.
 
 ## How Organization Changes Work
 
@@ -111,7 +113,7 @@ For a new product:
 1. Start from `org/main`.
 2. Create that product's `main`.
 3. Keep the office files.
-4. Add product code through normal feature branches.
+4. Add product code under `work/<app-slug>/` through normal feature branches.
 5. Periodically sync new org improvements from `org/main`.
 
 This lets every future product start with the same CEO memory, role structure,
@@ -146,4 +148,3 @@ If a change affects both, split it into two branches:
 
 - `org/<initiative>` for the office change.
 - `integrate/<feature-slug>` for the product change.
-

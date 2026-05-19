@@ -25,30 +25,31 @@ Once the Flutter app is created, use this as the starting structure unless a
 feature has a strong reason to differ:
 
 ```text
-lib/
-  app/
-    app.dart
-    router.dart
-    theme/
-  core/
-    errors/
-    services/
-    utils/
-  features/
-    <feature>/
-      data/
-      domain/
-      presentation/
-        screens/
-        widgets/
-        controllers/
-  shared/
-    widgets/
-    tokens/
-test/
-  features/
-  shared/
-integration_test/
+work/<app-slug>/
+  lib/
+    app/
+      app.dart
+      router.dart
+      theme/
+    core/
+      errors/
+      services/
+      utils/
+    features/
+      <feature>/
+        data/
+        domain/
+        presentation/
+          screens/
+          widgets/
+          controllers/
+    shared/
+      widgets/
+      tokens/
+  test/
+    features/
+    shared/
+  integration_test/
 ```
 
 The goal is not ceremony. The goal is for agents to know where work belongs.

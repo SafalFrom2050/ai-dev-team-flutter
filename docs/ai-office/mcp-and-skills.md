@@ -125,5 +125,5 @@ agents hands and eyes inside the Flutter toolchain.
 - [ ] Add the MCP server to Codex, Cursor, Gemini CLI, or the preferred agent
       client.
 - [x] Install official Flutter and Dart skills into `.agents/skills`.
-- [ ] Create the Flutter app scaffold.
-- [ ] Run `fvm flutter analyze` and `fvm flutter test` as default quality gates.
+- [ ] Create Flutter app scaffolds under `work/<app-slug>/`.
+- [ ] Run `fvm flutter analyze` and `fvm flutter test` from the app workspace.
