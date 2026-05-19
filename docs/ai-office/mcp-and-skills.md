@@ -47,8 +47,13 @@ configuration:
 
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
+- `GEMINI.md`
 
-These both point to `fvm dart mcp-server --force-roots-fallback`.
+The MCP configs point to `fvm dart mcp-server --force-roots-fallback`.
+
+`GEMINI.md` is not an MCP config. It is Gemini CLI's project context file. It
+exists so Gemini sees the office activation and status-mode rules before using
+MCP tools.
 
 ## Installed Official Agent Skills
 
@@ -106,6 +111,8 @@ can discover the new skills.
 Use the layers like this:
 
 - `AGENTS.md`: durable team rules for every agent.
+- `GEMINI.md`: Gemini CLI-specific guardrails for first response and status
+  mode.
 - `.fvmrc`: repo-local Flutter SDK pin.
 - Official Flutter/Dart rules: baseline framework behavior and best practices.
 - Agent Skills: task-specific playbooks for routing, layout, testing, package
