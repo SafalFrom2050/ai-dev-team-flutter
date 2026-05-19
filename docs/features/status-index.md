@@ -1,28 +1,20 @@
 # Feature Status Index
 
-This file is the Office Assistant's first stop for progress checks. Product
-branches should keep it current so status requests do not require reading the
-whole app or relying on hidden chat history.
+This file is the Office Assistant's first stop for progress checks. Keep it
+current so status requests do not require reading the whole app or relying on
+hidden chat history.
 
-## How To Update
+## Minimal Timer App
 
-Add one entry per active or recently shipped feature. Keep entries short and
-link to the detailed feature folder.
-
-```text
-## <Feature Name>
-
-- Slug: `<feature-slug>`
-- App workspace: `work/<app-slug>/`
-- Source of truth: `<branch-name>`
-- State: `<idea | planned | in progress | review | ready | shipped | blocked>`
-- Last quality gates: `<commands and result, or unknown>`
-- Manual QA: `<not started | partial | done | not applicable>`
-- Current owner: `<role or branch>`
-- Open risks: `<short list>`
-- Docs: `docs/features/<feature-slug>/`
-- Handoff: `docs/features/<feature-slug>/handoff.md`
-- Last updated: `<YYYY-MM-DD> by <role>`
-```
-
-If an entry is stale, update it before asking another role for status.
+- Slug: `minimal-timer-app`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `integrate/minimal-timer-app`
+- Target branch: `main`
+- State: `ready for release review`
+- Last quality gates: `fvm flutter pub get`, `fvm dart format --set-exit-if-changed .`, `fvm flutter analyze`, and `fvm flutter test` were recorded as passing in `docs/features/minimal-timer-app/handoff.md`
+- Manual QA: `partial`; web server smoke was recorded, but interactive emulator/browser QA was not completed
+- Current owner: `Release Engineer`
+- Open risks: completion sound, haptics, notifications, background timing, and persistence are out of scope for this slice
+- Docs: `docs/features/minimal-timer-app/`
+- Handoff: `docs/features/minimal-timer-app/handoff.md`
+- Last updated: `2026-05-19 by CEO`
