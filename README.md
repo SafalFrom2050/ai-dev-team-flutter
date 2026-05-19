@@ -282,6 +282,26 @@ Status mode is read-only and branch-aware. The Assistant starts with
 `docs/features/status-index.md`, handoffs, outboxes, and git refs instead of
 crawling app source or generated platform folders.
 
+### Role Activation In Action
+
+Every role announces itself before work starts. The CEO example shows office
+governance activation, while the Office Assistant examples show unstructured
+status prompts being routed through a lightweight, read-only status protocol.
+The same contract is portable across tools: Codex gets it through `AGENTS.md`,
+while Gemini CLI gets it through `GEMINI.md`.
+
+**CEO**
+
+![CEO activation](docs/assets/readme/ceo-activation.png)
+
+**Office Assistant - Codex**
+
+![Office Assistant activation in Codex](docs/assets/readme/office-assistant-activation.png)
+
+**Office Assistant - Gemini CLI**
+
+![Office Assistant activation in Gemini CLI](docs/assets/readme/office-assistant-activation-gemini.png)
+
 ### What A Packet Looks Like
 
 The Office Assistant outputs prompts like this for each agent:
