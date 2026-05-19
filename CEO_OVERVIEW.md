@@ -167,6 +167,8 @@ The CEO approved these layers:
 - `AGENTS.md`: durable office-wide agent rules.
 - `docs/ai-office/`: operating model, roles, workflow, quality gates, Flutter
   specialization, MCP, skills, and package decisions.
+- `GEMINI.md`: Gemini CLI compatibility shim for activation banners and
+  lightweight status behavior.
 - `.agents/skills/`: official Flutter and Dart agent skills installed in this
   workspace.
 - `.fvmrc`: repo-local Flutter SDK pin.
@@ -621,6 +623,34 @@ Created:
 Updated:
 
 - `README.md`
+
+### 2026-05-19: Add Gemini CLI Instruction Shim
+
+Decision: add a root `GEMINI.md` file and Gemini-specific documentation so
+Gemini CLI follows the same activation and status rules as Codex.
+
+Why: testing showed Codex respected `AGENTS.md`, but Gemini CLI started with a
+"Researching" step, skipped the Office Assistant banner, and read app source
+files during a status-only prompt. Gemini CLI uses `GEMINI.md` as its project
+context file, while `.gemini/settings.json` only configures tooling.
+
+Rule: Gemini must print the Office Assistant activation banner before tool use
+for unstructured prompts. For status prompts, Gemini should read
+`docs/features/status-index.md`, feature docs, and git state before touching app
+source, and it should not inspect app code unless the user asks for code-level
+detail.
+
+Created:
+
+- `GEMINI.md`
+- `docs/ai-office/gemini-cli.md`
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/mcp-and-skills.md`
 
 ### 2026-05-18: Materialize Office Baseline
 

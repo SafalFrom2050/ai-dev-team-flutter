@@ -89,6 +89,7 @@ For Flutter-specific behavior, start with:
 - `flutter-specialization.md`
 - `mcp-and-skills.md`
 - `package-decisions.md`
+- `gemini-cli.md`
 
 For parallel or multi-session role execution, use:
 

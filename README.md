@@ -165,12 +165,17 @@ Project-local MCP configs are included for tools that support them:
 
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
+- `GEMINI.md`
 
-They launch:
+The MCP configs launch:
 
 ```powershell
 fvm dart mcp-server --force-roots-fallback
 ```
+
+`GEMINI.md` is the Gemini CLI instruction shim. It makes Gemini announce the
+active role before tools and keeps status prompts on lightweight docs instead of
+scanning app source.
 
 Official Flutter and Dart agent skills are installed in `.agents/skills`, with
 their hashes recorded in `skills-lock.json`.
@@ -197,6 +202,15 @@ office and feature docs, determines the role sequence, and outputs
 
 You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
 CLI, Claude Code, or any AI tool) and the agent works within its defined scope.
+
+When using Gemini CLI, start it from the repo root so it loads `GEMINI.md`:
+
+```powershell
+gemini
+```
+
+If you are already inside a Gemini session after pulling new office rules, run
+`/memory reload` or restart the session.
 
 To skip the Office Assistant and invoke a specific role directly:
 
@@ -276,6 +290,7 @@ Start here if you are visiting:
 
 - `CEO_OVERVIEW.md`: executive map, decisions, team structure, open items.
 - `AGENTS.md`: rules every agent follows.
+- `GEMINI.md`: Gemini CLI-specific first-response and status-mode guardrails.
 - `docs/ai-office/org-branch-model.md`: how the company structure stays stable
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
@@ -289,6 +304,8 @@ Start here if you are visiting:
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
 - `docs/ai-office/mcp-and-skills.md`: MCP and official skills setup.
+- `docs/ai-office/gemini-cli.md`: Gemini CLI context loading and status
+  guardrails.
 - `docs/features/README.md`: where feature work lives.
 - `work/README.md`: where product app scaffolds live.
 

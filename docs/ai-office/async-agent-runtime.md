@@ -301,8 +301,21 @@ If MCP is available, use `fvm dart mcp-server --force-roots-fallback`.
 
 ### Gemini CLI
 
-Use the same packet files and branch names. The `.gemini/settings.json` MCP config
-points at FVM for this repo.
+Use the same packet files and branch names. The root `GEMINI.md` file is the
+Gemini-specific instruction shim; it requires activation banners before tool use
+and keeps status prompts on lightweight docs.
+
+The `.gemini/settings.json` MCP config points at FVM for this repo. MCP gives
+Gemini tools, while `GEMINI.md` gives Gemini the office behavior.
+
+After pulling office-rule changes inside an existing Gemini session, run:
+
+```text
+/memory reload
+```
+
+Use `/memory list` or `/memory show` to verify that the root `GEMINI.md` is
+loaded.
 
 ### Cursor
 
