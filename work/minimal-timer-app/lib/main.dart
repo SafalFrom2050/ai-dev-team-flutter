@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+
+import 'services/background_timer_service.dart';
 
 void main() {
-  runApp(const TimerApp());
+  runApp(TimerApp());
 }
 
 class TimerApp extends StatelessWidget {
-  const TimerApp({super.key});
+  const TimerApp({super.key, this.timerService});
+
+  final BackgroundTimerService? timerService;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +25,15 @@ class TimerApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFFAF9F5),
         useMaterial3: true,
       ),
-      home: const TimerScreen(),
+      home: TimerScreen(timerService: timerService),
     );
   }
 }
 
 class TimerScreen extends StatefulWidget {
-  const TimerScreen({super.key});
+  const TimerScreen({super.key, this.timerService});
+
+  final BackgroundTimerService? timerService;
 
   @override
   State<TimerScreen> createState() => _TimerScreenState();
@@ -37,11 +44,12 @@ class _TimerScreenState extends State<TimerScreen> {
   static const int _minimumSeconds = 60;
   static const int _maximumSeconds = 99 * 60;
 
-  Timer? _ticker;
+  late final BackgroundTimerService _timerService;
+  StreamSubscription<int>? _timerSubscription;
+
   int _durationSeconds = _defaultSeconds;
   int _remainingSeconds = _defaultSeconds;
-
-  bool get _isRunning => _ticker?.isActive ?? false;
+  bool _isRunning = false;
 
   double get _elapsedProgress {
     if (_durationSeconds == 0) {
@@ -68,8 +76,34 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _timerService = widget.timerService ?? BackgroundTimerService();
+    _initTimerService();
+  }
+
+  Future<void> _initTimerService() async {
+    await _timerService.initialize();
+    await _timerService.requestPermissions();
+
+    _timerSubscription = _timerService.remainingSecondsStream.listen((seconds) {
+      setState(() {
+        _remainingSeconds = seconds;
+        _isRunning = seconds > 0;
+      });
+    });
+
+    // Check if service is already running (e.g. app reopened)
+    if (await _timerService.isRunning()) {
+      setState(() {
+        _isRunning = true;
+      });
+    }
+  }
+
+  @override
   void dispose() {
-    _ticker?.cancel();
+    _timerSubscription?.cancel();
     super.dispose();
   }
 
@@ -101,9 +135,12 @@ class _TimerScreenState extends State<TimerScreen> {
     });
   }
 
-  void _toggleTimer() {
+  Future<void> _toggleTimer() async {
     if (_isRunning) {
-      _pauseTimer();
+      await _timerService.pause();
+      setState(() {
+        _isRunning = false;
+      });
       return;
     }
 
@@ -113,33 +150,17 @@ class _TimerScreenState extends State<TimerScreen> {
       });
     }
 
-    _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
-    setState(() {});
-  }
-
-  void _pauseTimer() {
-    _ticker?.cancel();
-    setState(() {});
-  }
-
-  void _resetTimer() {
-    _ticker?.cancel();
+    await _timerService.start(_remainingSeconds);
     setState(() {
-      _remainingSeconds = _durationSeconds;
+      _isRunning = true;
     });
   }
 
-  void _onTick(Timer timer) {
-    if (_remainingSeconds <= 1) {
-      timer.cancel();
-      setState(() {
-        _remainingSeconds = 0;
-      });
-      return;
-    }
-
+  Future<void> _resetTimer() async {
+    await _timerService.stop();
     setState(() {
-      _remainingSeconds -= 1;
+      _isRunning = false;
+      _remainingSeconds = _durationSeconds;
     });
   }
 
@@ -147,73 +168,75 @@ class _TimerScreenState extends State<TimerScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final dialSize = math.min(
-              320.0,
-              math.max(
-                180.0,
-                math.min(
-                  constraints.maxWidth - 48,
-                  constraints.maxHeight * .36,
-                ),
-              ),
-            );
-
-            return Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 24,
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Timer',
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Minimal focus countdown',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 28),
-                      _TimerDial(
-                        elapsedProgress: _elapsedProgress,
-                        formattedTime: _formatSeconds(_remainingSeconds),
-                        semanticTime: _formatSemanticTime(_remainingSeconds),
-                        size: dialSize,
-                        statusLabel: _statusLabel,
-                      ),
-                      const SizedBox(height: 28),
-                      _DurationControls(
-                        currentDurationSeconds: _durationSeconds,
-                        enabled: !_isRunning,
-                        onAdjustDuration: _adjustDuration,
-                        onSelectDuration: _selectDuration,
-                      ),
-                      const SizedBox(height: 20),
-                      _TimerActions(
-                        isRunning: _isRunning,
-                        canReset: _remainingSeconds != _durationSeconds,
-                        isComplete: _remainingSeconds == 0,
-                        onReset: _resetTimer,
-                        onToggleTimer: _toggleTimer,
-                      ),
-                    ],
+    return WithForegroundTask(
+      child: Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final dialSize = math.min(
+                320.0,
+                math.max(
+                  180.0,
+                  math.min(
+                    constraints.maxWidth - 48,
+                    constraints.maxHeight * .36,
                   ),
                 ),
-              ),
-            );
-          },
+              );
+
+              return Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 24,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 520),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Timer',
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Minimal focus countdown',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(height: 28),
+                        _TimerDial(
+                          elapsedProgress: _elapsedProgress,
+                          formattedTime: _formatSeconds(_remainingSeconds),
+                          semanticTime: _formatSemanticTime(_remainingSeconds),
+                          size: dialSize,
+                          statusLabel: _statusLabel,
+                        ),
+                        const SizedBox(height: 28),
+                        _DurationControls(
+                          currentDurationSeconds: _durationSeconds,
+                          enabled: !_isRunning,
+                          onAdjustDuration: _adjustDuration,
+                          onSelectDuration: _selectDuration,
+                        ),
+                        const SizedBox(height: 20),
+                        _TimerActions(
+                          isRunning: _isRunning,
+                          canReset: _remainingSeconds != _durationSeconds || _isRunning,
+                          isComplete: _remainingSeconds == 0,
+                          onReset: _resetTimer,
+                          onToggleTimer: _toggleTimer,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

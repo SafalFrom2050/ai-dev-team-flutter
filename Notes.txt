@@ -1,0 +1,3 @@
+When the feature is being implemented in another branch, the Office assistant has no clue about the project status and thus replies with outdated project state.
+The office assistant is reading all the files, and even the code of the app, which is very context heavy in the big projects just to ask for status.
+The roles are calling tools before announcing themselves.
