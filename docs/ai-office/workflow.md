@@ -20,6 +20,16 @@ docs/features/<feature-slug>/
 
 Not every file must be long. A short, clear document beats a large vague one.
 
+Product branches also keep a cross-feature status file:
+
+```text
+docs/features/status-index.md
+```
+
+The status index is the lightweight dashboard for the Office Assistant. Update
+it when feature state, source-of-truth branch, quality gates, or manual QA
+status changes.
+
 Product app code belongs under:
 
 ```text
@@ -52,9 +62,11 @@ Each agent branch should declare:
 - Scope.
 - Files owned.
 - Files touched outside ownership, if any.
+- Commit created or proposed.
 - Test evidence.
 - Open questions.
 - Follow-up risks.
+- Whether `docs/features/status-index.md` was updated.
 
 This is more important than pretending parallel work has no coordination cost.
 

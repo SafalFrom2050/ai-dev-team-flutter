@@ -22,6 +22,7 @@ Every role session should be able to start from:
 - `CEO_OVERVIEW.md`
 - `AGENTS.md`
 - The relevant files in `docs/ai-office/`
+- `docs/features/status-index.md` for project status
 - The current feature folder under `docs/features/<feature-slug>/`
 - The relevant app workspace under `work/<app-slug>/`, when code exists
 - Its own agent session packet
@@ -87,6 +88,8 @@ docs/features/<feature-slug>/
 `outbox/` is where each role writes the result of the session.
 
 `status.md`, `ownership.md`, and `decisions.md` are the coordination layer.
+`docs/features/status-index.md` is the cross-feature dashboard that lets the
+Office Assistant answer progress questions without reading the whole app.
 
 ## Agent Session Packet
 
@@ -112,13 +115,16 @@ Branch: feat/onboarding/senior-navigation
 You own: work/minimal-timer-app/lib/features/onboarding/
 Do NOT edit: work/minimal-timer-app/lib/shared/widgets/
 Other agents: Junior Flutter Developer is working on shared widgets.
-When done: commit and write summary to
+When done: commit using docs/ai-office/commit-guidelines.md and write summary to
   docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
 Packets should be under 200 words when practical. The activation banner remains
 required even in short packets. The agent reads the codebase itself. The packet
 sets boundaries and intent.
+
+Packets should also tell the role to use `docs/ai-office/commit-guidelines.md`
+for any commit it creates.
 
 See `templates/agent-session-packet.md` for the full template.
 
@@ -140,6 +146,9 @@ Recommended next agents:
 
 The next agent reads the previous outbox files instead of reading the entire
 previous chat.
+
+When a role changes feature state, it should also update
+`docs/features/status-index.md` on the branch where the work lives.
 
 ## Parallelization Model
 

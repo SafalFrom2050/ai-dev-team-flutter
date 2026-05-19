@@ -20,6 +20,16 @@ Which files or modules did this agent own?
 
 - 
 
+## Commit
+
+Commit created or proposed:
+
+```text
+<type>(<scope>): <imperative summary>
+```
+
+Follow `docs/ai-office/commit-guidelines.md`.
+
 ## Test Evidence
 
 Commands run:
@@ -39,4 +49,8 @@ Manual checks:
 ## Follow-Up Risks
 
 - 
+
+## Status Index Update
+
+Was `docs/features/status-index.md` updated? If not, explain why.
 
