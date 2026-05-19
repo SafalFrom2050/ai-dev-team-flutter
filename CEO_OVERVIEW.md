@@ -606,8 +606,8 @@ Updated:
 ### 2026-05-19: Improve README Office Entrance
 
 Decision: replace the crowded README round-table Mermaid chart with a simpler
-SVG office map, and add a repo-native Office Assistant activation screenshot to
-show the intended user experience.
+SVG office map, and add the actual pasted Office Assistant activation screenshot
+to show the intended user experience.
 
 Why: visitors should understand the office quickly. The README should show that
 the workflow is simple at the front door: ask a normal question, see the active
@@ -616,7 +616,7 @@ role announced, then get branch-aware evidence.
 Created:
 
 - `docs/assets/readme/office-round-table.svg`
-- `docs/assets/readme/office-assistant-activation.svg`
+- `docs/assets/readme/office-assistant-activation.png`
 
 Updated:
 

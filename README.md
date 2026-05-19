@@ -224,7 +224,7 @@ The user does not need to name a role or choose a workflow. A plain status
 question activates the Office Assistant, which announces itself first and then
 reports the project state from lightweight repo evidence.
 
-![Office Assistant activation screenshot](docs/assets/readme/office-assistant-activation.svg)
+![Office Assistant activation screenshot](docs/assets/readme/office-assistant-activation.png)
 
 ### What A Packet Looks Like
 
