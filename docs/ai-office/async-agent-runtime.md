@@ -90,27 +90,37 @@ docs/features/<feature-slug>/
 
 ## Agent Session Packet
 
-Each independent role session gets a small packet:
+The Office Assistant generates a ready-to-paste packet for each role session.
+Each packet answers five questions:
+
+1. **Who are you?** (activation banner)
+2. **What is your job?** (mission)
+3. **What branch?** (prevents commit collisions)
+4. **What files are yours and what is off-limits?** (prevents edit collisions)
+5. **Who else is working and what do you leave behind?** (enables handoffs)
+
+Example packet:
 
 ```text
-Role:
-Activation banner:
-Mission:
-Branch:
-Inputs:
-Files owned:
-Files to avoid:
-Commands to run:
-Required outputs:
-Definition of done:
-Stop conditions:
+Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+
+You are the Senior Flutter Engineer for this project.
+Read AGENTS.md for team rules.
+
+Mission: build the onboarding screen shell and route registration.
+Branch: feat/onboarding/senior-navigation
+You own: work/minimal-timer-app/lib/features/onboarding/
+Do NOT edit: work/minimal-timer-app/lib/shared/widgets/
+Other agents: Junior Flutter Developer is working on shared widgets.
+When done: commit and write summary to
+  docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
-The packet should be short enough to paste into any AI service, but specific
-enough that the role can operate without the CEO sitting in the same chat.
+Packets should be under 200 words when practical. The activation banner remains
+required even in short packets. The agent reads the codebase itself. The packet
+sets boundaries and intent.
 
-The first visible line in the role session should be the activation banner from
-`role-activation.md`.
+See `templates/agent-session-packet.md` for the full template.
 
 ## Handoff Packet
 
