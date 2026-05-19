@@ -20,6 +20,14 @@ docs/features/<feature-slug>/
 
 Not every file must be long. A short, clear document beats a large vague one.
 
+Product app code belongs under:
+
+```text
+work/<app-slug>/
+```
+
+Do not initialize Flutter apps at the repository root.
+
 ## Branch Flow
 
 0. CEO updates `CEO_OVERVIEW.md` for team, workflow, tooling, and direction
@@ -89,6 +97,13 @@ Senior Flutter Engineer   lib/features/auth/, navigation changes
 Junior Flutter Developer  lib/shared/widgets/primary_button.dart
 QA/Test Engineer          test/features/auth/, integration_test/
 UI/UX Designer            docs/features/auth/design-contract.md
+```
+
+For app code, write ownership paths relative to the app workspace:
+
+```text
+Senior Flutter Engineer   work/my-app/lib/features/auth/
+QA/Test Engineer          work/my-app/test/features/auth/
 ```
 
 If two agents need the same file, appoint one owner and have the other agent

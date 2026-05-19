@@ -187,6 +187,9 @@ Current local tool status:
 CEO decision: use FVM as the office cockpit for Flutter tooling. Plain global
 `dart` and `flutter` are not authoritative for this repo.
 
+Workspace decision: the repository root is the office. Product Flutter apps live
+under `work/<app-slug>/`.
+
 ## Decision Log
 
 ### 2026-05-18: Start The AI Flutter Office
@@ -433,6 +436,35 @@ Updated:
 - `docs/ai-office/task-triage.md`
 - `docs/ai-office/user-activation.md`
 - `docs/ai-office/roles.md`
+
+### 2026-05-19: Add Work Directory Layout
+
+Decision: keep the repository root as the AI office and put Flutter app
+scaffolds under `work/<app-slug>/`.
+
+Why: Flutter creates many platform folders such as `android/`, `ios/`, `web/`,
+`macos/`, `linux/`, and `windows/`. Initializing those at the root makes the
+office hard to scan and causes generated artifacts to appear beside org docs.
+
+Rule: new Flutter projects must be created under `work/<app-slug>/`, with
+`--project-name <dart_package_name>` when the folder slug is not a valid Dart
+package name. Office docs, roles, templates, skills, MCP config, and CEO memory
+stay at the root.
+
+Created:
+
+- `work/README.md`
+
+Updated:
+
+- `README.md`
+- `AGENTS.md`
+- `docs/ai-office/org-branch-model.md`
+- `docs/ai-office/workflow.md`
+- `docs/ai-office/flutter-specialization.md`
+- `docs/ai-office/quality-gates.md`
+- `docs/ai-office/mcp-and-skills.md`
+- `docs/ai-office/async-agent-runtime.md`
 
 ### 2026-05-18: Materialize Office Baseline
 

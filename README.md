@@ -128,6 +128,42 @@ MCP config, FVM setup, and CEO memory. Product `main` is where the current app
 becomes production code. New products can start from `org/main` without
 reinventing the office.
 
+## Workspace Layout
+
+The repository root is the office. Product apps live under `work/`.
+
+```text
+.
+  AGENTS.md
+  CEO_OVERVIEW.md
+  docs/
+  work/
+    <app-slug>/
+      lib/
+      test/
+      android/
+      ios/
+      web/
+```
+
+This keeps generated Flutter platform folders from taking over the office lobby.
+
+Create new Flutter apps like this:
+
+```powershell
+fvm flutter create --project-name <dart_package_name> work/<app-slug>
+```
+
+Run app commands from the app workspace:
+
+```powershell
+Push-Location work/<app-slug>
+fvm flutter pub get
+fvm flutter analyze
+fvm flutter test
+Pop-Location
+```
+
 ## Why It Is Flutter-Native
 
 This office is tuned for Flutter, not generic app development.
@@ -253,17 +289,21 @@ one giant context-heavy chat while keeping the office coordinated.
 Once the Flutter app scaffold exists, the default gates are:
 
 ```powershell
+Push-Location work/<app-slug>
 fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+Pop-Location
 ```
 
 As the app matures, release candidates should also earn platform checks:
 
 ```powershell
+Push-Location work/<app-slug>
 fvm flutter build web
 fvm flutter build apk --debug
+Pop-Location
 ```
 
 ## Map Of The Office
@@ -282,6 +322,7 @@ Start here if you are visiting:
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
 - `docs/ai-office/mcp-and-skills.md`: MCP and official skills setup.
 - `docs/features/README.md`: where feature work lives.
+- `work/README.md`: where product app scaffolds live.
 
 ## Current Status
 
