@@ -50,20 +50,11 @@ CEO-level decisions live in `CEO_OVERVIEW.md`.
 
 The office does not let every agent write straight to `main`.
 
-```mermaid
-flowchart LR
-    Idea["Raw idea"]
-    Brief["Product brief"]
-    Design["Design contract"]
-    Plan["Technical plan"]
-    Build["Flutter implementation"]
-    Test["QA and tests"]
-    Review["Code review"]
-    Release["Release PR"]
-    Main["main"]
+![AI Flutter Office production path](docs/assets/readme/production-path.svg)
 
-    Idea --> Brief --> Design --> Plan --> Build --> Test --> Review --> Release --> Main
-```
+The path is intentionally gated: product, design, and architecture artifacts
+come before implementation; tests and review come before release; only release
+work moves into production `main`.
 
 Work happens through an integration branch:
 

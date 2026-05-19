@@ -608,8 +608,9 @@ Updated:
 ### 2026-05-19: Improve README Office Entrance
 
 Decision: replace the crowded README round-table Mermaid chart with a simpler
-SVG office map, and add actual Office Assistant activation screenshots to show
-the intended user experience across multiple tools.
+SVG office map, replace the production-path Mermaid chart with a darker SVG
+pipeline, and add actual Office Assistant activation screenshots to show the
+intended user experience across multiple tools.
 
 Why: visitors should understand the office quickly. The README should show that
 the workflow is simple at the front door: ask a normal question, see the active
@@ -619,6 +620,7 @@ same behavior works in Codex and Gemini CLI.
 Created:
 
 - `docs/assets/readme/office-round-table.svg`
+- `docs/assets/readme/production-path.svg`
 - `docs/assets/readme/office-assistant-activation.png`
 - `docs/assets/readme/office-assistant-activation-gemini.png`
 
