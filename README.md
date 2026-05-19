@@ -33,15 +33,16 @@ and when to hand off.
 
 ## Office Entrance
 
-Welcome to the round table. Every feature starts as a conversation, then becomes
-packets, branches, handoffs, review, and finally production code.
+Welcome to the office architecture. Every feature starts as a conversation, then
+becomes packets, branches, handoffs, review, and finally production code.
 
-![AI Flutter Office round table](docs/assets/readme/office-round-table.svg)
+![AI Flutter Office architecture](docs/assets/readme/office-round-table.svg)
 
-The diagram is intentionally simple: the agents share one repository as memory,
-but each role owns a different kind of decision. The CEO keeps the office
-coherent, the Office Assistant routes work, product and design clarify intent,
-engineering builds, QA and review protect quality, and release protects `main`.
+The diagram is intentionally simple: prompts enter through the Office Assistant,
+role packets create scoped branch work, the repository preserves memory, and the
+delivery pipeline protects `main`. Each role owns a different kind of decision:
+product and design clarify intent, engineering builds, QA and review protect
+quality, and release protects production.
 
 CEO-level decisions live in `CEO_OVERVIEW.md`.
 
