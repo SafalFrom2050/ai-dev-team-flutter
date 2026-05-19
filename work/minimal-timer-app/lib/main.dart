@@ -3,17 +3,30 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'screens/onboarding_screen.dart';
 import 'services/background_timer_service.dart';
 
-void main() {
-  runApp(TimerApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+
+  runApp(TimerApp(onboardingComplete: onboardingComplete, prefs: prefs));
 }
 
 class TimerApp extends StatelessWidget {
-  const TimerApp({super.key, this.timerService});
+  const TimerApp({
+    super.key,
+    this.timerService,
+    required this.onboardingComplete,
+    required this.prefs,
+  });
 
   final BackgroundTimerService? timerService;
+  final bool onboardingComplete;
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,39 @@ class TimerApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFFAF9F5),
         useMaterial3: true,
       ),
-      home: TimerScreen(timerService: timerService),
+      initialRoute: onboardingComplete ? '/' : '/onboarding',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/onboarding') {
+          return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                OnboardingScreen(
+              onStartTiming: () async {
+                await prefs.setBool('onboarding_complete', true);
+                if (context.mounted) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                }
+              },
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        }
+
+        if (settings.name == '/') {
+          return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                TimerScreen(timerService: timerService),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        }
+
+        return null;
+      },
     );
   }
 }
@@ -170,6 +215,20 @@ class _TimerScreenState extends State<TimerScreen> {
 
     return WithForegroundTask(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline),
+              tooltip: 'Help & Tutorial',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/onboarding');
+              },
+            ),
+          ],
+        ),
+        extendBodyBehindAppBar: true,
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {

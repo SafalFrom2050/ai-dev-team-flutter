@@ -6,25 +6,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widget_test.mocks.dart';
 
-@GenerateMocks([BackgroundTimerService])
+@GenerateMocks([BackgroundTimerService, SharedPreferences])
 void main() {
   late MockBackgroundTimerService mockService;
+  late MockSharedPreferences mockPrefs;
   late StreamController<int> stateController;
 
   setUp(() {
     mockService = MockBackgroundTimerService();
+    mockPrefs = MockSharedPreferences();
     stateController = StreamController<int>.broadcast();
 
     when(mockService.initialize()).thenAnswer((_) async {});
     when(mockService.requestPermissions()).thenAnswer((_) async {});
     when(mockService.isRunning()).thenAnswer((_) async => false);
-    when(mockService.remainingSecondsStream).thenAnswer((_) => stateController.stream);
+    when(mockService.remainingSecondsStream)
+        .thenAnswer((_) => stateController.stream);
     when(mockService.start(any)).thenAnswer((_) async {});
     when(mockService.pause()).thenAnswer((_) async {});
     when(mockService.stop()).thenAnswer((_) async {});
+
+    when(mockPrefs.setBool(any, any)).thenAnswer((_) async => true);
   });
 
   tearDown(() {
@@ -32,7 +38,11 @@ void main() {
   });
 
   testWidgets('shows the default timer controls', (tester) async {
-    await tester.pumpWidget(TimerApp(timerService: mockService));
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: true,
+      prefs: mockPrefs,
+    ));
 
     expect(find.text('Timer'), findsOneWidget);
     expect(find.text('05:00'), findsOneWidget);
@@ -43,7 +53,11 @@ void main() {
   });
 
   testWidgets('changes duration with presets and steppers', (tester) async {
-    await tester.pumpWidget(TimerApp(timerService: mockService));
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: true,
+      prefs: mockPrefs,
+    ));
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -65,7 +79,11 @@ void main() {
   });
 
   testWidgets('starts, pauses, and resets the countdown', (tester) async {
-    await tester.pumpWidget(TimerApp(timerService: mockService));
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: true,
+      prefs: mockPrefs,
+    ));
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -95,7 +113,11 @@ void main() {
   });
 
   testWidgets('shows completion and restart action at zero', (tester) async {
-    await tester.pumpWidget(TimerApp(timerService: mockService));
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: true,
+      prefs: mockPrefs,
+    ));
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -109,5 +131,38 @@ void main() {
     expect(find.text('00:00'), findsOneWidget);
     expect(find.text('Done'), findsOneWidget);
     expect(find.text('Restart'), findsOneWidget);
+  });
+
+  testWidgets('shows onboarding on first launch', (tester) async {
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: false,
+      prefs: mockPrefs,
+    ));
+
+    expect(find.text('Minimal Timer'), findsOneWidget);
+    expect(find.text('Stays with you'), findsOneWidget);
+    expect(find.text('Start Timing'), findsOneWidget);
+
+    await tester.tap(find.text('Start Timing'));
+    await tester.pumpAndSettle();
+
+    // Should navigate to Timer screen
+    expect(find.text('Timer'), findsOneWidget);
+    verify(mockPrefs.setBool('onboarding_complete', true)).called(1);
+  });
+
+  testWidgets('can re-open onboarding from help button', (tester) async {
+    await tester.pumpWidget(TimerApp(
+      timerService: mockService,
+      onboardingComplete: true,
+      prefs: mockPrefs,
+    ));
+
+    await tester.tap(find.byIcon(Icons.help_outline));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Minimal Timer'), findsOneWidget);
+    expect(find.text('Start Timing'), findsOneWidget);
   });
 }

@@ -33,3 +33,16 @@ hidden chat history.
 - Docs: `docs/features/android-background-timer/`
 - Handoff: `missing`; create or update `docs/features/android-background-timer/handoff.md`
 - Last updated: `2026-05-19 by CEO`
+
+## Timer Onboarding
+
+- Slug: `timer-onboarding`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `main`
+- State: `shipped to main`
+- Last quality gates: `fvm flutter analyze` and `fvm flutter test` recorded as passing on 2026-05-19
+- Current owner: `Release Engineer`
+- Open risks: finding a balance between helpful guidance and breaking the "minimal" flow
+- Docs: `docs/features/timer-onboarding/`
+- Handoff: `docs/features/timer-onboarding/handoff.md`
+- Last updated: `2026-05-19 by Release Engineer`
