@@ -87,8 +87,11 @@ flowchart TB
 The Office Assistant should produce:
 
 ```text
+Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.
+
 Recommended owner:
 Supporting roles:
+Activation banner for next role:
 Branch:
 Feature folder:
 Packets to create:
@@ -106,6 +109,9 @@ docs/features/<feature-slug>/async/packets/
 
 If the work is not ready, it asks the minimum useful clarification or routes to
 Product Lead.
+
+Before any routed role starts work, the Assistant must show the role activation
+banner from `role-activation.md`.
 
 ## Progress Monitoring
 
@@ -135,6 +141,8 @@ For progress requests, the Office Assistant should inspect:
 Then report:
 
 ```text
+Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.
+
 Feature:
 Current branch:
 Overall state:

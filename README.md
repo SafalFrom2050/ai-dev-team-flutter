@@ -225,6 +225,12 @@ That is enough. You do not need to name branches, workflows, packet files, or
 specialist roles. The Office Assistant reads the repo, picks the role sequence,
 chooses the branch plan, and prepares the handoff path.
 
+Every active role should introduce itself before doing work:
+
+```text
+UI/UX Designer Activated: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+```
+
 You can also ask for progress:
 
 ```text
@@ -315,6 +321,8 @@ Start here if you are visiting:
 - `docs/ai-office/org-branch-model.md`: how the company structure stays stable
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
+- `docs/ai-office/role-activation.md`: visible chat banners for activated
+  roles.
 - `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
 - `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
 - `docs/ai-office/workflow.md`: branch and handoff model.
