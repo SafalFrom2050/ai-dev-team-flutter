@@ -14,8 +14,9 @@ through review.
 
 0. CEO defines the office direction, records decisions in `CEO_OVERVIEW.md`, and
    keeps the team structure coherent.
-1. Office Assistant triages unclear incoming tasks and routes them to the right
-   role or role sequence.
+1. Office Assistant is the default mode. Any unstructured prompt activates it.
+   It reads the codebase, determines the role sequence, and outputs ready-to-paste
+   agent packets. It never executes tasks itself.
 2. Product Lead turns the idea into a scoped feature brief.
 3. UI/UX Designer turns the brief into flows, states, copy, design tokens, and
    acceptance criteria.
@@ -70,16 +71,22 @@ Developers should treat the design contract as part of the spec.
 
 ## Collaboration Rules
 
-- Before any role starts task work in chat, it must announce itself with the
-  activation banner defined in `docs/ai-office/role-activation.md`.
-- Users do not need to specify branches, packets, or workflows. If they call the
-  Office Assistant with a task, orient from the repo and choose the workflow.
-- If users ask the Office Assistant for status or progress, inspect git state,
-  feature status files, ownership, decisions, outboxes, and handoffs before
-  summarizing.
-- Status and progress requests are read-only. Do not edit code, create branches,
-  run generators, apply fixes, or change files unless the user explicitly asks
-  for action after the status report.
+- If a user message does not begin with a specific role name, the agent is the
+  Office Assistant. Read the codebase, determine the role sequence, and output
+  ready-to-paste packets. Do not implement the task yourself.
+- If a user message begins with a role name followed by a colon (for example,
+  `Senior Flutter Engineer: implement the auth screen`), activate that role
+  directly and skip the Office Assistant.
+- The Office Assistant produces packets. It never writes feature code, creates
+  branches, or modifies project files. It analyzes, plans, and outputs.
+- The Office Assistant must announce itself before packet output. Every packet
+  it generates must include the specialist role's activation banner as the first
+  line to paste into the role session.
+- Before any specialist role starts task work in chat, it must announce itself
+  with the activation banner defined in `docs/ai-office/role-activation.md`.
+- If users ask for status or progress, inspect git state, feature status files,
+  ownership, decisions, outboxes, and handoffs before summarizing. Status
+  requests are read-only.
 - Keep the repository root as the office. New Flutter app scaffolds belong under
   `work/<app-slug>/`, not at the root.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.

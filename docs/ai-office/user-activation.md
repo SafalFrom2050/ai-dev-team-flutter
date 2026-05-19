@@ -1,181 +1,136 @@
 # User Activation Contract
 
-The user should not need to remember branch names, workflow steps, packet paths,
-or role order.
+The user should not need to remember role names, branch names, workflow steps,
+packet paths, or template formats.
 
-In any AI tool, the user should be able to make a natural request and rely on the
-Office Assistant to orient itself from the repository.
+Any unstructured prompt is an Office Assistant prompt. The Office Assistant reads
+the codebase, determines the role sequence, and outputs ready-to-paste agent
+packets.
 
-## Minimal Prompt
+## Just Type Your Task
 
-Use this in a new chat session:
-
-```text
-Office Assistant: <task>
-```
-
-Examples:
+No prefix needed. These all activate the Office Assistant:
 
 ```text
-Office Assistant: I want to start an idea for a habit tracker app.
+I want to start an idea for a habit tracker app.
 ```
 
 ```text
-Office Assistant: I found a layout bug in the dashboard. Route this to the right
-role and prepare the next steps.
+add onboarding to the timer app
 ```
 
 ```text
-Office Assistant: Add onboarding to the app.
+I found a layout bug in the dashboard. The timer overflows at 61 minutes.
 ```
 
 ```text
-Office Assistant: status
+status
 ```
 
 ```text
-Office Assistant: give me progress on the onboarding feature.
+give me progress on the onboarding feature
 ```
 
-## What The User Does Not Need To Specify
+## Direct Role Invocation
 
-The user does not need to specify:
+To skip the Office Assistant and activate a specific role, start your message
+with the role name and a colon:
+
+```text
+Senior Flutter Engineer: implement the auth screen using the design contract
+in docs/features/auth/design-contract.md
+```
+
+```text
+QA/Test Engineer: write widget tests for the onboarding card
+```
+
+This goes directly to that specialist. The Office Assistant does not intervene.
+
+## What You Get Back
+
+For any unstructured task, the Office Assistant produces:
+
+1. A **phase plan** showing which roles run and in what order.
+2. **Ready-to-paste packets** for each agent session.
+3. Each packet starts with the role's activation banner.
+4. Each packet includes: role, mission, branch, file ownership, boundaries,
+   concurrent agent awareness, and output location.
+
+You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
+CLI, Claude Code, or any AI coding tool) and the agent works within its defined
+boundaries.
+
+## What You Do Not Need To Specify
 
 - Which role owns the work.
 - Which branch to create.
 - Whether to use `org/main`, `main`, or `integrate/<feature>`.
 - Which workflow document to read.
-- Which packet template to use.
-- Which handoff file to update.
-- Whether the task is product, design, engineering, QA, review, release, or org
-  work.
+- Which template to use.
+- Which files each agent should own or avoid.
+- Whether agents can run in parallel.
 
-The Office Assistant figures that out from the repo.
+The Office Assistant figures all of that out from the codebase.
 
-The user can also ask for progress without knowing where status files, outboxes,
-or branches live.
+## What The Office Assistant Does First
 
-## What The Office Assistant Must Do First
+In a fresh session, the Office Assistant:
 
-In a fresh session, the Office Assistant must announce itself before task work,
-then orient from the repo:
+1. Announces:
+   `Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.`
+2. Reads `AGENTS.md` for team rules.
+3. Reads `CEO_OVERVIEW.md` for current office state and open items.
+4. Reads `docs/ai-office/role-activation.md` for banner text.
+5. Reads the current codebase structure under `work/` to understand what exists.
+6. Checks the current git branch and status.
+7. If a feature folder exists, reads it for prior context.
 
-1. Start with:
-   `Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.`
-2. Read `README.md`.
-3. Read `AGENTS.md`.
-4. Read `CEO_OVERVIEW.md`.
-5. Read `docs/ai-office/task-triage.md`.
-6. Read `docs/ai-office/role-activation.md`.
-7. If the task may change company structure, read
-   `docs/ai-office/org-branch-model.md`.
-8. If the task involves parallel roles, read
-   `docs/ai-office/async-agent-runtime.md`.
-9. Check the current git branch and status.
+Then it produces the phase plan and ready-to-paste packets.
 
-Only then should it choose the role sequence and branch plan.
+## Portable Starter Prompt
 
-When it activates a specialist role, it must show that role's activation banner
-before the specialist starts work.
-
-## Office Assistant Default Response
-
-For any incoming task, the Office Assistant should respond with:
+For AI tools that need explicit instructions, this prompt bootstraps the Office
+Assistant behavior:
 
 ```text
-Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.
+<task>
 
-Task type:
-Recommended owner:
-Supporting roles:
-Role activation line:
-Branch plan:
-Files or packets to create:
-First action:
-Clarification needed:
+You are the Office Assistant for this project. Read AGENTS.md for rules.
+Analyze the codebase, determine the role sequence and file ownership, and output
+ready-to-paste agent packets. Each packet must start with the target role's
+activation banner from docs/ai-office/role-activation.md. Do not implement the
+task yourself.
 ```
 
-If no clarification is needed, it should proceed.
-
-For progress requests, the Office Assistant should respond with:
-
-```text
-Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.
-
-Feature or scope:
-Current branch:
-Overall state:
-Completed:
-In progress:
-Blocked:
-Open questions:
-Next recommended action:
-```
-
-Progress and status requests are read-only. The Office Assistant must not edit
-code, create branches, run generators, apply fixes, update files, commit, or
-merge unless the user explicitly asks for action after receiving the status
-report.
-
-## Branch Choice Rules
-
-The Office Assistant chooses branches as follows:
-
-- Company/process/tooling/role change: `org/<initiative>` from `org/main`.
-- New product feature: `integrate/<feature-slug>` from `main`.
-- Product brief: `product/<feature-slug>` from the integration branch.
-- Design work: `design/<feature-slug>` from the integration branch.
-- Architecture work: `arch/<feature-slug>` from the integration branch.
-- Implementation: `feat/<feature-slug>/<slice>` from the integration branch.
-- QA/test work: `test/<feature-slug>` from the integration branch.
-- Review fixes: `fix/<feature-slug>/<issue>` from the integration branch.
-
-The user can override the branch plan, but should not have to provide one.
-
-## New Tool Session Prompt
-
-For maximum portability across Codex, Gemini CLI, Cursor, Claude Code, and other
-AI coding tools, this is the recommended starter prompt:
-
-```text
-Office Assistant: <task>
-
-Start by announcing:
-Office Assistant Activated: I am your Office Assistant and responsible for triage, routing, packets, and progress coordination.
-
-Then orient from README.md, AGENTS.md, CEO_OVERVIEW.md,
-docs/ai-office/task-triage.md, and docs/ai-office/role-activation.md. Announce
-the active specialist role banner before that specialist starts task work.
-Choose the right role sequence, branch plan, and files to update. Use repo files
-as shared memory and do not rely on hidden chat history.
-```
-
-This prompt is optional but useful when the tool has no prior conversation.
+This prompt is optional when `AGENTS.md` is already loaded as a project rule.
 
 ## If The Tool Cannot Edit Files
 
-If an AI tool cannot directly edit files, it should still produce:
+If an AI tool cannot directly edit files, the Office Assistant should still
+produce:
 
-- The recommended role sequence.
-- The branch plan.
-- The packet contents.
-- The handoff contents.
-- The exact file paths where the user should place them.
+- The phase plan.
+- The complete packet text for each agent.
+- The exact branch names and file paths.
+
+The user can then paste these into tools that can edit files.
 
 ## If The Task Is Too Vague
 
-Ask the minimum useful clarification.
-
-Good:
+Ask the minimum useful clarification:
 
 ```text
 What is the target user and the main outcome you want?
 ```
 
-Avoid asking the user to choose internal office mechanics unless the task truly
-depends on that choice.
+Do not ask the user to choose internal office mechanics.
 
-## User Rule
+## Summary
 
-The user calls the Office Assistant. The Office Assistant calls the office.
+```text
+Unstructured prompt → Office Assistant → ready-to-paste packets → user pastes
+into agent sessions → agents work within boundaries → handoffs through outbox
+```
 
+The user calls the office. The office produces the instructions.

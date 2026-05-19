@@ -496,6 +496,46 @@ Updated:
 - `docs/ai-office/async-agent-runtime.md`
 - `docs/ai-office/templates/agent-session-packet.md`
 
+### 2026-05-19: Adopt Packet-First Office Assistant
+
+Decision: make the Office Assistant the default mode for unstructured prompts
+and keep it as a packet generator, not an executor.
+
+Why: users should not need to know which role owns a task, but the Assistant
+should also not accidentally perform specialist work. The Assistant now routes,
+plans, and produces ready-to-paste role packets. Specialist roles do the actual
+product, design, code, QA, review, and release work.
+
+Rule: if a user prompt does not start with a specific role name and colon, the
+Office Assistant activates. It reads the repo, determines the role sequence,
+and outputs packets. Every packet must include the target role's activation
+banner as the first visible line.
+
+Accepted from external Opus review:
+
+- no-prefix Office Assistant default
+- ready-to-paste packet output
+- Office Assistant does not modify project files
+- slimmer packets with explicit file ownership and handoff targets
+
+Amended by CEO decision:
+
+- keep activation banners inside generated packets
+- keep `CEO_OVERVIEW.md` updated for office/workflow changes
+- use ASCII arrows in review notes to avoid encoding issues
+
+Updated:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/role-activation.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/templates/agent-session-packet.md`
+- `OPUS_REVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
