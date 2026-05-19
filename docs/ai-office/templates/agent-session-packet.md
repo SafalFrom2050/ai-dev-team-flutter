@@ -2,51 +2,58 @@
 
 ## Role
 
-<CEO | Office Assistant | Product Lead | UI/UX Designer | Product Engineer | Senior Flutter Engineer | Junior Flutter Developer | QA/Test Engineer | Code Reviewer | Release Engineer>
+<role name>
 
 ## Activation Banner
 
-Paste the matching line from `docs/ai-office/role-activation.md` at the top of
-the chat before doing task work.
+Paste the matching line from `docs/ai-office/role-activation.md` as the first
+visible line in the role session.
 
 ## Mission
 
-What should this role accomplish in this session?
+What should this role accomplish? Keep to one to three sentences.
 
 ## Branch
 
 `<branch-name>`
 
-## Inputs
-
-- 
-
 ## Files Owned
 
-- 
+These are the only files this agent should create or modify:
+
+- <owned paths>
 
 ## Files To Avoid
 
+These files are owned by other agents or are out of scope:
+
 - 
 
-## Commands To Run
+## Other Agents Working Now
 
-```powershell
+Who else is running concurrently and what do they own?
 
+- <concurrent role ownership, or "none">
+
+## Context
+
+Read these files before starting:
+
+- `AGENTS.md`
+- <task-specific context files>
+
+## When Done
+
+Commit your work and write your summary to:
+
+```text
+docs/features/<feature-slug>/async/outbox/<role-slug>.md
 ```
-
-## Required Outputs
-
-- 
-
-## Definition Of Done
-
-- [ ] 
-- [ ] 
-- [ ] 
 
 ## Stop Conditions
 
 Stop and write a blocker note if:
 
-- 
+- A required input file is missing or contradictory.
+- You need to edit a file outside your ownership.
+- The mission is ambiguous enough that you might break another agent's work.

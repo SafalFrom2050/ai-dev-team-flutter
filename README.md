@@ -18,7 +18,7 @@ project treats AI as a team.
 Each role has a job:
 
 - The CEO keeps the office coherent.
-- The Office Assistant routes unclear tasks to the right specialist.
+- The Office Assistant turns unstructured tasks into role packets.
 - The Product Lead clarifies what is worth building.
 - The UI/UX Designer makes the experience implementable.
 - The Product Engineer turns intent into architecture.
@@ -215,80 +215,66 @@ their hashes recorded in `skills-lock.json`.
 
 ## How To Fire Up The Office
 
-If you know the task but do not know the role, start here:
+Just describe your task. No prefix needed:
 
 ```text
-Office Assistant: <task>
+I want to build a habit tracker app.
 ```
-
-That is enough. You do not need to name branches, workflows, packet files, or
-specialist roles. The Office Assistant reads the repo, picks the role sequence,
-chooses the branch plan, and prepares the handoff path.
-
-Every active role should introduce itself before doing work:
 
 ```text
-UI/UX Designer Activated: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+add onboarding to the timer app
 ```
-
-You can also ask for progress:
 
 ```text
-Office Assistant: status
+fix the timer overflow bug where it shows 61 minutes
 ```
 
-or:
+Any unstructured prompt activates the Office Assistant, which reads the codebase,
+determines the role sequence, and outputs **ready-to-paste agent packets**.
+
+You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
+CLI, Claude Code, or any AI tool) and the agent works within its defined scope.
+
+To skip the Office Assistant and invoke a specific role directly:
 
 ```text
-Office Assistant: give me progress on <feature-slug>
+Senior Flutter Engineer: implement the auth screen
 ```
 
-Status mode is read-only. The Assistant should report what is happening and
-recommend the next action, not change code or files, unless you ask it to act.
-
-Start with a CEO kickoff:
+Ask for progress at any time:
 
 ```text
-CEO kickoff: I want to build <idea>.
-Run the AI office workflow.
-Create the feature folder, product brief, design contract, tech plan, and branch
-plan before implementation.
+status
 ```
-
-Then create the feature integration branch:
-
-```powershell
-git checkout -b integrate/<feature-slug>
-```
-
-The first feature folder should live here:
 
 ```text
-docs/features/<feature-slug>/
-  brief.md
-  ux.md
-  design-contract.md
-  tech-plan.md
-  handoff.md
-  test-plan.md
-  release-notes.md
+give me progress on onboarding
 ```
 
-For parallel role sessions, create async packets:
+Status mode is read-only. The Assistant reports what is happening and recommends
+the next action without changing code or files.
+
+### What A Packet Looks Like
+
+The Office Assistant outputs prompts like this for each agent:
 
 ```text
-docs/features/<feature-slug>/async/
-  runbook.md
-  status.md
-  ownership.md
-  decisions.md
-  packets/<role>.md
-  outbox/<role>.md
+Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+
+You are the Senior Flutter Engineer for this project.
+Read AGENTS.md for team rules.
+
+Mission: build the onboarding screen shell and route registration.
+Branch: feat/onboarding/senior-navigation
+You own: work/minimal-timer-app/lib/features/onboarding/
+Do NOT edit: work/minimal-timer-app/lib/shared/widgets/
+Other agents: Junior Flutter Developer is working on shared widgets.
+When done: commit and write summary to
+  docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
-Each role can then run in a separate AI session or service. The packet is the
-input. The outbox file is the handoff. The branch is the workspace. This avoids
-one giant context-heavy chat while keeping the office coordinated.
+Each role runs in a separate session on its own branch with disjoint file
+ownership. The integration branch is where everything comes together.
 
 ## Quality Gates
 
