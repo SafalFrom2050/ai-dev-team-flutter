@@ -466,6 +466,29 @@ Updated:
 - `docs/ai-office/mcp-and-skills.md`
 - `docs/ai-office/async-agent-runtime.md`
 
+### 2026-05-19: Move Minimal Timer App Into Work
+
+Decision: migrate the first product app from root-level Flutter scaffold files
+into `work/minimal-timer-app/`.
+
+Why: the first app proved the root-clutter problem in practice. The office root
+should remain readable as the company operating system, while generated
+platform folders and app-local tooling files belong inside the app workspace.
+
+Moved:
+
+- `lib/`, `test/`, `android/`, `ios/`, `web/`, `linux/`, `macos/`, `windows/`
+- `pubspec.yaml`, `pubspec.lock`, `analysis_options.yaml`, `.metadata`
+- app-local ignored artifacts such as `.dart_tool/`, `build/`, `.idea/`, and
+  the app `.iml` file when the OS allowed moving them
+
+Updated:
+
+- `README.md`
+- `docs/features/minimal-timer-app/handoff.md`
+- `docs/features/minimal-timer-app/tech-plan.md`
+- `docs/features/minimal-timer-app/test-plan.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
@@ -482,12 +505,9 @@ Result:
 
 ## Current Open CEO Items
 
-- Install or expose Flutter on PATH.
-- Add the MCP server to the active Codex environment with
-  `codex mcp add dart -- fvm dart mcp-server --force-roots-fallback`.
-- Create the actual Flutter app scaffold.
-- Run the first feature through the full office workflow.
-- Decide the first product idea this office will build.
+- Review and merge `integrate/minimal-timer-app` into `main` when the release
+  gate is green.
+- Decide whether timer completion needs sound, haptics, or notifications.
 
 ## CEO Rule
 

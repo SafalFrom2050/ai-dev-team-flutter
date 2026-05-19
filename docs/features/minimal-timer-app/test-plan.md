@@ -8,7 +8,7 @@ pauses, resets, and reaches completion.
 ## Automated Tests
 
 - Unit: Not added.
-- Widget: `test/widget_test.dart`.
+- Widget: `work/minimal-timer-app/test/widget_test.dart`.
 - Integration: Not added.
 - Golden: Not added.
 
@@ -27,6 +27,7 @@ pauses, resets, and reaches completion.
 ## Regression Areas
 
 - Flutter scaffold still builds across generated platforms.
+- App-local generated artifacts stay under `work/minimal-timer-app/`.
 - Starter counter test and demo copy are fully removed.
 - Reset remains disabled only when there is nothing to reset.
 

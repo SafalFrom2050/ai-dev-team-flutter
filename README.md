@@ -331,6 +331,7 @@ slice is a minimal countdown timer tracked under:
 
 ```text
 docs/features/minimal-timer-app/
+work/minimal-timer-app/
 ```
 
 Next CEO move:

@@ -2,12 +2,14 @@
 
 ## Summary
 
-Scaffold a Flutter app in the existing office repo and replace the starter
-counter with a single-screen Material 3 countdown timer.
+Scaffold a Flutter app inside the office repo's `work/` workspace and replace
+the starter counter with a single-screen Material 3 countdown timer.
 
 ## Architecture
 
-- Feature module: `lib/main.dart` for this first small slice.
+- App workspace: `work/minimal-timer-app/`.
+- Feature module: `work/minimal-timer-app/lib/main.dart` for this first small
+  slice.
 - State management: Local `StatefulWidget` with in-memory state.
 - Navigation: Single `MaterialApp` home route.
 - Data source: None.
@@ -18,8 +20,8 @@ counter with a single-screen Material 3 countdown timer.
 | Agent | Files or Modules |
 | --- | --- |
 | Office Assistant | Feature docs and branch setup |
-| Flutter Developer | `lib/main.dart`, `pubspec.yaml` |
-| QA/Test Engineer | `test/widget_test.dart`, test plan |
+| Flutter Developer | `work/minimal-timer-app/lib/main.dart`, `work/minimal-timer-app/pubspec.yaml` |
+| QA/Test Engineer | `work/minimal-timer-app/test/widget_test.dart`, test plan |
 
 ## Data Model
 
