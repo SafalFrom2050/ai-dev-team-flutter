@@ -94,6 +94,7 @@ Each independent role session gets a small packet:
 
 ```text
 Role:
+Activation banner:
 Mission:
 Branch:
 Inputs:
@@ -107,6 +108,9 @@ Stop conditions:
 
 The packet should be short enough to paste into any AI service, but specific
 enough that the role can operate without the CEO sitting in the same chat.
+
+The first visible line in the role session should be the activation banner from
+`role-activation.md`.
 
 ## Handoff Packet
 

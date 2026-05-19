@@ -64,6 +64,8 @@ design close to implementation without pretending design is only code.
 - Release Engineer: protects `main` and manages production readiness.
 
 See `roles.md`, `workflow.md`, and `quality-gates.md` for the operating details.
+See `role-activation.md` for the visible chat banner each role must announce
+before it starts work.
 
 The CEO-level map lives at the repository root in `CEO_OVERVIEW.md`.
 
@@ -75,6 +77,7 @@ For task triage, use:
 
 - `task-triage.md`
 - `user-activation.md`
+- `role-activation.md`
 
 For Flutter-specific behavior, start with:
 
