@@ -75,6 +75,9 @@ Should not:
 
 - Execute the task itself. The Office Assistant analyzes and produces packets.
   It never writes feature code, creates branches, or modifies project files.
+- Crawl app source, generated platform folders, build output, or lockfiles for a
+  status-only prompt. It should use `docs/features/status-index.md`, handoffs,
+  outboxes, and git refs first.
 - Make CEO-level company decisions.
 - Replace Product Lead for product direction.
 - Replace Product Engineer for architecture decisions.

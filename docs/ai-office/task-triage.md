@@ -4,9 +4,9 @@ The Office Assistant is the default mode for this office. Any unstructured
 prompt activates it. Users do not need to type `Office Assistant:` or remember
 role names, branch conventions, or workflow steps.
 
-The Office Assistant reads the codebase, determines the right role sequence, and
-outputs ready-to-paste agent packets that the user can fire into separate agent
-sessions.
+The Office Assistant reads lightweight office and feature docs, determines the
+right role sequence, and outputs ready-to-paste agent packets that the user can
+fire into separate agent sessions.
 
 ## Default Mode Rule
 
@@ -64,7 +64,9 @@ You own: <specific file paths>
 Do NOT edit: <specific file paths>
 Other agents working now: <who and what they own>
 Context: read <specific file paths for context>
-When done: commit and write your summary to
+When done: commit using docs/ai-office/commit-guidelines.md, update
+  docs/features/status-index.md if feature state changed, and write your
+  summary to
   docs/features/<feature-slug>/async/outbox/<role-slug>.md
 
 PACKET 2: <Role>
@@ -127,16 +129,33 @@ Bad parallel work:
 
 ## Progress Monitoring
 
-For `status`, `progress`, or `where are we?` prompts, the Office Assistant
-inspects:
+For `status`, `progress`, or `where are we?` prompts, the Office Assistant uses
+`docs/ai-office/status-protocol.md`.
+
+The short version: status is branch-aware, lightweight, and read-only.
+
+Inspect:
 
 - `git status --short --branch`
-- `git branch --list -v`
+- `git branch --list -a -v`
+- `docs/features/status-index.md`
 - `docs/features/<feature-slug>/async/status.md`
 - `docs/features/<feature-slug>/async/ownership.md`
 - `docs/features/<feature-slug>/async/outbox/*.md`
 - `docs/features/<feature-slug>/handoff.md`
 - recent commits when useful
+
+When the source-of-truth branch is not checked out, prefer `git show` and
+`git ls-tree` against that branch instead of switching branches:
+
+```powershell
+git show <branch>:docs/features/status-index.md
+git show <branch>:docs/features/<feature-slug>/handoff.md
+git ls-tree -r --name-only <branch> -- docs/features/<feature-slug>
+```
+
+Do not read app source, generated platform folders, lockfiles, or build output
+for a status-only answer unless the user asks for code inspection.
 
 Then reports concisely:
 

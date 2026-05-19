@@ -3,9 +3,9 @@
 The user should not need to remember role names, branch names, workflow steps,
 packet paths, or template formats.
 
-Any unstructured prompt is an Office Assistant prompt. The Office Assistant reads
-the codebase, determines the role sequence, and outputs ready-to-paste agent
-packets.
+Any unstructured prompt is an Office Assistant prompt. The Office Assistant
+reads lightweight project docs, determines the role sequence, and outputs
+ready-to-paste agent packets.
 
 ## Just Type Your Task
 
@@ -71,7 +71,8 @@ boundaries.
 - Which files each agent should own or avoid.
 - Whether agents can run in parallel.
 
-The Office Assistant figures all of that out from the codebase.
+The Office Assistant figures all of that out from the repository's office docs,
+feature docs, and git state.
 
 ## What The Office Assistant Does First
 
@@ -82,11 +83,17 @@ In a fresh session, the Office Assistant:
 2. Reads `AGENTS.md` for team rules.
 3. Reads `CEO_OVERVIEW.md` for current office state and open items.
 4. Reads `docs/ai-office/role-activation.md` for banner text.
-5. Reads the current codebase structure under `work/` to understand what exists.
+5. Reads `docs/features/status-index.md` when the prompt asks for status or
+   refers to an existing feature.
 6. Checks the current git branch and status.
-7. If a feature folder exists, reads it for prior context.
+7. If a feature folder exists, reads its lightweight docs and handoffs for prior
+   context.
 
 Then it produces the phase plan and ready-to-paste packets.
+
+For status-only prompts, it should not scan `work/<app-slug>/lib`, platform
+folders, generated files, lockfiles, or build output unless the user asks for
+implementation-level inspection.
 
 ## Portable Starter Prompt
 
@@ -97,10 +104,11 @@ Assistant behavior:
 <task>
 
 You are the Office Assistant for this project. Read AGENTS.md for rules.
-Analyze the codebase, determine the role sequence and file ownership, and output
+First print the Office Assistant activation banner from
+docs/ai-office/role-activation.md before using tools. Analyze the lightweight
+project docs, determine the role sequence and file ownership, and output
 ready-to-paste agent packets. Each packet must start with the target role's
-activation banner from docs/ai-office/role-activation.md. Do not implement the
-task yourself.
+activation banner. Do not implement the task yourself.
 ```
 
 This prompt is optional when `AGENTS.md` is already loaded as a project rule.
@@ -129,8 +137,8 @@ Do not ask the user to choose internal office mechanics.
 ## Summary
 
 ```text
-Unstructured prompt → Office Assistant → ready-to-paste packets → user pastes
-into agent sessions → agents work within boundaries → handoffs through outbox
+Unstructured prompt -> Office Assistant -> ready-to-paste packets -> user pastes
+into agent sessions -> agents work within boundaries -> handoffs through outbox
 ```
 
 The user calls the office. The office produces the instructions.

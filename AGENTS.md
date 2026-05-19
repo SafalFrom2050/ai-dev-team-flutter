@@ -79,14 +79,22 @@ Developers should treat the design contract as part of the spec.
   directly and skip the Office Assistant.
 - The Office Assistant produces packets. It never writes feature code, creates
   branches, or modifies project files. It analyzes, plans, and outputs.
+- Every role must announce its activation banner before any tool call, command,
+  file read, analysis, plan, or implementation note. The banner is the first
+  visible line of the session's task work.
 - The Office Assistant must announce itself before packet output. Every packet
   it generates must include the specialist role's activation banner as the first
   line to paste into the role session.
 - Before any specialist role starts task work in chat, it must announce itself
   with the activation banner defined in `docs/ai-office/role-activation.md`.
-- If users ask for status or progress, inspect git state, feature status files,
-  ownership, decisions, outboxes, and handoffs before summarizing. Status
-  requests are read-only.
+- If users ask for status or progress, use the branch-aware status protocol in
+  `docs/ai-office/status-protocol.md`. Start with
+  `docs/features/status-index.md`, then inspect git refs, feature status files,
+  ownership, decisions, outboxes, and handoffs. Do not crawl app source or
+  generated platform folders for a status-only answer unless the user asks for
+  code inspection. Status requests are read-only.
+- Use `docs/ai-office/commit-guidelines.md` for every commit message. Prefer
+  Conventional Commits with a scoped, imperative subject.
 - Keep the repository root as the office. New Flutter app scaffolds belong under
   `work/<app-slug>/`, not at the root.
 - Every feature owns a folder under `docs/features/<feature-slug>/`.

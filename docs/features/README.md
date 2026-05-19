@@ -6,6 +6,10 @@ Create one folder per feature:
 docs/features/<feature-slug>/
 ```
 
+Keep `docs/features/status-index.md` current on product branches. The Office
+Assistant reads it first for progress checks, so status requests stay lightweight
+and branch-aware.
+
 Start from the templates in `docs/ai-office/templates/`:
 
 - `feature-brief.md`

@@ -14,6 +14,12 @@ What changed or what was decided?
 
 - 
 
+## Commit
+
+```text
+<type>(<scope>): <imperative summary>
+```
+
 ## Decisions Made
 
 - 
@@ -35,4 +41,8 @@ What changed or what was decided?
 ## Recommended Next Agents
 
 - 
+
+## Status Index
+
+Was `docs/features/status-index.md` updated? If not, explain why.
 

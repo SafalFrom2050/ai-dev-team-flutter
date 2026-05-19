@@ -64,7 +64,7 @@ design close to implementation without pretending design is only code.
 
 See `roles.md`, `workflow.md`, and `quality-gates.md` for the operating details.
 See `role-activation.md` for the visible chat banner each role must announce
-before it starts work.
+before it starts work or uses tools.
 
 The CEO-level map lives at the repository root in `CEO_OVERVIEW.md`.
 
@@ -77,6 +77,12 @@ For task triage, use:
 - `task-triage.md`
 - `user-activation.md`
 - `role-activation.md`
+- `status-protocol.md`
+
+For commits and handoffs, use:
+
+- `commit-guidelines.md`
+- `../features/status-index.md`
 
 For Flutter-specific behavior, start with:
 

@@ -229,8 +229,9 @@ add onboarding to the timer app
 fix the timer overflow bug where it shows 61 minutes
 ```
 
-Any unstructured prompt activates the Office Assistant, which reads the codebase,
-determines the role sequence, and outputs **ready-to-paste agent packets**.
+Any unstructured prompt activates the Office Assistant, which reads lightweight
+office and feature docs, determines the role sequence, and outputs
+**ready-to-paste agent packets**.
 
 You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
 CLI, Claude Code, or any AI tool) and the agent works within its defined scope.
@@ -251,8 +252,9 @@ status
 give me progress on onboarding
 ```
 
-Status mode is read-only. The Assistant reports what is happening and recommends
-the next action without changing code or files.
+Status mode is read-only and branch-aware. The Assistant starts with
+`docs/features/status-index.md`, handoffs, outboxes, and git refs instead of
+crawling app source or generated platform folders.
 
 ### What A Packet Looks Like
 
@@ -269,7 +271,7 @@ Branch: feat/onboarding/senior-navigation
 You own: work/minimal-timer-app/lib/features/onboarding/
 Do NOT edit: work/minimal-timer-app/lib/shared/widgets/
 Other agents: Junior Flutter Developer is working on shared widgets.
-When done: commit and write summary to
+When done: commit using docs/ai-office/commit-guidelines.md and write summary to
   docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
@@ -309,6 +311,8 @@ Start here if you are visiting:
 - `docs/ai-office/roles.md`: each role and its definition of done.
 - `docs/ai-office/role-activation.md`: visible chat banners for activated
   roles.
+- `docs/ai-office/status-protocol.md`: lightweight branch-aware progress checks.
+- `docs/ai-office/commit-guidelines.md`: the office commit message standard.
 - `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
 - `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
 - `docs/ai-office/workflow.md`: branch and handoff model.

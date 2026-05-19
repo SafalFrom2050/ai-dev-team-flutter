@@ -536,6 +536,50 @@ Updated:
 - `docs/ai-office/templates/agent-session-packet.md`
 - `OPUS_REVIEW.md`
 
+### 2026-05-19: Harden Status, Activation, And Commits
+
+Decision: make status checks branch-aware and lightweight, require role
+activation before tool use, and standardize commit messages with Conventional
+Commits.
+
+Why: the first real app tests showed four protocol gaps:
+
+- status answers could become stale when feature work lived on another branch
+- status-only prompts could waste context by reading app and platform code
+- roles could call tools before the user saw which role was active
+- commit subjects were not predictable enough for a multi-agent repo
+
+Rules:
+
+- The activation banner must be the first visible line before tools, commands,
+  file reads, planning, or edits.
+- `docs/features/status-index.md` is the first source for project status.
+- Status mode should use branch-native git reads such as `git show <branch>:...`
+  instead of switching branches or crawling source by default.
+- Status mode does not read app source, generated platform folders, lockfiles,
+  or build output unless the user asks for code inspection.
+- Every commit follows `docs/ai-office/commit-guidelines.md`.
+
+Created:
+
+- `docs/ai-office/status-protocol.md`
+- `docs/ai-office/commit-guidelines.md`
+- `docs/features/status-index.md`
+
+Updated:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/ai-office/README.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/role-activation.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/templates/agent-session-packet.md`
+- `docs/ai-office/templates/handoff.md`
+- `docs/features/README.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
