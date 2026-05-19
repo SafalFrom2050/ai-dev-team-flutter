@@ -18,7 +18,13 @@ implementation notes.
 
 ## Rules
 
-- The activation line comes before analysis, planning, file edits, or commands.
+- The activation line comes before tool calls, shell commands, file reads,
+  analysis, planning, file edits, or implementation notes.
+- If a tool requires an initial assistant message before it can run, that first
+  message must include the activation line.
+- If the role realizes it forgot to announce before using tools, it should stop,
+  announce the correct role, and explain that the prior tool use was a protocol
+  miss before continuing.
 - The Office Assistant activates automatically for any unstructured prompt. It
   does not need to be invoked by name.
 - If a user message begins with a specific role name and colon, that role

@@ -44,7 +44,10 @@ Read these files before starting:
 
 ## When Done
 
-Commit your work and write your summary to:
+Use `docs/ai-office/commit-guidelines.md` for commit messages.
+
+Commit your work, update `docs/features/status-index.md` if feature state
+changed, and write your summary to:
 
 ```text
 docs/features/<feature-slug>/async/outbox/<role-slug>.md
