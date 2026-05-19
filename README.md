@@ -1,5 +1,7 @@
 # AI Dev Team Flutter
 
+![AI Dev Team Flutter: from idea to production main](docs/assets/readme/featured.png)
+
 An experimental Flutter studio where AI agents work like a real product team.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration

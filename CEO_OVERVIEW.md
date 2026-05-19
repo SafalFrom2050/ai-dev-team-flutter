@@ -656,6 +656,24 @@ Updated:
 - `docs/ai-office/async-agent-runtime.md`
 - `docs/ai-office/mcp-and-skills.md`
 
+### 2026-05-19: Add README Featured Hero Image
+
+Decision: add a recruiter-friendly featured image as the first visual in
+`README.md`.
+
+Why: visitors should understand the project's ambition immediately: an
+AI-native Flutter office that turns an idea into production `main` through
+specialist agents, branch workflow, tests, review, and release.
+
+Created:
+
+- `docs/assets/readme/featured.png`
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
