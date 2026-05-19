@@ -236,9 +236,17 @@ crawling app source or generated platform folders.
 
 The user does not need to name a role or choose a workflow. A plain status
 question activates the Office Assistant, which announces itself first and then
-reports the project state from lightweight repo evidence.
+reports the project state from lightweight repo evidence. The same contract is
+portable across tools: Codex gets it through `AGENTS.md`, while Gemini CLI gets
+it through `GEMINI.md`.
 
-![Office Assistant activation screenshot](docs/assets/readme/office-assistant-activation.png)
+**Codex**
+
+![Office Assistant activation in Codex](docs/assets/readme/office-assistant-activation.png)
+
+**Gemini CLI**
+
+![Office Assistant activation in Gemini CLI](docs/assets/readme/office-assistant-activation-gemini.png)
 
 ### What A Packet Looks Like
 
