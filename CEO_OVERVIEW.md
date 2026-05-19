@@ -603,6 +603,25 @@ Updated:
 - `docs/ai-office/templates/handoff.md`
 - `docs/features/README.md`
 
+### 2026-05-19: Improve README Office Entrance
+
+Decision: replace the crowded README round-table Mermaid chart with a simpler
+SVG office map, and add a repo-native Office Assistant activation screenshot to
+show the intended user experience.
+
+Why: visitors should understand the office quickly. The README should show that
+the workflow is simple at the front door: ask a normal question, see the active
+role announced, then get branch-aware evidence.
+
+Created:
+
+- `docs/assets/readme/office-round-table.svg`
+- `docs/assets/readme/office-assistant-activation.svg`
+
+Updated:
+
+- `README.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

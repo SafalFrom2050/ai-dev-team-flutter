@@ -33,55 +33,17 @@ and when to hand off.
 
 ## Office Entrance
 
-Welcome to the round table. Every feature starts here.
+Welcome to the round table. Every feature starts as a conversation, then becomes
+packets, branches, handoffs, review, and finally production code.
 
-```mermaid
-flowchart TB
-    Table(("AI Flutter Office\nRound Table"))
+![AI Flutter Office round table](docs/assets/readme/office-round-table.svg)
 
-    CEO["CEO\nVision, governance,\ndecision history"]
-    Assistant["Office Assistant\nTriage, routing,\nagent packets"]
-    Product["Product Lead\nProblem, users,\nacceptance criteria"]
-    Design["UI/UX Designer\nFlows, states,\ntokens, accessibility"]
-    Architect["Product Engineer\nArchitecture, data flow,\nwork slicing"]
-    Senior["Senior Flutter Engineer\nPatterns, state,\nplatform risk"]
-    Junior["Junior Flutter Developer\nFocused widgets,\nsmall slices, tests"]
-    QA["QA/Test Engineer\nUnit, widget,\nintegration, golden tests"]
-    Review["Code Reviewer\nCorrectness,\nmaintainability, risk"]
-    Release["Release Engineer\nCI, release notes,\nmain branch"]
-    Main["main\nProduction code"]
+The diagram is intentionally simple: the agents share one repository as memory,
+but each role owns a different kind of decision. The CEO keeps the office
+coherent, the Office Assistant routes work, product and design clarify intent,
+engineering builds, QA and review protect quality, and release protects `main`.
 
-    CEO --- Table
-    Assistant --- Table
-    Product --- Table
-    Design --- Table
-    Architect --- Table
-    Senior --- Table
-    Junior --- Table
-    QA --- Table
-    Review --- Table
-    Release --- Table
-
-    CEO --> Assistant
-    Assistant --> Product
-    Assistant --> Design
-    Assistant --> Architect
-    Assistant --> QA
-    Product --> Design
-    Product --> Architect
-    Design --> Senior
-    Architect --> Senior
-    Architect --> Junior
-    Senior --> QA
-    Junior --> QA
-    QA --> Review
-    Review --> Release
-    Release --> Main
-    CEO -. keeps the office honest .-> Main
-```
-
-The CEO role is us while we build and steer the office. CEO-level decisions live
-in `CEO_OVERVIEW.md`.
+CEO-level decisions live in `CEO_OVERVIEW.md`.
 
 ## The Production Path
 
@@ -255,6 +217,14 @@ give me progress on onboarding
 Status mode is read-only and branch-aware. The Assistant starts with
 `docs/features/status-index.md`, handoffs, outboxes, and git refs instead of
 crawling app source or generated platform folders.
+
+### Office Assistant In Action
+
+The user does not need to name a role or choose a workflow. A plain status
+question activates the Office Assistant, which announces itself first and then
+reports the project state from lightweight repo evidence.
+
+![Office Assistant activation screenshot](docs/assets/readme/office-assistant-activation.svg)
 
 ### What A Packet Looks Like
 
