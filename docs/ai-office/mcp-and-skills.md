@@ -111,6 +111,8 @@ can discover the new skills.
 Use the layers like this:
 
 - `AGENTS.md`: durable team rules for every agent.
+- `docs/ai-office/runtime-adapters.md`: optional native sub-agent harnesses and
+  packet fallback behavior.
 - `GEMINI.md`: Gemini CLI-specific guardrails for first response and status
   mode.
 - `.fvmrc`: repo-local Flutter SDK pin.
@@ -119,9 +121,28 @@ Use the layers like this:
   decisions, and analysis fixes.
 - MCP server: live tool access to analyzer, tests, package search, docs,
   runtime errors, and widget tree inspection.
+- Native agent harnesses: optional execution engines for launching role
+  sub-agents in tools such as Codex, Antigravity, Claude Code, Gemini, or Cursor.
 
-Rules define the team culture. Skills define how to do a specific job. MCP gives
-agents hands and eyes inside the Flutter toolchain.
+Rules define the team culture. Runtime adapters decide how roles are launched.
+Skills define how to do a specific job. MCP gives agents hands and eyes inside
+the Flutter toolchain.
+
+## Native Harnesses Stay Optional
+
+Antigravity 2.0, Antigravity CLI/SDK, Claude Code plugins, Codex sub-agents, and
+future harnesses can reduce manual packet passing. They should not replace the
+repo protocol.
+
+When a native harness is available:
+
+- Use the same role contract that would have been printed as a packet.
+- Give each sub-agent one role, one branch, clear file ownership, and a handoff
+  path.
+- Preserve activation banners and status-mode read-only rules.
+- Write durable results back to feature docs, outboxes, commits, and PRs.
+
+When a native harness is not available, print packets and continue normally.
 
 ## Setup Checklist
 

@@ -1,4 +1,7 @@
-# Agent Session Packet: <role>
+# Agent Role Contract: <role>
+
+Use this file as a native sub-agent prompt when the runtime supports sub-agents.
+If not, paste it into a separate agent session as the packet fallback.
 
 ## Role
 
@@ -7,7 +10,7 @@
 ## Activation Banner
 
 Paste the matching line from `docs/ai-office/role-activation.md` as the first
-visible line in the role session.
+visible line in the role session or sub-agent prompt.
 
 ## Mission
 

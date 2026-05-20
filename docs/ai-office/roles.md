@@ -55,26 +55,31 @@ Owns:
 
 - Default entry point for all unstructured prompts.
 - Codebase analysis to determine role sequence and file ownership.
-- Ready-to-paste agent packet generation as the primary output.
+- Role contract generation as the primary output.
+- Native sub-agent launch when the current tool supports it.
+- Ready-to-paste packet output as the portable fallback.
 - Dependency ordering between roles and parallelization decisions.
 - Progress monitoring and concise status reports when asked.
 - Escalation to CEO when the task changes the office itself.
 
 Definition of done:
 
-- Ready-to-paste packets are produced for each needed agent.
-- Each packet starts with the target role's activation banner and specifies:
+- Role contracts are produced for each needed agent.
+- Native sub-agents are launched when the runtime supports them and execution is
+  requested.
+- Ready-to-paste packets are printed when native sub-agents are not available.
+- Each contract starts with the target role's activation banner and specifies:
   role, mission, branch, files owned, files to avoid, concurrent agents, context
   references, and required output.
 - Parallelization order is explicit.
-- The user can copy-paste each packet into a separate agent session without
-  further modification.
+- The user can continue with packet fallback without further modification if the
+  native harness is unavailable.
 - Progress is summarized when asked.
 
 Should not:
 
-- Execute the task itself. The Office Assistant analyzes and produces packets.
-  It never writes feature code, creates branches, or modifies project files.
+- Execute specialist work itself. The Office Assistant analyzes, delegates, and
+  monitors. It never writes feature code or performs specialist implementation.
 - Crawl app source, generated platform folders, build output, or lockfiles for a
   status-only prompt. It should use `docs/features/status-index.md`, handoffs,
   outboxes, and git refs first.

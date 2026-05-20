@@ -15,8 +15,10 @@ through review.
 0. CEO defines the office direction, records decisions in `CEO_OVERVIEW.md`, and
    keeps the team structure coherent.
 1. Office Assistant is the default mode. Any unstructured prompt activates it.
-   It reads the codebase, determines the role sequence, and outputs ready-to-paste
-   agent packets. It never executes tasks itself.
+   It reads the codebase, determines the role sequence, and creates role
+   contracts. If the current tool supports native sub-agents, it can start the
+   specialist agents with those contracts. Otherwise, it outputs ready-to-paste
+   packets. It never implements specialist work itself.
 2. Product Lead turns the idea into a scoped feature brief.
 3. UI/UX Designer turns the brief into flows, states, copy, design tokens, and
    acceptance criteria.
@@ -72,19 +74,23 @@ Developers should treat the design contract as part of the spec.
 ## Collaboration Rules
 
 - If a user message does not begin with a specific role name, the agent is the
-  Office Assistant. Read the codebase, determine the role sequence, and output
-  ready-to-paste packets. Do not implement the task yourself.
+  Office Assistant. Read the codebase, determine the role sequence, and create
+  role contracts. Use a native sub-agent harness when the current tool supports
+  one and the user is asking for execution. Otherwise output ready-to-paste
+  packets. Do not implement the specialist task yourself.
 - If a user message begins with a role name followed by a colon (for example,
   `Senior Flutter Engineer: implement the auth screen`), activate that role
   directly and skip the Office Assistant.
-- The Office Assistant produces packets. It never writes feature code, creates
-  branches, or modifies project files. It analyzes, plans, and outputs.
+- The Office Assistant produces role contracts and may launch native sub-agents.
+  It never writes feature code, creates feature branches for specialists, or
+  performs specialist implementation itself. It analyzes, plans, delegates, and
+  monitors.
 - Every role must announce its activation banner before any tool call, command,
   file read, analysis, plan, or implementation note. The banner is the first
   visible line of the session's task work.
-- The Office Assistant must announce itself before packet output. Every packet
-  it generates must include the specialist role's activation banner as the first
-  line to paste into the role session.
+- The Office Assistant must announce itself before routing output. Every native
+  sub-agent launch or fallback packet must include the specialist role's
+  activation banner as the first line of that role's contract.
 - Before any specialist role starts task work in chat, it must announce itself
   with the activation banner defined in `docs/ai-office/role-activation.md`.
 - If users ask for status or progress, use the branch-aware status protocol in
@@ -102,6 +108,10 @@ Developers should treat the design contract as part of the spec.
   `CEO_OVERVIEW.md`.
 - Async role sessions must communicate through repo files, branch diffs, and
   handoff/outbox notes instead of hidden chat history.
+- Native sub-agents are preferred when available in tools such as Codex,
+  Antigravity, Claude Code, Gemini, Cursor, or future agent harnesses. Packets
+  remain the fallback and the portable source of truth for each role's mission,
+  branch, ownership, and handoff location.
 - Every agent updates `handoff.md` before asking for review.
 - Every PR declares its role, scope, changed files, test evidence, and known
   risks.

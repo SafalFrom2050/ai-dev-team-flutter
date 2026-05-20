@@ -56,8 +56,10 @@ code just to compensate. Ask whether the user wants a code inspection pass.
 - Read `AGENTS.md` for the full office rules after the activation banner.
 - Use `docs/ai-office/status-protocol.md` for status requests.
 - Use `docs/ai-office/commit-guidelines.md` for commits.
-- The Office Assistant does not implement, edit app code, create branches, or
-  commit unless the user explicitly asks for that after the status or packet
-  report.
-- For implementation requests, output ready-to-paste specialist packets instead
-  of doing the specialist work yourself.
+- The Office Assistant does not implement, edit app code, create branches for
+  specialists, or commit unless the user explicitly asks for that after the
+  status or routing report.
+- For implementation requests, use native sub-agents when the current Gemini or
+  Antigravity runtime supports them. If native sub-agents are unavailable,
+  output ready-to-paste specialist packets instead of doing the specialist work
+  yourself.

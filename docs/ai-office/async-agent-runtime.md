@@ -6,11 +6,12 @@ coordination.
 
 The best default is simple:
 
-> Use the repository as the shared memory, branches as workspaces, and Markdown
-> packets as the cross-agent protocol.
+> Use a native agent harness when the current tool has one. Use the repository
+> as shared memory, branches as workspaces, and Markdown packets as the fallback
+> cross-agent protocol.
 
-This keeps the workflow compatible with Codex, Gemini CLI, Cursor, Claude Code,
-plain terminal agents, and future tools.
+This keeps the workflow compatible with Codex, Antigravity, Gemini CLI, Cursor,
+Claude Code, plain terminal agents, and future tools.
 
 ## Core Principle
 
@@ -45,6 +46,42 @@ MCP, installed skills, and tool-specific features are useful accelerators, but
 they must be optional. The protocol should still work if an agent only has a
 terminal, a text editor, and git.
 
+## Native Harness First, Packet Fallback
+
+Newer AI coding tools can spin up multiple sub-agents from one main chat. The
+office should use that capability when it exists, because it reduces manual
+copy-paste and lets the main chat coordinate work without becoming the only
+context container.
+
+The execution order is:
+
+1. The main chat activates as CEO, Office Assistant, or the requested role.
+2. It creates a role contract for each specialist.
+3. If native sub-agents are available, it starts those agents with the role
+   contracts.
+4. If native sub-agents are not available, it prints ready-to-paste packets.
+5. Every role writes back through branches, commits, handoffs, outboxes, and
+   status files.
+
+The role contract is the portable unit. A native harness receives it as the
+sub-agent prompt. A human receives it as a packet to paste into another tool.
+
+Native sub-agents do not replace the repo protocol:
+
+- The main chat must still show which roles are being activated.
+- Each sub-agent must still announce its activation banner before task work.
+- Each sub-agent must still use the assigned branch and file ownership.
+- Each sub-agent must still write an outbox or handoff when done.
+- Status-only prompts remain read-only, even if the runtime can spawn agents.
+
+Use packets when:
+
+- The current AI service cannot spawn sub-agents.
+- The user wants to run roles in different tools.
+- The role needs a separate account, model, IDE, emulator, or device.
+- The task is sensitive and the user wants to review every prompt before launch.
+- The native harness cannot guarantee disjoint file ownership.
+
 ## Async Feature Workspace
 
 Each feature should include an async run folder:
@@ -61,7 +98,7 @@ docs/features/<feature-slug>/
     status.md
     ownership.md
     decisions.md
-      packets/
+    packets/
       office-assistant.md
       product-lead.md
       ui-ux-designer.md
@@ -71,7 +108,7 @@ docs/features/<feature-slug>/
       qa-test-engineer.md
       code-reviewer.md
       release-engineer.md
-      outbox/
+    outbox/
       office-assistant.md
       product-lead.md
       ui-ux-designer.md
@@ -83,7 +120,9 @@ docs/features/<feature-slug>/
       release-engineer.md
 ```
 
-`packets/` are the prompts or task contracts given to each role.
+`packets/` are the prompts or task contracts given to each role. They may be
+used directly by a native sub-agent harness or pasted manually into a separate
+agent session.
 
 `outbox/` is where each role writes the result of the session.
 
@@ -93,8 +132,10 @@ Office Assistant answer progress questions without reading the whole app.
 
 ## Agent Session Packet
 
-The Office Assistant generates a ready-to-paste packet for each role session.
-Each packet answers five questions:
+The Office Assistant generates a role contract for each role session. When the
+runtime supports native sub-agents, the contract is used as the sub-agent prompt.
+When it does not, the same contract is printed as a ready-to-paste packet. Each
+contract answers five questions:
 
 1. **Who are you?** (activation banner)
 2. **What is your job?** (mission)
@@ -120,8 +161,8 @@ When done: commit using docs/ai-office/commit-guidelines.md and write summary to
 ```
 
 Packets should be under 200 words when practical. The activation banner remains
-required even in short packets. The agent reads the codebase itself. The packet
-sets boundaries and intent.
+required even in short packets and native sub-agent prompts. The agent reads the
+codebase itself. The packet sets boundaries and intent.
 
 Packets should also tell the role to use `docs/ai-office/commit-guidelines.md`
 for any commit it creates.
@@ -282,9 +323,11 @@ everything session.
 Recommended flow:
 
 1. CEO creates `integrate/<feature-slug>`.
-2. CEO creates the feature folder and async packets.
-3. Product Lead runs in its own session and writes outbox.
-4. UI/UX Designer and Product Engineer run in separate sessions.
+2. CEO or Office Assistant creates the feature folder and role contracts.
+3. If the current tool supports native sub-agents, start the Product Lead
+   sub-agent. Otherwise print the Product Lead packet.
+4. UI/UX Designer and Product Engineer run as native sub-agents or separate
+   packet sessions.
 5. CEO or Product Engineer updates `ownership.md`.
 6. Flutter developers run in parallel on disjoint branches.
 7. QA/Test Engineer runs test planning early and test implementation after code.
@@ -296,14 +339,32 @@ Recommended flow:
 
 ### Codex
 
-Use a fresh chat or subtask per role. Give the role packet plus relevant files.
-If MCP is available, use `fvm dart mcp-server --force-roots-fallback`.
+Use native sub-agents when the user has asked to run parallel or delegated role
+work. Give each sub-agent one role contract, explicit file ownership, and a
+handoff path. If native sub-agents are not available, use a fresh chat per role
+with the packet. If MCP is available, use
+`fvm dart mcp-server --force-roots-fallback`.
+
+### Antigravity
+
+Use Antigravity 2.0, Antigravity CLI, or the Antigravity SDK as a runtime
+adapter, not as the office source of truth. The main chat may start dynamic
+sub-agents or managed agents from the same role contracts used elsewhere.
+Antigravity-specific artifacts are useful, but the durable record must still be
+commits, branch diffs, outboxes, and feature status files.
+
+### Claude Code
+
+When Claude Code plugins or sub-agent harnesses are available, start one
+sub-agent per role contract. Keep plugin-specific state optional. If the runtime
+cannot create a sub-agent, print the packet and let the user paste it into a new
+Claude Code session.
 
 ### Gemini CLI
 
-Use the same packet files and branch names. The root `GEMINI.md` file is the
-Gemini-specific instruction shim; it requires activation banners before tool use
-and keeps status prompts on lightweight docs.
+Use the same role contracts, packet files, and branch names. The root
+`GEMINI.md` file is the Gemini-specific instruction shim; it requires activation
+banners before tool use and keeps status prompts on lightweight docs.
 
 The `.gemini/settings.json` MCP config points at FVM for this repo. MCP gives
 Gemini tools, while `GEMINI.md` gives Gemini the office behavior.
@@ -324,9 +385,10 @@ The `.cursor/mcp.json` MCP config points at FVM for this repo.
 
 ### Any Other AI Service
 
-Paste the packet, attach or reference the relevant files, and require the agent
-to write its outbox handoff. If the service cannot write files directly, copy the
-handoff into the repo afterward.
+If the service has a native agent harness, start one sub-agent per role contract.
+If it does not, paste the packet, attach or reference the relevant files, and
+require the agent to write its outbox handoff. If the service cannot write files
+directly, copy the handoff into the repo afterward.
 
 ## Rule Of Thumb
 

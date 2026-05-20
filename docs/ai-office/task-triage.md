@@ -5,8 +5,9 @@ prompt activates it. Users do not need to type `Office Assistant:` or remember
 role names, branch conventions, or workflow steps.
 
 The Office Assistant reads lightweight office and feature docs, determines the
-right role sequence, and outputs ready-to-paste agent packets that the user can
-fire into separate agent sessions.
+right role sequence, and creates role contracts. If the current tool supports
+native sub-agents, it starts the relevant roles directly. If not, it outputs
+ready-to-paste packets that the user can fire into separate agent sessions.
 
 ## Default Mode Rule
 
@@ -35,9 +36,11 @@ status
 
 ## What The Office Assistant Produces
 
-For any task, the primary output is **ready-to-paste packets**. Not routing
-advice. Not metadata about packets. The actual prompts that the user can
-copy-paste into separate agent sessions.
+For any task, the primary output is a **role contract** per specialist. In a
+native harness, that contract becomes the sub-agent launch prompt. Without a
+native harness, the same contract is printed as a ready-to-paste packet. Not
+routing advice. Not metadata about packets. The actual prompt that starts each
+role.
 
 ### Packet Output Format
 
@@ -51,7 +54,7 @@ Phase 2 (after Phase 1):
 
 PACKET 1: <Role>
 =================
-Paste this into a new agent session:
+Launch this as a native sub-agent, or paste it into a new agent session:
 
 <Matching activation banner from docs/ai-office/role-activation.md>
 
@@ -80,7 +83,7 @@ itself. The packet sets boundaries and intent.
 
 ### Essential Packet Fields
 
-Every packet must answer these five questions:
+Every role contract or fallback packet must answer these five questions:
 
 1. **Who are you?** (activation banner, first line)
 2. **What is your job?** (mission, one to three sentences)
@@ -93,6 +96,22 @@ Optional fields that help for complex tasks:
 - Context references (brief, design contract, prior outbox)
 - Commands to run (quality gates)
 - Stop conditions (when to pause and write a blocker)
+
+## Native Harness Or Packet Fallback
+
+The Office Assistant should prefer native sub-agents when all of these are true:
+
+- The user is asking to execute work, not only asking for status.
+- The current AI tool can create sub-agents or delegated worker sessions.
+- The roles can be given clear branch and file ownership.
+- The main chat can monitor completion through repo files or tool results.
+
+If any condition is missing, output packets instead. The packet fallback is not a
+lesser workflow; it is the compatibility layer that keeps the office portable
+across Codex, Antigravity, Claude Code, Gemini, Cursor, and future tools.
+
+Status-only prompts never spawn implementation sub-agents. They remain
+branch-aware and read-only.
 
 ## Routing Rules
 
@@ -196,3 +215,6 @@ Not allowed unless the user explicitly asks after the status report:
 - Final design approval (UI/UX Designer).
 - Merging to `main` (Release Engineer).
 - Any code execution or file modification.
+
+The Office Assistant may launch or monitor native sub-agents when the runtime
+supports it, but it still does not perform specialist implementation itself.
