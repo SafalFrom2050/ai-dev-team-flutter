@@ -1,0 +1,134 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Native sub-agent harness for the AI Flutter office</title>
+  <desc id="desc">A dark architecture diagram showing one main chat launching specialist sub-agents through role contracts, with Antigravity 2.0 highlighted as the strongest current harness and packets kept as fallback.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f8fafc"/>
+    </marker>
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f472b6"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a3e635"/>
+    </marker>
+    <style>
+      .title { font: 800 42px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 500 18px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; }
+      .label { font: 800 20px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .body { font: 500 15px Inter, Segoe UI, Arial, sans-serif; fill: #d4d4d4; }
+      .small { font: 800 12px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; letter-spacing: 1px; }
+      .mono { font: 700 13px "JetBrains Mono", Consolas, monospace; fill: #ffffff; }
+      .panel { fill: #080808; stroke: #262626; stroke-width: 2; }
+      .card { fill: #111111; stroke: #404040; stroke-width: 1.6; }
+      .accentPink { fill: #141014; stroke: #f472b6; stroke-width: 2.3; }
+      .accentGreen { fill: #11140c; stroke: #a3e635; stroke-width: 2.3; }
+      .accentAmber { fill: #171307; stroke: #f59e0b; stroke-width: 2.3; }
+      .accentCyan { fill: #071318; stroke: #22d3ee; stroke-width: 2.3; }
+      .flow { stroke: #f8fafc; stroke-width: 2.4; marker-end: url(#arrow); }
+      .pinkFlow { stroke: #f472b6; stroke-width: 2.4; marker-end: url(#arrowPink); }
+      .greenFlow { stroke: #a3e635; stroke-width: 2.4; marker-end: url(#arrowGreen); }
+      .softFlow { stroke: #737373; stroke-width: 1.8; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1400" height="820" rx="32" fill="#050505"/>
+  <rect x="30" y="30" width="1340" height="760" rx="28" class="panel"/>
+
+  <text x="70" y="88" class="title">Native Sub-Agent Office</text>
+  <text x="70" y="122" class="subtitle">One main chat orchestrates specialist roles. Each sub-agent gets a narrow mission, branch, owned files, and handoff path.</text>
+
+  <g transform="translate(70 164)">
+    <rect x="0" y="0" width="1260" height="112" rx="22" fill="#0a0a0a" stroke="#262626" stroke-width="1.8"/>
+    <text x="28" y="34" class="small">RUNTIME ADAPTER</text>
+
+    <rect x="28" y="52" width="256" height="38" rx="12" class="accentGreen"/>
+    <text x="156" y="77" text-anchor="middle" class="label">Antigravity 2.0</text>
+
+    <rect x="318" y="52" width="180" height="38" rx="12" class="card"/>
+    <text x="408" y="77" text-anchor="middle" class="body">Codex</text>
+
+    <rect x="522" y="52" width="180" height="38" rx="12" class="card"/>
+    <text x="612" y="77" text-anchor="middle" class="body">Claude Code</text>
+
+    <rect x="726" y="52" width="180" height="38" rx="12" class="card"/>
+    <text x="816" y="77" text-anchor="middle" class="body">Gemini</text>
+
+    <rect x="930" y="52" width="180" height="38" rx="12" class="card"/>
+    <text x="1020" y="77" text-anchor="middle" class="body">Cursor</text>
+
+    <text x="1240" y="42" text-anchor="end" class="body">Antigravity is highlighted as the best current fit.</text>
+    <text x="1240" y="82" text-anchor="end" class="body">The contract stays provider-agnostic.</text>
+  </g>
+
+  <g transform="translate(70 328)">
+    <rect x="0" y="0" width="330" height="124" rx="20" class="accentPink"/>
+    <text x="165" y="38" text-anchor="middle" class="label">Main Chat</text>
+    <text x="165" y="66" text-anchor="middle" class="body">CEO or Office Assistant</text>
+    <text x="165" y="91" text-anchor="middle" class="mono">orchestrates, monitors, decides</text>
+  </g>
+
+  <g transform="translate(535 306)">
+    <rect x="0" y="0" width="330" height="168" rx="20" class="accentCyan"/>
+    <text x="165" y="36" text-anchor="middle" class="label">Role Contract</text>
+    <text x="165" y="66" text-anchor="middle" class="body">activation banner</text>
+    <text x="165" y="91" text-anchor="middle" class="body">mission + branch</text>
+    <text x="165" y="116" text-anchor="middle" class="body">owned files + off-limits files</text>
+    <text x="165" y="141" text-anchor="middle" class="body">handoff/outbox path</text>
+  </g>
+
+  <line x1="400" y1="390" x2="535" y2="390" class="pinkFlow"/>
+
+  <g transform="translate(1010 316)">
+    <rect x="0" y="0" width="250" height="72" rx="18" class="accentAmber"/>
+    <text x="125" y="32" text-anchor="middle" class="label">Packet Fallback</text>
+    <text x="125" y="55" text-anchor="middle" class="body">manual sessions still work</text>
+  </g>
+
+  <path d="M865 390 C920 390 940 352 1010 352" class="softFlow"/>
+
+  <g transform="translate(70 538)">
+    <rect x="0" y="0" width="1260" height="156" rx="24" fill="#090909" stroke="#262626" stroke-width="1.8"/>
+    <text x="28" y="34" class="small">SPECIALIST SUB-AGENTS</text>
+
+    <rect x="28" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="109" y="89" text-anchor="middle" class="label">Product</text>
+    <text x="109" y="110" text-anchor="middle" class="body">scope</text>
+
+    <rect x="220" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="301" y="89" text-anchor="middle" class="label">Design</text>
+    <text x="301" y="110" text-anchor="middle" class="body">UX states</text>
+
+    <rect x="412" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="493" y="89" text-anchor="middle" class="label">Architect</text>
+    <text x="493" y="110" text-anchor="middle" class="body">slices</text>
+
+    <rect x="604" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="685" y="89" text-anchor="middle" class="label">Flutter Devs</text>
+    <text x="685" y="110" text-anchor="middle" class="body">features</text>
+
+    <rect x="796" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="877" y="89" text-anchor="middle" class="label">QA</text>
+    <text x="877" y="110" text-anchor="middle" class="body">evidence</text>
+
+    <rect x="988" y="64" width="162" height="58" rx="14" class="card"/>
+    <text x="1069" y="89" text-anchor="middle" class="label">Review</text>
+    <text x="1069" y="110" text-anchor="middle" class="body">risk</text>
+
+    <rect x="1176" y="64" width="56" height="58" rx="14" fill="#1c1917" stroke="#f59e0b" stroke-width="2.2"/>
+    <text x="1204" y="98" text-anchor="middle" class="label">main</text>
+  </g>
+
+  <path d="M700 474 V536" class="greenFlow"/>
+  <path d="M165 452 C165 510 150 508 150 538" class="softFlow"/>
+  <path d="M700 474 C700 510 109 508 109 538" class="flow"/>
+  <path d="M700 474 C700 510 301 508 301 538" class="flow"/>
+  <path d="M700 474 C700 510 493 508 493 538" class="flow"/>
+  <path d="M700 474 C700 510 685 508 685 538" class="flow"/>
+  <path d="M700 474 C700 510 877 508 877 538" class="flow"/>
+  <path d="M700 474 C700 510 1069 508 1069 538" class="flow"/>
+
+  <g transform="translate(70 724)">
+    <rect x="0" y="0" width="1260" height="42" rx="14" fill="#111111" stroke="#262626"/>
+    <text x="630" y="27" text-anchor="middle" class="body">The repo is the office memory: branches, docs, status index, commits, PRs, handoffs, and outboxes.</text>
+  </g>
+</svg>

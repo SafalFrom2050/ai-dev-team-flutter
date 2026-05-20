@@ -1,0 +1,119 @@
+<svg width="1400" height="720" viewBox="0 0 1400 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Why role-specific sub-agents scale better than one giant chat</title>
+  <desc id="desc">A dark comparison diagram contrasting one overloaded chat with a role-specific sub-agent office that splits context, ownership, and quality gates across specialists.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f8fafc"/>
+    </marker>
+    <style>
+      .title { font: 800 40px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 500 18px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; }
+      .label { font: 800 20px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .body { font: 500 15px Inter, Segoe UI, Arial, sans-serif; fill: #d4d4d4; }
+      .muted { font: 500 14px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; }
+      .small { font: 800 12px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; letter-spacing: 1px; }
+      .mono { font: 700 13px "JetBrains Mono", Consolas, monospace; fill: #ffffff; }
+      .panel { fill: #080808; stroke: #262626; stroke-width: 2; }
+      .bad { fill: #130d0d; stroke: #ef4444; stroke-width: 2; }
+      .good { fill: #0c1210; stroke: #22d3ee; stroke-width: 2; }
+      .card { fill: #111111; stroke: #404040; stroke-width: 1.6; }
+      .green { fill: #11140c; stroke: #a3e635; stroke-width: 2; }
+      .amber { fill: #171307; stroke: #f59e0b; stroke-width: 2; }
+      .pink { fill: #141014; stroke: #f472b6; stroke-width: 2; }
+      .flow { stroke: #f8fafc; stroke-width: 2.2; marker-end: url(#arrow); }
+      .soft { stroke: #737373; stroke-width: 1.7; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1400" height="720" rx="32" fill="#050505"/>
+  <rect x="30" y="30" width="1340" height="660" rx="28" class="panel"/>
+
+  <text x="70" y="88" class="title">Why Sub-Agents Are The Point</text>
+  <text x="70" y="122" class="subtitle">The office is designed to prevent context bloat, hidden decisions, and unclear ownership in large Flutter projects.</text>
+
+  <g transform="translate(70 170)">
+    <rect x="0" y="0" width="590" height="410" rx="24" class="bad"/>
+    <text x="32" y="44" class="small">COMMON AI CODING LOOP</text>
+    <text x="32" y="82" class="label">One giant chat does everything</text>
+
+    <rect x="48" y="120" width="494" height="98" rx="18" fill="#1a1010" stroke="#7f1d1d"/>
+    <text x="295" y="154" text-anchor="middle" class="label">Single overloaded context</text>
+    <text x="295" y="184" text-anchor="middle" class="body">product + design + architecture + code + QA + review</text>
+
+    <rect x="48" y="260" width="145" height="72" rx="14" class="card"/>
+    <text x="120" y="290" text-anchor="middle" class="label">Blurred</text>
+    <text x="120" y="314" text-anchor="middle" class="muted">ownership</text>
+
+    <rect x="223" y="260" width="145" height="72" rx="14" class="card"/>
+    <text x="296" y="290" text-anchor="middle" class="label">Manual</text>
+    <text x="296" y="314" text-anchor="middle" class="muted">next steps</text>
+
+    <rect x="398" y="260" width="145" height="72" rx="14" class="card"/>
+    <text x="470" y="290" text-anchor="middle" class="label">Fragile</text>
+    <text x="470" y="314" text-anchor="middle" class="muted">memory</text>
+
+    <path d="M295 218 V250" class="soft"/>
+    <path d="M120 332 V362 H470 V332" stroke="#7f1d1d" stroke-width="2"/>
+    <text x="295" y="382" text-anchor="middle" class="body">The user becomes the project manager.</text>
+  </g>
+
+  <g transform="translate(740 170)">
+    <rect x="0" y="0" width="590" height="410" rx="24" class="good"/>
+    <text x="32" y="44" class="small">AI FLUTTER OFFICE LOOP</text>
+    <text x="32" y="82" class="label">Role-specific sub-agents run the company</text>
+
+    <rect x="42" y="116" width="162" height="74" rx="16" class="pink"/>
+    <text x="123" y="146" text-anchor="middle" class="label">Main chat</text>
+    <text x="123" y="170" text-anchor="middle" class="muted">orchestrator</text>
+
+    <rect x="326" y="116" width="214" height="74" rx="16" class="green"/>
+    <text x="433" y="146" text-anchor="middle" class="label">Repo memory</text>
+    <text x="433" y="170" text-anchor="middle" class="mono">docs + branches</text>
+
+    <line x1="204" y1="153" x2="326" y2="153" class="flow"/>
+
+    <rect x="42" y="232" width="110" height="54" rx="13" class="card"/>
+    <text x="97" y="255" text-anchor="middle" class="label">Product</text>
+    <text x="97" y="275" text-anchor="middle" class="muted">brief</text>
+
+    <rect x="170" y="232" width="110" height="54" rx="13" class="card"/>
+    <text x="225" y="255" text-anchor="middle" class="label">Design</text>
+    <text x="225" y="275" text-anchor="middle" class="muted">states</text>
+
+    <rect x="298" y="232" width="110" height="54" rx="13" class="card"/>
+    <text x="353" y="255" text-anchor="middle" class="label">Arch</text>
+    <text x="353" y="275" text-anchor="middle" class="muted">plan</text>
+
+    <rect x="426" y="232" width="110" height="54" rx="13" class="card"/>
+    <text x="481" y="255" text-anchor="middle" class="label">Dev</text>
+    <text x="481" y="275" text-anchor="middle" class="muted">slice</text>
+
+    <rect x="106" y="318" width="132" height="54" rx="13" class="card"/>
+    <text x="172" y="341" text-anchor="middle" class="label">QA</text>
+    <text x="172" y="361" text-anchor="middle" class="muted">evidence</text>
+
+    <rect x="278" y="318" width="132" height="54" rx="13" class="card"/>
+    <text x="344" y="341" text-anchor="middle" class="label">Review</text>
+    <text x="344" y="361" text-anchor="middle" class="muted">risk</text>
+
+    <rect x="450" y="318" width="90" height="54" rx="13" class="amber"/>
+    <text x="495" y="341" text-anchor="middle" class="label">main</text>
+    <text x="495" y="361" text-anchor="middle" class="muted">release</text>
+
+    <path d="M123 190 C123 212 97 212 97 232" class="soft"/>
+    <path d="M123 190 C123 212 225 212 225 232" class="soft"/>
+    <path d="M123 190 C123 212 353 212 353 232" class="soft"/>
+    <path d="M123 190 C123 212 481 212 481 232" class="soft"/>
+    <path d="M97 286 C97 306 172 298 172 318" class="flow"/>
+    <path d="M225 286 C225 306 344 298 344 318" class="flow"/>
+    <path d="M481 286 C481 306 344 298 344 318" class="flow"/>
+    <path d="M344 372 H450" class="flow"/>
+    <path d="M97 286 C97 304 433 300 433 190" class="soft"/>
+    <path d="M481 286 C481 304 433 300 433 190" class="soft"/>
+  </g>
+
+  <g transform="translate(70 620)">
+    <rect x="0" y="0" width="1260" height="42" rx="14" fill="#111111" stroke="#262626"/>
+    <text x="630" y="27" text-anchor="middle" class="body">Sub-agents let the office scale: smaller context, clearer ownership, parallel work, durable handoffs, stronger release gates.</text>
+  </g>
+</svg>
