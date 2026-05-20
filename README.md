@@ -396,18 +396,18 @@ Start here if you are visiting:
 
 ## Current Status
 
-The office is built, and the current product branch contains a Minimal Timer
-Flutter app tracked under:
+This branch is the reusable office starting point. A new product should replace
+this section with its own feature status once work begins.
 
 ```text
-docs/features/minimal-timer-app/
-work/minimal-timer-app/
+docs/features/<feature-slug>/
+work/<app-slug>/
 ```
 
-Current product state:
+Example product state:
 
-1. `minimal-timer-app` is shipped to `main`.
-2. `android-background-timer` is implemented on `main` and needs a verification
-   pass, especially Android emulator/device background behavior.
-3. `docs/features/status-index.md` is the lightweight source for progress
-   checks.
+1. `docs/features/status-index.md` lists active features, branches, and release
+   readiness.
+2. Feature folders live under `docs/features/<feature-slug>/`.
+3. App workspaces live under `work/<app-slug>/`.
+4. Release readiness is recorded in each feature handoff.

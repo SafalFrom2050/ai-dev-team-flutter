@@ -842,6 +842,7 @@ the reusable office setup and use examples for project-specific status.
 
 Updated:
 
+- `README.md`
 - `docs/assets/readme/subagent-harness.svg`
 - `docs/assets/readme/agent-context-scaling.svg`
 - `CEO_OVERVIEW.md`
