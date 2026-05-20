@@ -113,6 +113,22 @@ across Codex, Antigravity, Claude Code, Gemini, Cursor, and future tools.
 Status-only prompts never spawn implementation sub-agents. They remain
 branch-aware and read-only.
 
+## Execution Prompts Run To A Useful Stop
+
+For build, fix, implement, verify, or release prompts, the Office Assistant
+should plan the full role sequence and keep the main chat moving through it.
+Do not stop after a toolchain command, role handoff, or partial branch update
+just to ask "what next?"
+
+Continue until one of these is true:
+
+- The feature is release-ready and needs final approval.
+- A blocker requires user choice, credentials, network/device access, or
+  destructive permission.
+- A failed gate needs a product or architecture decision.
+- A merge/file-ownership conflict cannot be resolved safely.
+- The task was explicitly scoped to only one role or one step.
+
 ## Routing Rules
 
 The Office Assistant decides which roles are needed:

@@ -29,6 +29,77 @@ Use this order:
 
 The same role contract powers all three modes.
 
+## Why Role Sub-Agents Matter
+
+Large Flutter projects punish one giant chat context. Role sub-agents let the
+office split context by responsibility instead of asking one model session to
+remember product intent, design details, architecture, implementation, tests,
+review, and release at the same time.
+
+Advantages:
+
+- Product, design, architecture, implementation, QA, and review can carry
+  different context windows.
+- Parallel roles can work on disjoint files without bloating the main chat.
+- The main chat can stay focused on orchestration, blockers, and final quality.
+- A failed sub-agent can be retried from its role contract without replaying the
+  entire project history.
+- Large projects can preserve clearer ownership because each role writes a
+  handoff or outbox instead of burying decisions in chat.
+
+```mermaid
+flowchart LR
+    User["User idea or task"]
+    Main["Main chat\nCEO or Office Assistant"]
+    Contract["Role contracts\nbranch + files + handoff"]
+    Product["Product Lead\nsub-agent"]
+    Design["UI/UX Designer\nsub-agent"]
+    Arch["Product Engineer\nsub-agent"]
+    Dev["Flutter dev\nsub-agents"]
+    QA["QA/Test Engineer\nsub-agent"]
+    Review["Code Reviewer\nsub-agent"]
+    Release["Release Engineer"]
+    Repo["Repo memory\nbranches + docs + outboxes"]
+    Packet["Packet fallback\nmanual sessions"]
+
+    User --> Main --> Contract
+    Contract --> Product
+    Contract --> Design
+    Contract --> Arch
+    Contract --> Dev
+    Contract --> QA
+    Contract --> Review
+    Contract -. if harness unavailable .-> Packet
+    Product --> Repo
+    Design --> Repo
+    Arch --> Repo
+    Dev --> Repo
+    QA --> Repo
+    Review --> Repo
+    Repo --> Main
+    Main --> Release --> Repo
+```
+
+## Antigravity 2.0 Fit
+
+Antigravity 2.0 is the strongest fit for this architecture right now because it
+is built around an agent harness: dynamic sub-agents, background or managed
+agent work, CLI/SDK entry points, and Markdown-defined agent instructions map
+cleanly onto this office's role-contract model.
+
+Use Antigravity 2.0 when available for:
+
+- Starting multiple specialist roles from one main chat.
+- Running long QA, review, or verification jobs in the background.
+- Keeping the main chat as the orchestrator while sub-agents own focused work.
+- Turning the same Markdown role contracts into repeatable SDK or CLI workflows.
+
+The office has not yet been fully tested across every other provider's harness.
+The contract should still work across Codex, Claude Code plugins, Gemini, Cursor,
+and future tools because it only depends on Markdown instructions, git branches,
+repo files, shell commands, and handoff notes. Treat those integrations as
+portable but still to be proven in real project runs.
+
 ## Adapter Contract
 
 Every adapter must preserve these rules:

@@ -66,6 +66,10 @@ When they are not, you copy-paste each packet into a separate agent session
 (Codex, Cursor, Gemini CLI, Antigravity CLI, Claude Code, or any AI coding tool)
 and the agent works within its defined boundaries.
 
+For build or fix requests, the office should continue across roles until the
+feature is release-ready, blocked, or waiting for final approval. The user should
+not have to ask for the next role after every handoff or toolchain step.
+
 ## What You Do Not Need To Specify
 
 - Which role owns the work.
@@ -98,6 +102,11 @@ In a fresh session, the Office Assistant:
 
 Then it produces the phase plan. If native sub-agents are available and the task
 is an execution task, it starts them. If not, it prints the packet fallbacks.
+
+For execution tasks, the Office Assistant or main chat keeps orchestrating the
+next clear step. It only stops to ask the user when a blocker, permission,
+credential, device requirement, destructive operation, merge conflict, unclear
+failed gate, or final release decision needs human input.
 
 For status-only prompts, it should not scan `work/<app-slug>/lib`, platform
 folders, generated files, lockfiles, or build output unless the user asks for
@@ -148,7 +157,8 @@ Do not ask the user to choose internal office mechanics.
 
 ```text
 Unstructured prompt -> Office Assistant -> role contracts -> native sub-agents
-or packet fallback -> agents work within boundaries -> handoffs through outbox
+or packet fallback -> agents work within boundaries -> gates and review ->
+release-ready handoff or blocker
 ```
 
 The user calls the office. The office produces the instructions.

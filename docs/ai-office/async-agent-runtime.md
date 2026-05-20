@@ -82,6 +82,34 @@ Use packets when:
 - The task is sensitive and the user wants to review every prompt before launch.
 - The native harness cannot guarantee disjoint file ownership.
 
+## Autonomous Feature Run
+
+A feature execution prompt means the office should keep moving until the feature
+is release-ready, blocked, or waiting for final approval. Toolchain completions
+are checkpoints, not conversation endings.
+
+The main chat should:
+
+1. Start the required role agents in dependency order.
+2. Wait for handoffs or tool results.
+3. Read the outbox/status files.
+4. Start the next role or follow-up fix agent when the path is clear.
+5. Run the final release gate, including build and browser checks when
+   available.
+6. Notify the user with the final state and any remaining decisions.
+
+The main chat should interrupt the user only for:
+
+- Product ambiguity that blocks a useful brief.
+- Permission, credential, network, emulator, or device access.
+- Destructive git/file operations.
+- Merge conflicts or overlapping ownership that cannot be resolved safely.
+- Failed quality gates where the next fix is unclear or out of scope.
+- Final release or merge approval.
+
+Otherwise, role progress should be written to `docs/features/<feature-slug>/`,
+`async/outbox/`, commits, and `docs/features/status-index.md`.
+
 ## Async Feature Workspace
 
 Each feature should include an async run folder:
@@ -332,8 +360,10 @@ Recommended flow:
 6. Flutter developers run in parallel on disjoint branches.
 7. QA/Test Engineer runs test planning early and test implementation after code.
 8. Code Reviewer reads diffs, outbox files, and test evidence.
-9. Release Engineer merges the integration branch to `main`.
-10. CEO updates `CEO_OVERVIEW.md` if the office changed.
+9. Release Engineer runs the final release gate: format, analyze, tests, Flutter
+   build, and browser smoke when supported.
+10. Release Engineer prepares the final PR or merge approval request.
+11. CEO updates `CEO_OVERVIEW.md` if the office changed.
 
 ## Compatibility Notes
 

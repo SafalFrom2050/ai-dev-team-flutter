@@ -123,6 +123,8 @@ Use the layers like this:
   runtime errors, and widget tree inspection.
 - Native agent harnesses: optional execution engines for launching role
   sub-agents in tools such as Codex, Antigravity, Claude Code, Gemini, or Cursor.
+- Browser automation: optional release/QA tooling for web-capable Flutter apps.
+  Use it to open the app and exercise the primary user flow after build gates.
 
 Rules define the team culture. Runtime adapters decide how roles are launched.
 Skills define how to do a specific job. MCP gives agents hands and eyes inside
