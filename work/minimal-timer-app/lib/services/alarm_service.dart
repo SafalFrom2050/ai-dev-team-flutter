@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show Platform;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vibration/vibration.dart';
@@ -42,6 +42,8 @@ class AlarmService {
   Timer? _autoSilenceTimer;
   bool _isPlaying = false;
 
+  bool get _isTest => !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+
   /// Returns true if the alarm is currently active (ringing or vibrating).
   bool get isPlaying => _isPlaying;
 
@@ -74,7 +76,7 @@ class AlarmService {
   /// but they do not trigger vibration.
   Future<void> playPreview(String soundId) async {
     await stopAlarm();
-    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+    if (_isTest) {
       return;
     }
     try {
@@ -96,7 +98,7 @@ class AlarmService {
 
     // 1. Play loop audio if not muted
     if (!config.isMuted) {
-      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      if (!_isTest) {
         try {
           await _audioPlayer.setReleaseMode(ReleaseMode.loop);
           await _audioPlayer.setVolume(1.0);
@@ -109,7 +111,7 @@ class AlarmService {
 
     // 2. Play custom double-beat vibration
     try {
-      if (await Vibration.hasVibrator()) {
+      if (await Vibration.hasVibrator() == true) {
         await Vibration.vibrate(pattern: [0, 150, 150, 150], repeat: 0);
       }
     } catch (e) {
@@ -125,7 +127,7 @@ class AlarmService {
     _isPlaying = false;
     _stopAutoSilenceTimer();
 
-    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+    if (!_isTest) {
       try {
         await _audioPlayer.stop();
       } catch (e) {
@@ -142,7 +144,7 @@ class AlarmService {
 
   void _startAutoSilenceTimer() {
     _autoSilenceTimer?.cancel();
-    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+    if (_isTest) {
       return;
     }
     _autoSilenceTimer = Timer(const Duration(minutes: 5), () {

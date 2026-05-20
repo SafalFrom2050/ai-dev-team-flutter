@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'alarm_service.dart';
 
@@ -111,7 +112,17 @@ class BackgroundTimerService {
   final _eventController = StreamController<String>.broadcast();
   Stream<String> get eventStream => _eventController.stream;
 
+  // Web fallback timer variables
+  Timer? _webTimer;
+  int _webRemainingSeconds = 0;
+  bool _webIsRunning = false;
+
   Future<void> initialize() async {
+    if (kIsWeb) {
+      // Isolate initialization not supported on web
+      return;
+    }
+
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'timer_service',
@@ -150,10 +161,17 @@ class BackgroundTimerService {
   }
 
   Future<bool> isRunning() async {
+    if (kIsWeb) {
+      return _webIsRunning;
+    }
     return await FlutterForegroundTask.isRunningService;
   }
 
   Future<void> requestPermissions() async {
+    if (kIsWeb) {
+      return;
+    }
+
     if (!await FlutterForegroundTask.isIgnoringBatteryOptimizations) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
     }
@@ -166,6 +184,23 @@ class BackgroundTimerService {
   }
 
   Future<void> start(int seconds) async {
+    if (kIsWeb) {
+      _webRemainingSeconds = seconds;
+      _webIsRunning = true;
+      _webTimer?.cancel();
+      _webTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (_webRemainingSeconds > 0) {
+          _webRemainingSeconds--;
+          _stateController.add(_webRemainingSeconds);
+        } else {
+          _webIsRunning = false;
+          _webTimer?.cancel();
+          _stateController.add(0);
+        }
+      });
+      return;
+    }
+
     if (await isRunning()) {
       FlutterForegroundTask.sendDataToTask({
         'command': 'start',
@@ -191,15 +226,43 @@ class BackgroundTimerService {
   }
 
   Future<void> pause() async {
+    if (kIsWeb) {
+      _webTimer?.cancel();
+      _webIsRunning = false;
+      return;
+    }
     FlutterForegroundTask.sendDataToTask({'command': 'pause'});
   }
 
   Future<void> resume() async {
+    if (kIsWeb) {
+      if (_webRemainingSeconds > 0) {
+        _webIsRunning = true;
+        _webTimer?.cancel();
+        _webTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          if (_webRemainingSeconds > 0) {
+            _webRemainingSeconds--;
+            _stateController.add(_webRemainingSeconds);
+          } else {
+            _webIsRunning = false;
+            _webTimer?.cancel();
+            _stateController.add(0);
+          }
+        });
+      }
+      return;
+    }
     FlutterForegroundTask.sendDataToTask({'command': 'resume'});
   }
 
   Future<void> stop() async {
     await AlarmService().stopAlarm();
+    if (kIsWeb) {
+      _webTimer?.cancel();
+      _webIsRunning = false;
+      _webRemainingSeconds = 0;
+      return;
+    }
     await FlutterForegroundTask.stopService();
   }
 }
