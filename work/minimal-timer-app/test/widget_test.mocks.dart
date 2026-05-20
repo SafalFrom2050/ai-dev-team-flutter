@@ -43,6 +43,14 @@ class MockBackgroundTimerService extends _i1.Mock
           as _i3.Stream<int>);
 
   @override
+  _i3.Stream<String> get eventStream =>
+      (super.noSuchMethod(
+            Invocation.getter(#eventStream),
+            returnValue: _i3.Stream<String>.empty(),
+          )
+          as _i3.Stream<String>);
+
+  @override
   _i3.Future<void> initialize() =>
       (super.noSuchMethod(
             Invocation.method(#initialize, []),

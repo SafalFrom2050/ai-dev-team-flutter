@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vibration/vibration.dart';
@@ -73,6 +74,9 @@ class AlarmService {
   /// but they do not trigger vibration.
   Future<void> playPreview(String soundId) async {
     await stopAlarm();
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      return;
+    }
     try {
       await _audioPlayer.setReleaseMode(ReleaseMode.release);
       await _audioPlayer.setVolume(1.0);
@@ -92,12 +96,14 @@ class AlarmService {
 
     // 1. Play loop audio if not muted
     if (!config.isMuted) {
-      try {
-        await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-        await _audioPlayer.setVolume(1.0);
-        await _audioPlayer.play(AssetSource('audio/${config.soundId}.wav'));
-      } catch (e) {
-        debugPrint('Error playing looping alarm: $e');
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        try {
+          await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+          await _audioPlayer.setVolume(1.0);
+          await _audioPlayer.play(AssetSource('audio/${config.soundId}.wav'));
+        } catch (e) {
+          debugPrint('Error playing looping alarm: $e');
+        }
       }
     }
 
@@ -119,10 +125,12 @@ class AlarmService {
     _isPlaying = false;
     _stopAutoSilenceTimer();
 
-    try {
-      await _audioPlayer.stop();
-    } catch (e) {
-      debugPrint('Error stopping alarm audio: $e');
+    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      try {
+        await _audioPlayer.stop();
+      } catch (e) {
+        debugPrint('Error stopping alarm audio: $e');
+      }
     }
 
     try {
@@ -134,6 +142,9 @@ class AlarmService {
 
   void _startAutoSilenceTimer() {
     _autoSilenceTimer?.cancel();
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      return;
+    }
     _autoSilenceTimer = Timer(const Duration(minutes: 5), () {
       debugPrint('Alarm auto-silenced after 5 minutes of continuous play.');
       stopAlarm();

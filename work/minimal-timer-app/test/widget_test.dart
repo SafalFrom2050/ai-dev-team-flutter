@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ai_dev_team_flutter/main.dart';
 import 'package:ai_dev_team_flutter/services/background_timer_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -15,11 +16,59 @@ void main() {
   late MockBackgroundTimerService mockService;
   late MockSharedPreferences mockPrefs;
   late StreamController<int> stateController;
+  late StreamController<String> eventController;
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, (message) async {
+          if (message.method == 'HapticFeedback.vibrate') {
+            return null;
+          }
+          return null;
+        });
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(const MethodChannel('vibration'), (
+          message,
+        ) async {
+          if (message.method == 'hasVibrator') {
+            return true;
+          }
+          if (message.method == 'vibrate' || message.method == 'cancel') {
+            return null;
+          }
+          return null;
+        });
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('xyz.luan/audioplayers'),
+          (message) async {
+            return null;
+          },
+        );
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('xyz.luan/audioplayers/audioplayers'),
+          (message) async {
+            return null;
+          },
+        );
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('xyz.luan/audioplayers/global'),
+          (message) async {
+            return null;
+          },
+        );
+
     mockService = MockBackgroundTimerService();
     mockPrefs = MockSharedPreferences();
     stateController = StreamController<int>.broadcast();
+    eventController = StreamController<String>.broadcast();
 
     when(mockService.initialize()).thenAnswer((_) async {});
     when(mockService.requestPermissions()).thenAnswer((_) async {});
@@ -27,6 +76,7 @@ void main() {
     when(
       mockService.remainingSecondsStream,
     ).thenAnswer((_) => stateController.stream);
+    when(mockService.eventStream).thenAnswer((_) => eventController.stream);
     when(mockService.start(any)).thenAnswer((_) async {});
     when(mockService.pause()).thenAnswer((_) async {});
     when(mockService.stop()).thenAnswer((_) async {});
@@ -36,6 +86,7 @@ void main() {
 
   tearDown(() {
     stateController.close();
+    eventController.close();
   });
 
   testWidgets('shows the default timer controls', (tester) async {
@@ -84,6 +135,13 @@ void main() {
   });
 
   testWidgets('starts, pauses, and resets the countdown', (tester) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     await tester.pumpWidget(
       TimerApp(
         timerService: mockService,
@@ -120,6 +178,13 @@ void main() {
   });
 
   testWidgets('shows completion and restart action at zero', (tester) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     await tester.pumpWidget(
       TimerApp(
         timerService: mockService,
@@ -177,5 +242,121 @@ void main() {
 
     expect(find.text('Minimal Timer'), findsOneWidget);
     expect(find.text('Start Timing'), findsOneWidget);
+  });
+
+  testWidgets('can toggle mute state', (tester) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Verify initial mute status is showing Chime (Zen Bowl)
+    expect(find.text('Chime (Zen Bowl)'), findsOneWidget);
+
+    // Tap mute toggle
+    await tester.tap(find.byKey(const Key('volume-mute-toggle')));
+    await tester.pumpAndSettle();
+
+    // Verify mute state is showing Muted
+    expect(find.text('Muted'), findsOneWidget);
+
+    // Tap mute toggle again to unmute
+    await tester.tap(find.byKey(const Key('volume-mute-toggle')));
+    await tester.pumpAndSettle();
+
+    // Verify it is unmuted
+    expect(find.text('Chime (Zen Bowl)'), findsOneWidget);
+  });
+
+  testWidgets('can expand sound selector and pick sound tone chip', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Sound chips should initially be collapsed/hidden
+    expect(find.byKey(const Key('sound-chip-chime')), findsNothing);
+
+    // Tap expand button
+    await tester.tap(find.byKey(const Key('expand-sound-selector-button')));
+    await tester.pumpAndSettle();
+
+    // Sound chips should now be visible
+    expect(find.byKey(const Key('sound-chip-chime')), findsOneWidget);
+    expect(find.byKey(const Key('sound-chip-beep')), findsOneWidget);
+    expect(find.byKey(const Key('sound-chip-echo')), findsOneWidget);
+
+    // Tap Beep chip
+    await tester.tap(find.byKey(const Key('sound-chip-beep')));
+    await tester.pumpAndSettle();
+
+    // Label should update to Beep (Digital)
+    expect(find.text('Beep (Digital)'), findsNWidgets(2));
+  });
+
+  testWidgets('shows RingingOverlay at zero and dismissing resets timer', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
+    await tester.pump();
+    await tester.tap(find.byKey(const Key('start-pause-button')));
+    await tester.pump();
+
+    // Simulate reaching zero
+    stateController.add(0);
+    await tester.pump(const Duration(seconds: 1));
+
+    // Verify RingingOverlay is visible
+    expect(find.text("Time's Up!"), findsOneWidget);
+    expect(find.byKey(const Key('ringing-dismiss-button')), findsOneWidget);
+
+    // Tap Dismiss
+    await tester.tap(find.byKey(const Key('ringing-dismiss-button')));
+    await tester.pumpAndSettle();
+
+    // RingingOverlay should be gone and timer reset to Ready / 01:00
+    expect(find.text("Time's Up!"), findsNothing);
+    expect(find.text('Ready'), findsOneWidget);
+    expect(find.text('01:00'), findsOneWidget);
   });
 }

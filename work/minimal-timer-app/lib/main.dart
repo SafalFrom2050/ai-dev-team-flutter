@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/onboarding_screen.dart';
 import 'services/background_timer_service.dart';
+import 'services/alarm_service.dart';
+import 'widgets/ringing_overlay.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -91,10 +94,18 @@ class _TimerScreenState extends State<TimerScreen> {
 
   late final BackgroundTimerService _timerService;
   StreamSubscription<int>? _timerSubscription;
+  StreamSubscription<String>? _eventSubscription;
 
   int _durationSeconds = _defaultSeconds;
   int _remainingSeconds = _defaultSeconds;
   bool _isRunning = false;
+
+  AlarmConfig _alarmConfig = const AlarmConfig(
+    soundId: 'chime',
+    isMuted: false,
+  );
+  bool _isSoundSelectorExpanded = false;
+  bool _alarmTriggered = false;
 
   double get _elapsedProgress {
     if (_durationSeconds == 0) {
@@ -125,6 +136,14 @@ class _TimerScreenState extends State<TimerScreen> {
     super.initState();
     _timerService = widget.timerService ?? BackgroundTimerService();
     _initTimerService();
+    _loadAlarmConfig();
+  }
+
+  Future<void> _loadAlarmConfig() async {
+    final config = await AlarmService().getAlarmConfig();
+    setState(() {
+      _alarmConfig = config;
+    });
   }
 
   Future<void> _initTimerService() async {
@@ -132,10 +151,24 @@ class _TimerScreenState extends State<TimerScreen> {
     await _timerService.requestPermissions();
 
     _timerSubscription = _timerService.remainingSecondsStream.listen((seconds) {
+      if (seconds == -1) {
+        return;
+      }
       setState(() {
         _remainingSeconds = seconds;
         _isRunning = seconds > 0;
       });
+
+      if (seconds == 0 && !_alarmTriggered) {
+        _alarmTriggered = true;
+        AlarmService().playLoopingAlarm();
+      }
+    });
+
+    _eventSubscription = _timerService.eventStream.listen((event) {
+      if (event == 'dismiss') {
+        _handleDismiss();
+      }
     });
 
     // Check if service is already running (e.g. app reopened)
@@ -149,6 +182,7 @@ class _TimerScreenState extends State<TimerScreen> {
   @override
   void dispose() {
     _timerSubscription?.cancel();
+    _eventSubscription?.cancel();
     super.dispose();
   }
 
@@ -206,100 +240,293 @@ class _TimerScreenState extends State<TimerScreen> {
     setState(() {
       _isRunning = false;
       _remainingSeconds = _durationSeconds;
+      _alarmTriggered = false;
     });
+  }
+
+  Future<void> _handleDismiss() async {
+    await AlarmService().stopAlarm();
+    await _resetTimer();
+  }
+
+  Future<void> _toggleMute() async {
+    if (_isRunning) return;
+    try {
+      await HapticFeedback.lightImpact();
+    } catch (_) {}
+
+    final newConfig = _alarmConfig.copyWith(isMuted: !_alarmConfig.isMuted);
+    await AlarmService().saveAlarmConfig(newConfig);
+    setState(() {
+      _alarmConfig = newConfig;
+    });
+  }
+
+  Future<void> _selectSound(String soundId) async {
+    if (_isRunning) return;
+    final newConfig = _alarmConfig.copyWith(soundId: soundId);
+    await AlarmService().saveAlarmConfig(newConfig);
+    setState(() {
+      _alarmConfig = newConfig;
+    });
+    await AlarmService().playPreview(soundId);
+  }
+
+  String _getSoundLabel(String soundId) {
+    switch (soundId) {
+      case 'chime':
+        return 'Chime (Zen Bowl)';
+      case 'beep':
+        return 'Beep (Digital)';
+      case 'echo':
+        return 'Echo (Classic Bell)';
+      default:
+        return 'Chime (Zen Bowl)';
+    }
+  }
+
+  Widget _buildSoundConfigUI(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Semantics(
+              label: _alarmConfig.isMuted
+                  ? "Unmute alarm sound. Currently muted."
+                  : "Mute alarm sound. Currently playing ${_getSoundLabel(_alarmConfig.soundId)}.",
+              button: true,
+              child: IconButton(
+                key: const Key('volume-mute-toggle'),
+                icon: Icon(
+                  _alarmConfig.isMuted ? Icons.volume_off : Icons.volume_up,
+                  color: _isRunning
+                      ? colorScheme.onSurface.withValues(alpha: 0.38)
+                      : colorScheme.primary,
+                ),
+                onPressed: _isRunning ? null : _toggleMute,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              _alarmConfig.isMuted
+                  ? "Muted"
+                  : _getSoundLabel(_alarmConfig.soundId),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: _isRunning
+                    ? colorScheme.onSurfaceVariant.withValues(alpha: 0.38)
+                    : colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              key: const Key('expand-sound-selector-button'),
+              icon: Icon(
+                _isSoundSelectorExpanded
+                    ? Icons.expand_less
+                    : Icons.expand_more,
+                color: _isRunning
+                    ? colorScheme.onSurface.withValues(alpha: 0.38)
+                    : colorScheme.primary,
+              ),
+              onPressed: _isRunning
+                  ? null
+                  : () {
+                      setState(() {
+                        _isSoundSelectorExpanded = !_isSoundSelectorExpanded;
+                      });
+                    },
+            ),
+          ],
+        ),
+        if (_isSoundSelectorExpanded) _buildSoundChips(context),
+      ],
+    );
+  }
+
+  Widget _buildSoundChips(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final soundOptions = [
+      {
+        'id': 'chime',
+        'label': 'Chime (Zen Bowl)',
+        'semantic': 'Zen Bowl chime tone. Tap to select and play preview.',
+      },
+      {
+        'id': 'beep',
+        'label': 'Beep (Digital)',
+        'semantic': 'Digital beep tone. Tap to select and play preview.',
+      },
+      {
+        'id': 'echo',
+        'label': 'Echo (Classic Bell)',
+        'semantic': 'Classic Bell echo tone. Tap to select and play preview.',
+      },
+    ];
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+      margin: const EdgeInsets.only(top: 8),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 8,
+        runSpacing: 8,
+        children: soundOptions.map((opt) {
+          final id = opt['id'] as String;
+          final label = opt['label'] as String;
+          final semanticLabel = opt['semantic'] as String;
+          final isSelected = _alarmConfig.soundId == id;
+
+          return Semantics(
+            label: semanticLabel,
+            selected: isSelected,
+            button: true,
+            child: ChoiceChip(
+              key: Key('sound-chip-$id'),
+              label: Text(
+                label,
+                style: TextStyle(
+                  color: isSelected
+                      ? Colors.white
+                      : colorScheme.onSurfaceVariant,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              selected: isSelected,
+              selectedColor: colorScheme.primary,
+              backgroundColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: isSelected ? colorScheme.primary : colorScheme.outline,
+                  width: 1,
+                ),
+              ),
+              avatar: isSelected
+                  ? const Icon(Icons.check, color: Colors.white, size: 18)
+                  : null,
+              onSelected: _isRunning
+                  ? null
+                  : (selected) {
+                      if (selected) {
+                        _selectSound(id);
+                      }
+                    },
+              showCheckmark: false,
+            ),
+          );
+        }).toList(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return WithForegroundTask(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.help_outline),
-              tooltip: 'Help & Tutorial',
-              onPressed: () {
-                Navigator.of(context).pushNamed('/onboarding');
-              },
-            ),
-          ],
-        ),
-        extendBodyBehindAppBar: true,
-        body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final dialSize = math.min(
-                320.0,
-                math.max(
-                  180.0,
-                  math.min(
-                    constraints.maxWidth - 48,
-                    constraints.maxHeight * .36,
-                  ),
-                ),
-              );
-
-              return Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 24,
-                  ),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 520),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Timer',
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Minimal focus countdown',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: colorScheme.onSurfaceVariant),
-                        ),
-                        const SizedBox(height: 28),
-                        _TimerDial(
-                          elapsedProgress: _elapsedProgress,
-                          formattedTime: _formatSeconds(_remainingSeconds),
-                          semanticTime: _formatSemanticTime(_remainingSeconds),
-                          size: dialSize,
-                          statusLabel: _statusLabel,
-                        ),
-                        const SizedBox(height: 28),
-                        _DurationControls(
-                          currentDurationSeconds: _durationSeconds,
-                          enabled: !_isRunning,
-                          onAdjustDuration: _adjustDuration,
-                          onSelectDuration: _selectDuration,
-                        ),
-                        const SizedBox(height: 20),
-                        _TimerActions(
-                          isRunning: _isRunning,
-                          canReset:
-                              _remainingSeconds != _durationSeconds ||
-                              _isRunning,
-                          isComplete: _remainingSeconds == 0,
-                          onReset: _resetTimer,
-                          onToggleTimer: _toggleTimer,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+    Widget screen = Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: 'Help & Tutorial',
+            onPressed: () {
+              Navigator.of(context).pushNamed('/onboarding');
             },
           ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final dialSize = math.min(
+              320.0,
+              math.max(
+                180.0,
+                math.min(
+                  constraints.maxWidth - 48,
+                  constraints.maxHeight * .36,
+                ),
+              ),
+            );
+
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 24,
+                ),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Timer',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Minimal focus countdown',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+                      _TimerDial(
+                        elapsedProgress: _elapsedProgress,
+                        formattedTime: _formatSeconds(_remainingSeconds),
+                        semanticTime: _formatSemanticTime(_remainingSeconds),
+                        size: dialSize,
+                        statusLabel: _statusLabel,
+                      ),
+                      const SizedBox(height: 28),
+                      _DurationControls(
+                        currentDurationSeconds: _durationSeconds,
+                        enabled: !_isRunning,
+                        onAdjustDuration: _adjustDuration,
+                        onSelectDuration: _selectDuration,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildSoundConfigUI(context),
+                      const SizedBox(height: 20),
+                      _TimerActions(
+                        isRunning: _isRunning,
+                        canReset:
+                            _remainingSeconds != _durationSeconds || _isRunning,
+                        isComplete: _remainingSeconds == 0,
+                        onReset: _resetTimer,
+                        onToggleTimer: _toggleTimer,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
+
+    if (_remainingSeconds == 0 && _statusLabel == 'Done') {
+      screen = Stack(
+        children: [
+          screen,
+          Positioned.fill(child: RingingOverlay(onDismiss: _handleDismiss)),
+        ],
+      );
+    }
+
+    return WithForegroundTask(child: screen);
   }
 
   String _formatSeconds(int totalSeconds) {
