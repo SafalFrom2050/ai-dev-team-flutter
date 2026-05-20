@@ -804,6 +804,26 @@ Updated:
 - `README.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-20: Polish Sub-Agent README Diagrams
+
+Decision: simplify the sub-agent harness diagram, restore the missing QA to
+review flow in the context-scaling diagram, and keep reusable `org/main` status
+content generic.
+
+Why: the first sub-agent visual made the harness concept feel crowded instead
+of architectural, and the context-scaling diagram was missing the explicit QA to
+review gate. `org/main` is a starter office, so it should show example status
+content rather than the current product's real release state.
+
+Rule: product `main` may describe the current app. `org/main` should describe
+the reusable office setup and use examples for project-specific status.
+
+Updated:
+
+- `docs/assets/readme/subagent-harness.svg`
+- `docs/assets/readme/agent-context-scaling.svg`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
