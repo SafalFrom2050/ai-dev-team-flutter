@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'alarm_service.dart';
 
 /// The entry point for the background task isolate.
 @pragma('vm:entry-point')
@@ -25,6 +26,7 @@ class TimerTaskHandler extends TaskHandler {
   @override
   Future<void> onDestroy(DateTime timestamp, bool withStopService) async {
     _timer?.cancel();
+    await AlarmService().stopAlarm();
   }
 
   @override
@@ -36,12 +38,26 @@ class TimerTaskHandler extends TaskHandler {
         _startTimer();
       } else if (command == 'pause') {
         _stopTimer();
+        AlarmService().stopAlarm();
       } else if (command == 'resume') {
         _startTimer();
       } else if (command == 'reset') {
         _stopTimer();
         _remainingSeconds = 0;
+        AlarmService().stopAlarm();
       }
+    }
+  }
+
+  @override
+  void onNotificationButtonPressed(String id) {
+    if (id == 'dismiss_alarm') {
+      // 1. Mute audio/haptics
+      AlarmService().stopAlarm();
+      // 2. Notify the main UI thread
+      FlutterForegroundTask.sendDataToMain({'event': 'dismiss'});
+      // 3. Stop the service
+      FlutterForegroundTask.stopService();
     }
   }
 
@@ -56,6 +72,8 @@ class TimerTaskHandler extends TaskHandler {
         _stopTimer();
         _updateNotification(isDone: true);
         FlutterForegroundTask.sendDataToMain(0);
+        // Play looping alarm when countdown finishes
+        AlarmService().playLoopingAlarm();
       }
     });
   }
@@ -68,22 +86,30 @@ class TimerTaskHandler extends TaskHandler {
   void _updateNotification({bool isDone = false}) {
     final minutes = _remainingSeconds ~/ 60;
     final seconds = _remainingSeconds % 60;
-    final timeStr = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-    
+    final timeStr =
+        '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+
     FlutterForegroundTask.updateService(
       notificationTitle: isDone ? 'Timer Done' : 'Timer Running',
       notificationText: isDone ? 'Time is up!' : 'Remaining: $timeStr',
+      notificationButtons: [
+        const NotificationButton(id: 'dismiss_alarm', text: 'Dismiss'),
+      ],
     );
   }
 }
 
 class BackgroundTimerService {
-  static final BackgroundTimerService _instance = BackgroundTimerService._internal();
+  static final BackgroundTimerService _instance =
+      BackgroundTimerService._internal();
   factory BackgroundTimerService() => _instance;
   BackgroundTimerService._internal();
 
   final _stateController = StreamController<int>.broadcast();
   Stream<int> get remainingSecondsStream => _stateController.stream;
+
+  final _eventController = StreamController<String>.broadcast();
+  Stream<String> get eventStream => _eventController.stream;
 
   Future<void> initialize() async {
     FlutterForegroundTask.init(
@@ -91,8 +117,10 @@ class BackgroundTimerService {
         channelId: 'timer_service',
         channelName: 'Timer Service',
         channelDescription: 'Running the countdown timer in the background',
-        channelImportance: NotificationChannelImportance.LOW,
-        priority: NotificationPriority.LOW,
+        channelImportance: NotificationChannelImportance.HIGH,
+        priority: NotificationPriority.HIGH,
+        playSound: true,
+        enableVibration: true,
       ),
       iosNotificationOptions: const IOSNotificationOptions(
         showNotification: true,
@@ -112,6 +140,12 @@ class BackgroundTimerService {
   void _onTaskDataReceived(Object data) {
     if (data is int) {
       _stateController.add(data);
+    } else if (data is Map) {
+      final event = data['event'];
+      if (event == 'dismiss') {
+        _eventController.add('dismiss');
+        _stateController.add(-1);
+      }
     }
   }
 
@@ -123,8 +157,8 @@ class BackgroundTimerService {
     if (!await FlutterForegroundTask.isIgnoringBatteryOptimizations) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
     }
-    
-    NotificationPermission notificationPermissionStatus = 
+
+    NotificationPermission notificationPermissionStatus =
         await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermissionStatus != NotificationPermission.granted) {
       await FlutterForegroundTask.requestNotificationPermission();
@@ -133,17 +167,26 @@ class BackgroundTimerService {
 
   Future<void> start(int seconds) async {
     if (await isRunning()) {
-      FlutterForegroundTask.sendDataToTask({'command': 'start', 'seconds': seconds});
+      FlutterForegroundTask.sendDataToTask({
+        'command': 'start',
+        'seconds': seconds,
+      });
     } else {
       await FlutterForegroundTask.startService(
         notificationTitle: 'Timer Starting',
         notificationText: 'Preparing countdown...',
+        notificationButtons: [
+          const NotificationButton(id: 'dismiss_alarm', text: 'Dismiss'),
+        ],
         callback: startCallback,
       );
-      
+
       // Give it a moment to start before sending data
       await Future.delayed(const Duration(milliseconds: 500));
-      FlutterForegroundTask.sendDataToTask({'command': 'start', 'seconds': seconds});
+      FlutterForegroundTask.sendDataToTask({
+        'command': 'start',
+        'seconds': seconds,
+      });
     }
   }
 
@@ -156,6 +199,7 @@ class BackgroundTimerService {
   }
 
   Future<void> stop() async {
+    await AlarmService().stopAlarm();
     await FlutterForegroundTask.stopService();
   }
 }

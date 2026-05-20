@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_foreground_task: 9.2.2
   shared_preferences: ^2.5.5
+  audioplayers: ^6.0.0
+  vibration: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +62,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/audio/chime.wav
+    - assets/audio/beep.wav
+    - assets/audio/echo.wav
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -24,8 +24,9 @@ void main() {
     when(mockService.initialize()).thenAnswer((_) async {});
     when(mockService.requestPermissions()).thenAnswer((_) async {});
     when(mockService.isRunning()).thenAnswer((_) async => false);
-    when(mockService.remainingSecondsStream)
-        .thenAnswer((_) => stateController.stream);
+    when(
+      mockService.remainingSecondsStream,
+    ).thenAnswer((_) => stateController.stream);
     when(mockService.start(any)).thenAnswer((_) async {});
     when(mockService.pause()).thenAnswer((_) async {});
     when(mockService.stop()).thenAnswer((_) async {});
@@ -38,11 +39,13 @@ void main() {
   });
 
   testWidgets('shows the default timer controls', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: true,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
 
     expect(find.text('Timer'), findsOneWidget);
     expect(find.text('05:00'), findsOneWidget);
@@ -53,11 +56,13 @@ void main() {
   });
 
   testWidgets('changes duration with presets and steppers', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: true,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -79,11 +84,13 @@ void main() {
   });
 
   testWidgets('starts, pauses, and resets the countdown', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: true,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -113,11 +120,13 @@ void main() {
   });
 
   testWidgets('shows completion and restart action at zero', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: true,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
 
     await tester.tap(find.byKey(const Key('duration-1-minute-chip')));
     await tester.pump();
@@ -134,11 +143,13 @@ void main() {
   });
 
   testWidgets('shows onboarding on first launch', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: false,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: false,
+        prefs: mockPrefs,
+      ),
+    );
 
     expect(find.text('Minimal Timer'), findsOneWidget);
     expect(find.text('Stays with you'), findsOneWidget);
@@ -153,11 +164,13 @@ void main() {
   });
 
   testWidgets('can re-open onboarding from help button', (tester) async {
-    await tester.pumpWidget(TimerApp(
-      timerService: mockService,
-      onboardingComplete: true,
-      prefs: mockPrefs,
-    ));
+    await tester.pumpWidget(
+      TimerApp(
+        timerService: mockService,
+        onboardingComplete: true,
+        prefs: mockPrefs,
+      ),
+    );
 
     await tester.tap(find.byIcon(Icons.help_outline));
     await tester.pumpAndSettle();

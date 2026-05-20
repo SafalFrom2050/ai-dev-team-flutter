@@ -44,17 +44,17 @@ class TimerApp extends StatelessWidget {
           return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 OnboardingScreen(
-              onStartTiming: () async {
-                await prefs.setBool('onboarding_complete', true);
-                if (context.mounted) {
-                  Navigator.of(context).pushReplacementNamed('/');
-                }
-              },
-            ),
+                  onStartTiming: () async {
+                    await prefs.setBool('onboarding_complete', true);
+                    if (context.mounted) {
+                      Navigator.of(context).pushReplacementNamed('/');
+                    }
+                  },
+                ),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
+                  return FadeTransition(opacity: animation, child: child);
+                },
           );
         }
 
@@ -64,8 +64,8 @@ class TimerApp extends StatelessWidget {
                 TimerScreen(timerService: timerService),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
+                  return FadeTransition(opacity: animation, child: child);
+                },
           );
         }
 
@@ -262,9 +262,8 @@ class _TimerScreenState extends State<TimerScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'Minimal focus countdown',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: colorScheme.onSurfaceVariant),
                         ),
                         const SizedBox(height: 28),
                         _TimerDial(
@@ -284,7 +283,9 @@ class _TimerScreenState extends State<TimerScreen> {
                         const SizedBox(height: 20),
                         _TimerActions(
                           isRunning: _isRunning,
-                          canReset: _remainingSeconds != _durationSeconds || _isRunning,
+                          canReset:
+                              _remainingSeconds != _durationSeconds ||
+                              _isRunning,
                           isComplete: _remainingSeconds == 0,
                           onReset: _resetTimer,
                           onToggleTimer: _toggleTimer,
