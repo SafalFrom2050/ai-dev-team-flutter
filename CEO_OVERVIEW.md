@@ -804,46 +804,6 @@ Updated:
 - `README.md`
 - `CEO_OVERVIEW.md`
 
-### 2026-05-20: Polish Sub-Agent README Diagrams
-
-Decision: simplify the sub-agent harness diagram, restore the missing QA to
-review flow in the context-scaling diagram, and keep reusable `org/main` status
-content generic.
-
-Why: the first sub-agent visual made the harness concept feel crowded instead
-of architectural, and the context-scaling diagram was missing the explicit QA to
-review gate. `org/main` is a starter office, so it should show example status
-content rather than the current product's real release state.
-
-Rule: product `main` may describe the current app. `org/main` should describe
-the reusable office setup and use examples for project-specific status.
-
-Updated:
-
-- `docs/assets/readme/subagent-harness.svg`
-- `docs/assets/readme/agent-context-scaling.svg`
-- `CEO_OVERVIEW.md`
-
-### 2026-05-20: Use Generated PNG Sub-Agent Diagrams
-
-Decision: replace the hand-authored sub-agent README SVG diagrams with generated
-PNG images using the same base filenames.
-
-Why: visual polish matters for a visitor-facing README, and the generated PNGs
-communicate the sub-agent architecture more attractively than the manually drawn
-SVG versions.
-
-Updated:
-
-- `README.md`
-- `docs/assets/readme/subagent-harness.png`
-- `docs/assets/readme/agent-context-scaling.png`
-
-Removed:
-
-- `docs/assets/readme/subagent-harness.svg`
-- `docs/assets/readme/agent-context-scaling.svg`
-
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
@@ -866,6 +826,13 @@ Result:
 
 ## CEO Rule
 
-When the office changes, update this file in the same branch as the change. If a
-future agent cannot understand the team, workflow, or decision history from this
-file, the CEO has not finished the job.
+When the office changes in a durable way, update this file in the same branch as
+the change. Durable changes include team structure, workflow, role definitions,
+branch strategy, tooling strategy, quality gates, and product direction.
+
+Do not log routine README polish, screenshot swaps, visual asset replacements,
+typo fixes, or other cosmetic documentation maintenance unless they change how
+the office operates.
+
+If a future agent cannot understand the team, workflow, or decision history from
+this file, the CEO has not finished the job.
