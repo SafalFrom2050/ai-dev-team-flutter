@@ -847,6 +847,26 @@ Updated:
 - `docs/assets/readme/agent-context-scaling.svg`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-20: Use Generated PNG Sub-Agent Diagrams
+
+Decision: replace the hand-authored sub-agent README SVG diagrams with generated
+PNG images using the same base filenames.
+
+Why: visual polish matters for a visitor-facing README, and the generated PNGs
+communicate the sub-agent architecture more attractively than the manually drawn
+SVG versions.
+
+Updated:
+
+- `README.md`
+- `docs/assets/readme/subagent-harness.png`
+- `docs/assets/readme/agent-context-scaling.png`
+
+Removed:
+
+- `docs/assets/readme/subagent-harness.svg`
+- `docs/assets/readme/agent-context-scaling.svg`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
