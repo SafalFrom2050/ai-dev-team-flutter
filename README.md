@@ -21,7 +21,7 @@ context window. It is an **AI dev office**: one main chat acts like the CEO or
 Office Assistant, then launches specialist sub-agents for product, design,
 architecture, Flutter implementation, QA, code review, and release.
 
-![Native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.svg)
+![Native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.png)
 
 The main chat should stay light: it routes work, monitors branch state, reads
 handoffs, and decides when to ask the user. The specialist agents do the deep
@@ -42,7 +42,7 @@ screen states, architecture decisions, implementation details, test evidence,
 browser checks, and release risk all compete for context. This office splits that
 work by role.
 
-![Why role-specific sub-agents scale better than one giant chat](docs/assets/readme/agent-context-scaling.svg)
+![Why role-specific sub-agents scale better than one giant chat](docs/assets/readme/agent-context-scaling.png)
 
 Role-specific sub-agents make the office stronger because:
 
