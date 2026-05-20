@@ -51,12 +51,12 @@ hidden chat history.
 
 - Slug: `alarms`
 - App workspace: `work/minimal-timer-app/`
-- Source of truth: `product/alarms`
-- State: `In Planning`
+- Source of truth: `design/alarms`
+- State: `In Design`
 - Last quality gates: `n/a`
-- Current owner: `Product Lead`
+- Current owner: `UI/UX Designer`
 - Open risks: audio and vibration execution in background service / battery optimization policies
 - Docs: `docs/features/alarms/`
-- Handoff: `docs/features/alarms/async/outbox/product-lead.md`
-- Last updated: `2026-05-20 by Product Lead`
+- Handoff: `docs/features/alarms/async/outbox/ui-designer.md`
+- Last updated: `2026-05-20 by UI/UX Designer`
 
