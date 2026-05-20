@@ -4,8 +4,10 @@ The user should not need to remember role names, branch names, workflow steps,
 packet paths, or template formats.
 
 Any unstructured prompt is an Office Assistant prompt. The Office Assistant
-reads lightweight project docs, determines the role sequence, and outputs
-ready-to-paste agent packets.
+reads lightweight project docs, determines the role sequence, and creates role
+contracts. If the current tool can start native sub-agents, the Office Assistant
+uses those contracts to launch the team. If not, it outputs ready-to-paste agent
+packets.
 
 ## Just Type Your Task
 
@@ -52,14 +54,17 @@ This goes directly to that specialist. The Office Assistant does not intervene.
 For any unstructured task, the Office Assistant produces:
 
 1. A **phase plan** showing which roles run and in what order.
-2. **Ready-to-paste packets** for each agent session.
-3. Each packet starts with the role's activation banner.
-4. Each packet includes: role, mission, branch, file ownership, boundaries,
+2. **Native sub-agent launches** when the current tool supports them.
+3. **Ready-to-paste packets** as the fallback when native sub-agents are not
+   available.
+4. Each role contract starts with the role's activation banner.
+5. Each contract includes: role, mission, branch, file ownership, boundaries,
    concurrent agent awareness, and output location.
 
-You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
-CLI, Claude Code, or any AI coding tool) and the agent works within its defined
-boundaries.
+When native sub-agents are available, the main chat starts those agents for you.
+When they are not, you copy-paste each packet into a separate agent session
+(Codex, Cursor, Gemini CLI, Antigravity CLI, Claude Code, or any AI coding tool)
+and the agent works within its defined boundaries.
 
 ## What You Do Not Need To Specify
 
@@ -88,8 +93,11 @@ In a fresh session, the Office Assistant:
 6. Checks the current git branch and status.
 7. If a feature folder exists, reads its lightweight docs and handoffs for prior
    context.
+8. Checks whether the current tool can create native sub-agents for the selected
+   roles.
 
-Then it produces the phase plan and ready-to-paste packets.
+Then it produces the phase plan. If native sub-agents are available and the task
+is an execution task, it starts them. If not, it prints the packet fallbacks.
 
 For status-only prompts, it should not scan `work/<app-slug>/lib`, platform
 folders, generated files, lockfiles, or build output unless the user asks for
@@ -106,9 +114,11 @@ Assistant behavior:
 You are the Office Assistant for this project. Read AGENTS.md for rules.
 First print the Office Assistant activation banner from
 docs/ai-office/role-activation.md before using tools. Analyze the lightweight
-project docs, determine the role sequence and file ownership, and output
-ready-to-paste agent packets. Each packet must start with the target role's
-activation banner. Do not implement the task yourself.
+project docs, determine the role sequence and file ownership, and create role
+contracts. If this tool can start native sub-agents, launch the relevant roles
+with those contracts. If it cannot, output ready-to-paste packets. Each contract
+or packet must start with the target role's activation banner. Do not implement
+the specialist task yourself.
 ```
 
 This prompt is optional when `AGENTS.md` is already loaded as a project rule.
@@ -137,8 +147,8 @@ Do not ask the user to choose internal office mechanics.
 ## Summary
 
 ```text
-Unstructured prompt -> Office Assistant -> ready-to-paste packets -> user pastes
-into agent sessions -> agents work within boundaries -> handoffs through outbox
+Unstructured prompt -> Office Assistant -> role contracts -> native sub-agents
+or packet fallback -> agents work within boundaries -> handoffs through outbox
 ```
 
 The user calls the office. The office produces the instructions.

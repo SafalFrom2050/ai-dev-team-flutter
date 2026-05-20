@@ -716,6 +716,41 @@ Updated:
 - `README.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-20: Adopt Native Harness With Packet Fallback
+
+Decision: make native sub-agent harnesses the preferred execution path when an
+AI tool supports them, while preserving ready-to-paste packets as the universal
+fallback.
+
+Why: new tools such as Antigravity 2.0, Antigravity CLI/SDK, Codex sub-agents,
+Claude Code plugins, Gemini, Cursor, and future harnesses can launch role
+workers directly. The office should use that speed without becoming dependent on
+any one provider, model, dashboard, or hidden chat state.
+
+Rule: the role contract is the portable unit. Native harnesses receive it as a
+sub-agent prompt. Tools without sub-agents print it as a packet. Every role still
+uses repo files, branches, commits, handoffs, outboxes, and status docs as the
+source of truth.
+
+Created:
+
+- `docs/ai-office/runtime-adapters.md`
+
+Updated:
+
+- `AGENTS.md`
+- `GEMINI.md`
+- `README.md`
+- `docs/ai-office/README.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/mcp-and-skills.md`
+- `docs/ai-office/role-activation.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/templates/agent-session-packet.md`
+- `docs/ai-office/user-activation.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

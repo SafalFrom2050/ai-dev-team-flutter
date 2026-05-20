@@ -32,7 +32,8 @@ project treats AI as a team.
 Each role has a job:
 
 - The CEO keeps the office coherent.
-- The Office Assistant turns unstructured tasks into role packets.
+- The Office Assistant turns unstructured tasks into role contracts, launches
+  native sub-agents when available, and prints packets as fallback.
 - The Product Lead clarifies what is worth building.
 - The UI/UX Designer makes the experience implementable.
 - The Product Engineer turns intent into architecture.
@@ -48,15 +49,17 @@ and when to hand off.
 ## Office Entrance
 
 Welcome to the office architecture. Every feature starts as a conversation, then
-becomes packets, branches, handoffs, review, and finally production code.
+becomes native sub-agents or packets, branches, handoffs, review, and finally
+production code.
 
 ![AI Flutter Office architecture](docs/assets/readme/office-round-table.svg)
 
 The diagram is intentionally simple: prompts enter through the Office Assistant,
-role packets create scoped branch work, the repository preserves memory, and the
-delivery pipeline protects `main`. Each role owns a different kind of decision:
-product and design clarify intent, engineering builds, QA and review protect
-quality, and release protects production.
+role contracts create scoped branch work through native sub-agents or packet
+fallbacks, the repository preserves memory, and the delivery pipeline protects
+`main`. Each role owns a different kind of decision: product and design clarify
+intent, engineering builds, QA and review protect quality, and release protects
+production.
 
 CEO-level decisions live in `CEO_OVERVIEW.md`.
 
@@ -203,11 +206,13 @@ fix the timer overflow bug where it shows 61 minutes
 ```
 
 Any unstructured prompt activates the Office Assistant, which reads lightweight
-office and feature docs, determines the role sequence, and outputs
-**ready-to-paste agent packets**.
+office and feature docs, determines the role sequence, and creates
+**role contracts**.
 
-You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
-CLI, Claude Code, or any AI tool) and the agent works within its defined scope.
+If the current tool supports native sub-agents, the Assistant can start the
+roles directly. If not, it outputs ready-to-paste packets for separate sessions
+(Codex, Cursor, Gemini CLI, Antigravity CLI, Claude Code, or any AI tool), and
+each agent works within its defined scope.
 
 When using Gemini CLI, start it from the repo root so it loads `GEMINI.md`:
 
@@ -320,6 +325,8 @@ Start here if you are visiting:
 - `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
 - `docs/ai-office/workflow.md`: branch and handoff model.
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
+- `docs/ai-office/runtime-adapters.md`: native sub-agent harnesses and packet
+  fallback behavior.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
 - `docs/ai-office/mcp-and-skills.md`: MCP and official skills setup.
 - `docs/ai-office/gemini-cli.md`: Gemini CLI context loading and status
