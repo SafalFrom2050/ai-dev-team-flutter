@@ -107,6 +107,7 @@
     <path d="M97 286 C97 306 172 298 172 318" class="flow"/>
     <path d="M225 286 C225 306 344 298 344 318" class="flow"/>
     <path d="M481 286 C481 306 344 298 344 318" class="flow"/>
+    <path d="M238 345 H278" class="flow"/>
     <path d="M344 372 H450" class="flow"/>
     <path d="M97 286 C97 304 433 300 433 190" class="soft"/>
     <path d="M481 286 C481 304 433 300 433 190" class="soft"/>
