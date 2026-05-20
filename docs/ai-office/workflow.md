@@ -87,6 +87,30 @@ Use this order for most features:
 Small changes can compress steps, but should not skip product clarity, review, or
 tests.
 
+## End-To-End Feature Runs
+
+When the user asks the office to build or fix a feature, the default behavior is
+to keep going until the feature is release-ready, blocked, or waiting for final
+approval. A role handoff, passing command, failed command, or branch merge is not
+automatically a stopping point.
+
+The main chat should continue across the normal chain:
+
+```text
+intake -> brief -> design -> tech plan -> implementation -> QA -> review -> build/browser release gate -> handoff
+```
+
+Talk to the user when:
+
+- The task needs product clarification.
+- A command needs approval, credentials, network access, or device access.
+- A quality gate fails and the fix path is not clear.
+- File ownership conflicts or merge conflicts need a decision.
+- The feature is release-ready and needs final merge/release approval.
+
+Otherwise, keep the work moving and record progress in `docs/features/`,
+outboxes, commits, and the status index.
+
 ## Organization Versus Product Work
 
 Use `org/main` for stable company structure. Use product `main` and feature

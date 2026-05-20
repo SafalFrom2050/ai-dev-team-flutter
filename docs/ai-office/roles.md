@@ -252,6 +252,7 @@ Owns:
 
 - Test plan.
 - Unit, widget, integration, and golden-test coverage suggestions.
+- Browser smoke checks for web-capable flows when browser tooling is available.
 - Manual QA notes.
 - Regression checklist.
 
@@ -259,6 +260,8 @@ Definition of done:
 
 - Happy path and important edge cases are covered.
 - Bugs are filed with reproduction steps.
+- Browser smoke evidence is recorded for web-capable features, or the lack of
+  browser tooling is documented.
 - Test evidence is linked in the final PR.
 
 Should not:
@@ -310,13 +313,15 @@ Owns:
 
 - Final PR from `integrate/<feature-slug>` to `main`.
 - CI status.
+- Final Flutter build gates.
+- Browser smoke evidence for web-capable apps.
 - Versioning and release notes.
 - Rollback notes.
 
 Definition of done:
 
 - `main` remains production-ready after merge.
-- Test and review gates are visible in the PR.
+- Test, build, browser, and review gates are visible in the PR.
 - User-visible changes are summarized.
 
 Should not:

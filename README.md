@@ -214,6 +214,10 @@ roles directly. If not, it outputs ready-to-paste packets for separate sessions
 (Codex, Cursor, Gemini CLI, Antigravity CLI, Claude Code, or any AI tool), and
 each agent works within its defined scope.
 
+For build or fix requests, the office should keep going until the feature is
+release-ready, blocked, or waiting for final approval. You should not have to
+ask it to run the next role after each toolchain checkpoint.
+
 When using Gemini CLI, start it from the repo root so it loads `GEMINI.md`:
 
 ```powershell
@@ -295,17 +299,21 @@ fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+fvm flutter build web
 Pop-Location
 ```
 
-As the app matures, release candidates should also earn platform checks:
+Release candidates should also earn target platform checks:
 
 ```powershell
 Push-Location work/<app-slug>
-fvm flutter build web
 fvm flutter build apk --debug
 Pop-Location
 ```
+
+For web-capable features, QA or Release Engineering should use browser tools
+when available to open the app and smoke-test the primary user flow. If browser
+automation is unavailable, the handoff should say so plainly.
 
 ## Map Of The Office
 

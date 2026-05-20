@@ -85,6 +85,12 @@ Developers should treat the design contract as part of the spec.
   It never writes feature code, creates feature branches for specialists, or
   performs specialist implementation itself. It analyzes, plans, delegates, and
   monitors.
+- For execution prompts, the office should run the feature loop end to end:
+  product, design, architecture, implementation, QA, review, release readiness,
+  and handoff. Do not stop after a role or toolchain step just to ask for the
+  next step. Pause only for missing requirements, unsafe/destructive actions,
+  credentials, unavailable tooling, merge conflicts, failed gates that need a
+  decision, or final release approval.
 - Every role must announce its activation banner before any tool call, command,
   file read, analysis, plan, or implementation note. The banner is the first
   visible line of the session's task work.
@@ -132,6 +138,10 @@ Before code reaches `main`, expect:
 - `fvm dart format` clean.
 - `fvm flutter analyze` clean.
 - Unit, widget, and integration tests appropriate to the change.
+- Final release builds pass, at least `fvm flutter build web` for web-capable
+  apps plus the target platform build when relevant.
+- Browser smoke testing covers the primary user flow when the app supports web
+  and the active tool has browser automation.
 - UI states reviewed against the design contract.
 - Accessibility and responsive behavior checked for user-facing screens.
 - Release notes or a short product summary for user-visible changes.

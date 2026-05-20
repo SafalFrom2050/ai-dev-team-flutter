@@ -773,6 +773,38 @@ Updated:
 - `docs/ai-office/workflow.md`
 - `docs/assets/readme/`
 
+### 2026-05-20: Run Features End To End And Harden Release Gates
+
+Decision: feature execution prompts should run the office loop from intake to
+release-ready handoff by default, instead of stopping after each role or
+toolchain checkpoint. Final release gates must include Flutter build checks and
+browser smoke testing for web-capable apps when browser tools are available.
+
+Why: real feature runs showed that stopping after every handoff or command made
+the user manually drive the office. The office should move itself through the
+next clear step and only ask for help when a decision, permission, credential,
+device, merge conflict, unclear failed gate, or final approval is needed.
+
+Antigravity 2.0 note: its native sub-agent harness is currently the strongest
+fit for this office because role contracts map well to dynamic sub-agents,
+background work, managed agents, CLI/SDK entry points, and Markdown-defined
+agent instructions. Other platforms should work through the same contract, but
+they still need more real project testing.
+
+Updated:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/mcp-and-skills.md`
+- `docs/ai-office/quality-gates.md`
+- `docs/ai-office/roles.md`
+- `docs/ai-office/runtime-adapters.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/user-activation.md`
+- `docs/ai-office/workflow.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

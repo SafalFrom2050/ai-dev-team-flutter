@@ -9,7 +9,10 @@ Before anything merges to `main`:
 - Code is formatted.
 - Static analysis passes.
 - Relevant unit and widget tests pass.
+- Release build checks pass for the target platform.
 - Important UI states match the design contract.
+- Browser smoke testing covers the primary flow when the app supports web and
+  the active agent runtime has browser tools.
 - Accessibility and responsive behavior have been checked for user-facing UI.
 - Known risks are documented in the PR.
 
@@ -21,17 +24,29 @@ fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+fvm flutter build web
 Pop-Location
 ```
 
-Add platform build checks as the app matures:
+Add target-platform build checks for the release target:
 
 ```powershell
 Push-Location work/<app-slug>
-fvm flutter build web
 fvm flutter build apk --debug
 Pop-Location
 ```
+
+For a web-capable feature, the Release Engineer or QA/Test Engineer should also
+run a browser smoke check when the active tool supports browser automation:
+
+1. Build or run the web app.
+2. Open the app in a browser.
+3. Exercise the primary user flow and the main changed state.
+4. Capture the result in `docs/features/<feature-slug>/handoff.md` or
+   `docs/features/<feature-slug>/async/outbox/qa-test-engineer.md`.
+
+If browser tooling is unavailable, record that honestly instead of marking the
+browser gate green.
 
 ## PR Review Gate
 
