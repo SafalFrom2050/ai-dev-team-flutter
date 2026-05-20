@@ -202,7 +202,7 @@ void main() {
     stateController.add(0);
     await tester.pump();
 
-    expect(find.text('00:00'), findsOneWidget);
+    expect(find.text('00:00'), findsNWidgets(2));
     expect(find.text('Done'), findsOneWidget);
     expect(find.text('Restart'), findsOneWidget);
   });
@@ -217,7 +217,7 @@ void main() {
     );
 
     expect(find.text('Minimal Timer'), findsOneWidget);
-    expect(find.text('Stays with you'), findsOneWidget);
+    expect(find.text('Tactile Control'), findsOneWidget);
     expect(find.text('Start Timing'), findsOneWidget);
 
     await tester.tap(find.text('Start Timing'));

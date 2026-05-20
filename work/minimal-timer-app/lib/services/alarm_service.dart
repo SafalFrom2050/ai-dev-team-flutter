@@ -42,7 +42,8 @@ class AlarmService {
   Timer? _autoSilenceTimer;
   bool _isPlaying = false;
 
-  bool get _isTest => !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+  bool get _isTest =>
+      !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
 
   /// Returns true if the alarm is currently active (ringing or vibrating).
   bool get isPlaying => _isPlaying;

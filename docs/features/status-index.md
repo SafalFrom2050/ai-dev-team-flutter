@@ -60,4 +60,21 @@ hidden chat history.
 - Handoff: `docs/features/alarms/walkthrough.md`
 - Last updated: `2026-05-20 by Release Engineer`
 
+## Fluent Minimal Redesign
+
+- Slug: `fluent-minimal-redesign`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `integrate/fluent-minimal-redesign`
+- State: `fully implemented, formatted, and verified via passing test suite`
+- Last quality gates: `fvm dart format .`, `fvm flutter analyze` (clean), and `fvm flutter test` (all 9 tests passed)
+- Manual QA: `N/A`
+- Current owner: `Release Engineer`
+- Open risks: balancing intense physics-based animations (springs, glows) with low-end device performance; ensuring seamless Android/iOS background persistence is maintained after visual restructuring
+- Docs: `docs/features/fluent-minimal-redesign/`
+- Brief: `docs/features/fluent-minimal-redesign/brief.md`
+- Design Contract: `docs/features/fluent-minimal-redesign/design-contract.md`
+- Handoff: `docs/features/fluent-minimal-redesign/handoff.md`
+- Last updated: `2026-05-20 by Senior Flutter Engineer`
+
+
 
