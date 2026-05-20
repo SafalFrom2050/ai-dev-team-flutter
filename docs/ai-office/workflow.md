@@ -105,13 +105,13 @@ Before parallel implementation starts, write a simple ownership map in
 ```text
 Agent                     Owns
 ------------------------  -----------------------------------------
-Senior Flutter Engineer   lib/features/auth/, navigation changes
-Junior Flutter Developer  lib/shared/widgets/primary_button.dart
-QA/Test Engineer          test/features/auth/, integration_test/
+Senior Flutter Engineer   work/my-app/lib/features/auth/, navigation changes
+Junior Flutter Developer  work/my-app/lib/shared/widgets/primary_button.dart
+QA/Test Engineer          work/my-app/test/features/auth/, work/my-app/integration_test/
 UI/UX Designer            docs/features/auth/design-contract.md
 ```
 
-For app code, write ownership paths relative to the app workspace:
+For a smaller slice, keep the same app-workspace prefix:
 
 ```text
 Senior Flutter Engineer   work/my-app/lib/features/auth/

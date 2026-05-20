@@ -1,5 +1,7 @@
 # AI Dev Team Flutter
 
+![AI Dev Team Flutter: from idea to production main](docs/assets/readme/featured.png)
+
 An experimental Flutter studio where AI agents work like a real product team.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration
@@ -50,77 +52,26 @@ Welcome to the office architecture. Every feature starts as a conversation, then
 becomes native sub-agents or packets, branches, handoffs, review, and finally
 production code.
 
-```mermaid
-flowchart TB
-    Table(("AI Flutter Office\nRound Table"))
-
-    CEO["CEO\nVision, governance,\ndecision history"]
-    Assistant["Office Assistant\nRole contracts,\nsub-agents, packets"]
-    Product["Product Lead\nProblem, users,\nacceptance criteria"]
-    Design["UI/UX Designer\nFlows, states,\ntokens, accessibility"]
-    Architect["Product Engineer\nArchitecture, data flow,\nwork slicing"]
-    Senior["Senior Flutter Engineer\nPatterns, state,\nplatform risk"]
-    Junior["Junior Flutter Developer\nFocused widgets,\nsmall slices, tests"]
-    QA["QA/Test Engineer\nUnit, widget,\nintegration, golden tests"]
-    Review["Code Reviewer\nCorrectness,\nmaintainability, risk"]
-    Release["Release Engineer\nCI, release notes,\nmain branch"]
-    Main["main\nProduction code"]
-
-    CEO --- Table
-    Assistant --- Table
-    Product --- Table
-    Design --- Table
-    Architect --- Table
-    Senior --- Table
-    Junior --- Table
-    QA --- Table
-    Review --- Table
-    Release --- Table
-
-    CEO --> Assistant
-    Assistant --> Product
-    Assistant --> Design
-    Assistant --> Architect
-    Assistant --> QA
-    Product --> Design
-    Product --> Architect
-    Design --> Senior
-    Architect --> Senior
-    Architect --> Junior
-    Senior --> QA
-    Junior --> QA
-    QA --> Review
-    Review --> Release
-    Release --> Main
-    CEO -. keeps the office honest .-> Main
-```
+![AI Flutter Office architecture](docs/assets/readme/office-round-table.svg)
 
 The diagram is intentionally simple: prompts enter through the Office Assistant,
 role contracts create scoped branch work through native sub-agents or packet
 fallbacks, the repository preserves memory, and the delivery pipeline protects
-`main`.
+`main`. Each role owns a different kind of decision: product and design clarify
+intent, engineering builds, QA and review protect quality, and release protects
+production.
 
-The CEO role is us while we build and steer the office. CEO-level decisions live
-in `CEO_OVERVIEW.md`.
+CEO-level decisions live in `CEO_OVERVIEW.md`.
 
 ## The Production Path
 
 The office does not let every agent write straight to `main`.
 
-```mermaid
-flowchart LR
-    Idea["Raw idea"]
-    Brief["Product brief"]
-    Design["Design contract"]
-    Plan["Technical plan"]
-    Build["Flutter implementation"]
-    Test["QA and tests"]
-    Review["Code review"]
-    Release["Release PR"]
-    Main["main"]
+![AI Flutter Office production path](docs/assets/readme/production-path.svg)
 
-    Idea --> Brief --> Design --> Plan --> Build --> Test --> Review --> Release --> Main
-```
+The path is intentionally gated: product, design, and architecture artifacts
+come before implementation; tests and review come before release; only release
+work moves into production `main`.
 
 Work happens through an integration branch:
 
@@ -385,11 +336,18 @@ Start here if you are visiting:
 
 ## Current Status
 
-The office is built. The Flutter app itself has not been scaffolded yet.
+The office is built, and the current product branch contains a Minimal Timer
+Flutter app tracked under:
 
-Next CEO move:
+```text
+docs/features/minimal-timer-app/
+work/minimal-timer-app/
+```
 
-1. Choose the first product idea.
-2. Run it through the office workflow.
-3. Create the Flutter app scaffold with FVM.
-4. Ship the first production-ready slice to `main`.
+Current product state:
+
+1. `minimal-timer-app` is shipped to `main`.
+2. `android-background-timer` is implemented on `main` and needs a verification
+   pass, especially Android emulator/device background behavior.
+3. `docs/features/status-index.md` is the lightweight source for progress
+   checks.

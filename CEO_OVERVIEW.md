@@ -468,6 +468,29 @@ Updated:
 - `docs/ai-office/mcp-and-skills.md`
 - `docs/ai-office/async-agent-runtime.md`
 
+### 2026-05-19: Move Minimal Timer App Into Work
+
+Decision: migrate the first product app from root-level Flutter scaffold files
+into `work/minimal-timer-app/`.
+
+Why: the first app proved the root-clutter problem in practice. The office root
+should remain readable as the company operating system, while generated
+platform folders and app-local tooling files belong inside the app workspace.
+
+Moved:
+
+- `lib/`, `test/`, `android/`, `ios/`, `web/`, `linux/`, `macos/`, `windows/`
+- `pubspec.yaml`, `pubspec.lock`, `analysis_options.yaml`, `.metadata`
+- app-local ignored artifacts such as `.dart_tool/`, `build/`, `.idea/`, and
+  the app `.iml` file when the OS allowed moving them
+
+Updated:
+
+- `README.md`
+- `docs/features/minimal-timer-app/handoff.md`
+- `docs/features/minimal-timer-app/tech-plan.md`
+- `docs/features/minimal-timer-app/test-plan.md`
+
 ### 2026-05-19: Add Role Activation Banners
 
 Decision: every role must announce a visible activation banner before doing
@@ -582,6 +605,29 @@ Updated:
 - `docs/ai-office/templates/handoff.md`
 - `docs/features/README.md`
 
+### 2026-05-19: Improve README Office Entrance
+
+Decision: replace the crowded README round-table Mermaid chart with a simpler
+SVG office map, replace the production-path Mermaid chart with a darker SVG
+pipeline, and add actual Office Assistant activation screenshots to show the
+intended user experience across multiple tools.
+
+Why: visitors should understand the office quickly. The README should show that
+the workflow is simple at the front door: ask a normal question, see the active
+role announced, then get branch-aware evidence. It should also show that the
+same behavior works in Codex and Gemini CLI.
+
+Created:
+
+- `docs/assets/readme/office-round-table.svg`
+- `docs/assets/readme/production-path.svg`
+- `docs/assets/readme/office-assistant-activation.png`
+- `docs/assets/readme/office-assistant-activation-gemini.png`
+
+Updated:
+
+- `README.md`
+
 ### 2026-05-19: Add Gemini CLI Instruction Shim
 
 Decision: add a root `GEMINI.md` file and Gemini-specific documentation so
@@ -609,6 +655,24 @@ Updated:
 - `CEO_OVERVIEW.md`
 - `docs/ai-office/async-agent-runtime.md`
 - `docs/ai-office/mcp-and-skills.md`
+
+### 2026-05-19: Add README Featured Hero Image
+
+Decision: add a recruiter-friendly featured image as the first visual in
+`README.md`.
+
+Why: visitors should understand the project's ambition immediately: an
+AI-native Flutter office that turns an idea into production `main` through
+specialist agents, branch workflow, tests, review, and release.
+
+Created:
+
+- `docs/assets/readme/featured.png`
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
 
 ### 2026-05-19: Open Source The Project
 
@@ -687,6 +751,28 @@ Updated:
 - `docs/ai-office/user-activation.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-20: Align Org README With Production Learning
+
+Decision: keep `org/main`'s README aligned with the organization-facing README
+on `main`, including the current office diagrams, activation screenshots, and
+runtime-adapter explanation.
+
+Why: `main` is where the office is being tested against real product work. When
+that production use teaches the office a better public structure, `org/main`
+should absorb that organization learning instead of preserving an older,
+simpler README.
+
+Rule: sync office-facing README structure, docs, and assets from `main` to
+`org/main` when they describe the company operating system. Do not pull product
+source code or generated app artifacts into `org/main`.
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
+- `docs/ai-office/workflow.md`
+- `docs/assets/readme/`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating
@@ -703,12 +789,9 @@ Result:
 
 ## Current Open CEO Items
 
-- Install or expose Flutter on PATH.
-- Add the MCP server to the active Codex environment with
-  `codex mcp add dart -- fvm dart mcp-server --force-roots-fallback`.
-- Create the actual Flutter app scaffold.
-- Run the first feature through the full office workflow.
-- Decide the first product idea this office will build.
+- Review and merge `integrate/minimal-timer-app` into `main` when the release
+  gate is green.
+- Decide whether timer completion needs sound, haptics, or notifications.
 
 ## CEO Rule
 
