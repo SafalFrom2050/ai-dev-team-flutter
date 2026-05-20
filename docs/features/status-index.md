@@ -51,12 +51,13 @@ hidden chat history.
 
 - Slug: `alarms`
 - App workspace: `work/minimal-timer-app/`
-- Source of truth: `design/alarms`
-- State: `In Architecture/Planning`
-- Last quality gates: `n/a`
-- Current owner: `Product Engineer`
-- Open risks: audio and vibration execution in background service / battery optimization policies
+- Source of truth: `main`
+- State: `shipped to main`
+- Last quality gates: `fvm dart format --set-exit-if-changed .`, `fvm flutter analyze`, and `fvm flutter test` passing cleanly on 2026-05-20
+- Current owner: `Release Engineer`
+- Open risks: background execution and battery optimization constraints (mitigated via native alarm notification and vibration triggers)
 - Docs: `docs/features/alarms/`
-- Handoff: `docs/features/alarms/async/outbox/product-engineer.md`
-- Last updated: `2026-05-20 by Product Engineer`
+- Handoff: `docs/features/alarms/walkthrough.md`
+- Last updated: `2026-05-20 by Release Engineer`
+
 
