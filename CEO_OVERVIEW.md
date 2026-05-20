@@ -805,6 +805,27 @@ Updated:
 - `docs/ai-office/workflow.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-05-20: Make Sub-Agents The README Headline
+
+Decision: reposition the README so the project is presented first as a
+sub-agent-native AI Flutter office, not only as a collection of roles and
+workflow docs.
+
+Why: the strongest idea is that the main chat orchestrates specialist
+sub-agents through portable role contracts while the repo preserves durable
+memory. Visitors should understand that immediately, before reading branch
+details or quality gates.
+
+Created:
+
+- `docs/assets/readme/subagent-harness.svg`
+- `docs/assets/readme/agent-context-scaling.svg`
+
+Updated:
+
+- `README.md`
+- `CEO_OVERVIEW.md`
+
 ### 2026-05-18: Materialize Office Baseline
 
 Decision: create the first repository commit as the AI Flutter office operating

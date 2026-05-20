@@ -2,7 +2,9 @@
 
 ![AI Dev Team Flutter: from idea to production main](docs/assets/readme/featured.png)
 
-An experimental Flutter studio where AI agents work like a real product team.
+An experimental Flutter studio where AI agents work like a real product team,
+with role-specific sub-agents, repo-backed memory, Flutter quality gates, and a
+production `main` branch.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration
 system for taking a rough idea, shaping it through product and design, building
@@ -11,6 +13,56 @@ production-ready work into `main`.
 
 The ambition is simple and slightly dangerous in the best engineering way:
 build the best Flutter AI dev team in the world.
+
+## The Big Idea
+
+This project is not a prompt collection and not a single chatbot with a bigger
+context window. It is an **AI dev office**: one main chat acts like the CEO or
+Office Assistant, then launches specialist sub-agents for product, design,
+architecture, Flutter implementation, QA, code review, and release.
+
+![Native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.svg)
+
+The main chat should stay light: it routes work, monitors branch state, reads
+handoffs, and decides when to ask the user. The specialist agents do the deep
+work inside their own context windows and leave durable output in the repo.
+
+| Office Primitive | What It Does |
+|---|---|
+| Main chat | Orchestrates the whole feature run from idea to release-ready handoff. |
+| Role contracts | Give each sub-agent its mission, branch, file ownership, and handoff path. |
+| Native sub-agents | Let supported tools run specialists in parallel without bloating one chat. |
+| Packet fallback | Keeps the same workflow portable when a tool cannot create sub-agents. |
+| Repo memory | Stores decisions in docs, branches, commits, status files, and outboxes. |
+
+## Why Sub-Agents Are The Headline
+
+Large Flutter projects are too much for one chat to hold cleanly. Product intent,
+screen states, architecture decisions, implementation details, test evidence,
+browser checks, and release risk all compete for context. This office splits that
+work by role.
+
+![Why role-specific sub-agents scale better than one giant chat](docs/assets/readme/agent-context-scaling.svg)
+
+Role-specific sub-agents make the office stronger because:
+
+- Product, design, architecture, implementation, QA, and review each get focused
+  context instead of fighting inside one long transcript.
+- Parallel work becomes safer because every agent has explicit branch and file
+  ownership.
+- The main chat can keep moving through the feature loop instead of asking the
+  user to manually trigger each next step.
+- Failed or weak role output can be retried from the same role contract without
+  replaying the whole project.
+- Handoffs and outboxes make progress inspectable by Codex, Antigravity, Claude
+  Code, Gemini, Cursor, or a future tool.
+
+Antigravity 2.0 is especially interesting here because its agent harness maps
+directly onto this design: a main conversation can spin up specialist workers,
+background jobs, managed agents, and SDK/CLI-driven workflows from the same
+Markdown role contracts. Other platforms should work through the same contract,
+but this repo is honest about the current state: Antigravity is the clearest fit
+so far; other sub-agent harnesses still need more real project testing.
 
 ## Open Source
 
