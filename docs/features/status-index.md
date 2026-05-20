@@ -46,3 +46,17 @@ hidden chat history.
 - Docs: `docs/features/timer-onboarding/`
 - Handoff: `docs/features/timer-onboarding/handoff.md`
 - Last updated: `2026-05-19 by Release Engineer`
+
+## Alarms
+
+- Slug: `alarms`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `product/alarms`
+- State: `In Planning`
+- Last quality gates: `n/a`
+- Current owner: `Product Lead`
+- Open risks: audio and vibration execution in background service / battery optimization policies
+- Docs: `docs/features/alarms/`
+- Handoff: `docs/features/alarms/async/outbox/product-lead.md`
+- Last updated: `2026-05-20 by Product Lead`
+
