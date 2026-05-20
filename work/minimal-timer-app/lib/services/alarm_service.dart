@@ -111,7 +111,7 @@ class AlarmService {
 
     // 2. Play custom double-beat vibration
     try {
-      if (await Vibration.hasVibrator() == true) {
+      if (!kIsWeb && await Vibration.hasVibrator() == true) {
         await Vibration.vibrate(pattern: [0, 150, 150, 150], repeat: 0);
       }
     } catch (e) {
@@ -136,7 +136,9 @@ class AlarmService {
     }
 
     try {
-      await Vibration.cancel();
+      if (!kIsWeb) {
+        await Vibration.cancel();
+      }
     } catch (e) {
       debugPrint('Error canceling vibration: $e');
     }
