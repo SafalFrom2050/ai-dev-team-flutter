@@ -182,7 +182,8 @@ class _TimerTabState extends State<TimerTab>
   @override
   Widget build(BuildContext context) {
     final bool canReset =
-        widget.controller.remainingSeconds != widget.controller.durationSeconds ||
+        widget.controller.remainingSeconds !=
+            widget.controller.durationSeconds ||
         widget.controller.isRunning;
     final durationLabel = '${widget.controller.durationSeconds ~/ 60} min';
 
@@ -318,7 +319,9 @@ class _TimerTabState extends State<TimerTab>
                                         ? _buildDirectInputField()
                                         : Text(
                                             _formatSeconds(
-                                              widget.controller.remainingSeconds,
+                                              widget
+                                                  .controller
+                                                  .remainingSeconds,
                                             ),
                                             key: const Key('timer-display'),
                                             style: GoogleFonts.outfit(
@@ -376,7 +379,8 @@ class _TimerTabState extends State<TimerTab>
                             ) {
                               final int minutes = _presetMinutes[index];
                               final bool isSelected =
-                                  widget.controller.durationSeconds == minutes * 60;
+                                  widget.controller.durationSeconds ==
+                                  minutes * 60;
 
                               return GestureDetector(
                                 onLongPress: !widget.controller.isRunning
@@ -408,7 +412,9 @@ class _TimerTabState extends State<TimerTab>
                                   showCheckmark: false,
                                   onSelected: !widget.controller.isRunning
                                       ? (_) {
-                                          widget.controller.selectDuration(minutes);
+                                          widget.controller.selectDuration(
+                                            minutes,
+                                          );
                                         }
                                       : null,
                                 ),
@@ -421,7 +427,8 @@ class _TimerTabState extends State<TimerTab>
                             children: [
                               SpringScaleButton(
                                 enabled: !widget.controller.isRunning,
-                                onTap: () => widget.controller.adjustDuration(-60),
+                                onTap: () =>
+                                    widget.controller.adjustDuration(-60),
                                 child: Container(
                                   key: const Key('decrease-duration-button'),
                                   padding: const EdgeInsets.all(12),
@@ -442,7 +449,8 @@ class _TimerTabState extends State<TimerTab>
                               const SizedBox(width: 18),
                               SpringScaleButton(
                                 enabled: !widget.controller.isRunning,
-                                onTap: () => widget.controller.adjustDuration(60),
+                                onTap: () =>
+                                    widget.controller.adjustDuration(60),
                                 child: Container(
                                   key: const Key('increase-duration-button'),
                                   padding: const EdgeInsets.all(12),
@@ -496,25 +504,26 @@ class _TimerTabState extends State<TimerTab>
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                    Icon(
-                                      widget.controller.isRunning
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
+                                  Icon(
+                                    widget.controller.isRunning
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    color: const Color(0xFF0B0F19),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    widget.controller.isRunning
+                                        ? 'Pause'
+                                        : widget.controller.remainingSeconds ==
+                                              0
+                                        ? 'Restart'
+                                        : 'Start',
+                                    style: GoogleFonts.plusJakartaSans(
                                       color: const Color(0xFF0B0F19),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
                                     ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      widget.controller.isRunning
-                                          ? 'Pause'
-                                          : widget.controller.remainingSeconds == 0
-                                          ? 'Restart'
-                                          : 'Start',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        color: const Color(0xFF0B0F19),
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                      ),
-                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -522,7 +531,9 @@ class _TimerTabState extends State<TimerTab>
                           const SizedBox(width: 16),
                           SpringScaleButton(
                             enabled: canReset,
-                            onTap: canReset ? widget.controller.resetTimer : () {},
+                            onTap: canReset
+                                ? widget.controller.resetTimer
+                                : () {},
                             child: Container(
                               key: const Key('reset-button'),
                               padding: const EdgeInsets.symmetric(

@@ -59,7 +59,19 @@ class _AlarmTabState extends State<AlarmTab> {
   }
 
   Widget _buildWaveform(bool isPlaying) {
-    final List<double> heights = [16.0, 32.0, 48.0, 24.0, 38.0, 56.0, 32.0, 42.0, 18.0, 30.0, 12.0];
+    final List<double> heights = [
+      16.0,
+      32.0,
+      48.0,
+      24.0,
+      38.0,
+      56.0,
+      32.0,
+      42.0,
+      18.0,
+      30.0,
+      12.0,
+    ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: heights.map((h) {
@@ -69,7 +81,9 @@ class _AlarmTabState extends State<AlarmTab> {
           width: 4,
           height: isPlaying ? h : 6.0,
           decoration: BoxDecoration(
-            color: isPlaying ? const Color(0xFF00F5D4) : const Color(0xFF2A3342),
+            color: isPlaying
+                ? const Color(0xFF00F5D4)
+                : const Color(0xFF2A3342),
             borderRadius: BorderRadius.circular(2),
           ),
         );
@@ -184,7 +198,9 @@ class _AlarmTabState extends State<AlarmTab> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
-                                    isMuted ? Icons.volume_off : Icons.volume_up,
+                                    isMuted
+                                        ? Icons.volume_off
+                                        : Icons.volume_up,
                                     color: isMuted
                                         ? const Color(0xFF94A3B8)
                                         : const Color(0xFF00F5D4),
@@ -206,7 +222,9 @@ class _AlarmTabState extends State<AlarmTab> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      isMuted ? 'Muted' : _getSoundLabel(activeSound),
+                                      isMuted
+                                          ? 'Muted'
+                                          : _getSoundLabel(activeSound),
                                       style: GoogleFonts.plusJakartaSans(
                                         color: const Color(0xFFF8FAFC),
                                         fontSize: 15,
@@ -225,13 +243,17 @@ class _AlarmTabState extends State<AlarmTab> {
                               decoration: BoxDecoration(
                                 color: isMuted
                                     ? const Color(0xFF2A3342)
-                                    : const Color(0xFF00F5D4).withValues(alpha: 0.1),
+                                    : const Color(
+                                        0xFF00F5D4,
+                                      ).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 isMuted ? 'MUTED' : 'ONLINE',
                                 style: GoogleFonts.plusJakartaSans(
-                                  color: isMuted ? const Color(0xFF94A3B8) : const Color(0xFF00F5D4),
+                                  color: isMuted
+                                      ? const Color(0xFF94A3B8)
+                                      : const Color(0xFF00F5D4),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -266,20 +288,29 @@ class _AlarmTabState extends State<AlarmTab> {
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF1E2530).withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: isMuted ? const Color(0xFF2A3342) : const Color(0xFF00F5D4).withValues(alpha: 0.3),
+                          color: isMuted
+                              ? const Color(0xFF2A3342)
+                              : const Color(0xFF00F5D4).withValues(alpha: 0.3),
                           width: 1.2,
                         ),
                       ),
                       child: Row(
                         children: [
                           Icon(
-                            isMuted ? Icons.volume_off_outlined : Icons.volume_up_outlined,
-                            color: isMuted ? const Color(0xFF94A3B8) : const Color(0xFF00F5D4),
+                            isMuted
+                                ? Icons.volume_off_outlined
+                                : Icons.volume_up_outlined,
+                            color: isMuted
+                                ? const Color(0xFF94A3B8)
+                                : const Color(0xFF00F5D4),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -296,7 +327,9 @@ class _AlarmTabState extends State<AlarmTab> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  isMuted ? 'Muted (Vibration Only)' : 'Active (Audible Sound + Vibration)',
+                                  isMuted
+                                      ? 'Muted (Vibration Only)'
+                                      : 'Active (Audible Sound + Vibration)',
                                   style: GoogleFonts.plusJakartaSans(
                                     color: const Color(0xFF94A3B8),
                                     fontSize: 11,
@@ -308,7 +341,9 @@ class _AlarmTabState extends State<AlarmTab> {
                           Switch(
                             key: const Key('volume-mute-toggle'),
                             activeThumbColor: const Color(0xFF00F5D4),
-                            activeTrackColor: const Color(0xFF00F5D4).withValues(alpha: 0.2),
+                            activeTrackColor: const Color(
+                              0xFF00F5D4,
+                            ).withValues(alpha: 0.2),
                             inactiveThumbColor: const Color(0xFF94A3B8),
                             inactiveTrackColor: const Color(0xFF2A3342),
                             value: isMuted,
@@ -369,10 +404,15 @@ class _AlarmTabState extends State<AlarmTab> {
                           borderRadius: BorderRadius.circular(20),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? const Color(0xFF00F5D4).withValues(alpha: 0.08)
+                                  ? const Color(
+                                      0xFF00F5D4,
+                                    ).withValues(alpha: 0.08)
                                   : const Color(0xFF1E2530),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
@@ -388,13 +428,17 @@ class _AlarmTabState extends State<AlarmTab> {
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? const Color(0xFF00F5D4).withValues(alpha: 0.15)
+                                        ? const Color(
+                                            0xFF00F5D4,
+                                          ).withValues(alpha: 0.15)
                                         : const Color(0xFF0B0F19),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
                                     icon,
-                                    color: isSelected ? const Color(0xFF00F5D4) : const Color(0xFF94A3B8),
+                                    color: isSelected
+                                        ? const Color(0xFF00F5D4)
+                                        : const Color(0xFF94A3B8),
                                     size: 20,
                                   ),
                                 ),
@@ -402,14 +446,17 @@ class _AlarmTabState extends State<AlarmTab> {
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
                                           Text(
                                             title,
                                             style: GoogleFonts.plusJakartaSans(
-                                              color: isSelected ? const Color(0xFF00F5D4) : const Color(0xFFF8FAFC),
+                                              color: isSelected
+                                                  ? const Color(0xFF00F5D4)
+                                                  : const Color(0xFFF8FAFC),
                                               fontSize: 14.5,
                                               fontWeight: FontWeight.w700,
                                             ),

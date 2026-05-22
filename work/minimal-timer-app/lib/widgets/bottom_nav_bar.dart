@@ -20,9 +20,21 @@ class CustomBottomNavBar extends StatelessWidget {
     const int totalTabs = 3;
 
     final tabs = [
-      {'icon': Icons.bedtime_outlined, 'activeIcon': Icons.bedtime, 'label': 'Sleep'},
-      {'icon': Icons.timer_outlined, 'activeIcon': Icons.timer, 'label': 'Timer'},
-      {'icon': Icons.graphic_eq_outlined, 'activeIcon': Icons.graphic_eq, 'label': 'Studio'},
+      {
+        'icon': Icons.bedtime_outlined,
+        'activeIcon': Icons.bedtime,
+        'label': 'Sleep',
+      },
+      {
+        'icon': Icons.timer_outlined,
+        'activeIcon': Icons.timer,
+        'label': 'Timer',
+      },
+      {
+        'icon': Icons.graphic_eq_outlined,
+        'activeIcon': Icons.graphic_eq,
+        'label': 'Studio',
+      },
     ];
 
     return Container(
@@ -60,7 +72,10 @@ class CustomBottomNavBar extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 1.0 / totalTabs,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF00F5D4).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(24),
@@ -70,7 +85,9 @@ class CustomBottomNavBar extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF00F5D4).withValues(alpha: 0.15),
+                          color: const Color(
+                            0xFF00F5D4,
+                          ).withValues(alpha: 0.15),
                           blurRadius: 10,
                           spreadRadius: 1,
                         ),
@@ -85,7 +102,9 @@ class CustomBottomNavBar extends StatelessWidget {
                 children: List.generate(totalTabs, (index) {
                   final tab = tabs[index];
                   final isSelected = index == currentIndex;
-                  final icon = isSelected ? tab['activeIcon'] as IconData : tab['icon'] as IconData;
+                  final icon = isSelected
+                      ? tab['activeIcon'] as IconData
+                      : tab['icon'] as IconData;
                   final label = tab['label'] as String;
 
                   return Expanded(
@@ -121,7 +140,9 @@ class CustomBottomNavBar extends StatelessWidget {
                                     ? const Color(0xFFF8FAFC)
                                     : const Color(0xFF94A3B8),
                                 fontSize: 11,
-                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                fontWeight: isSelected
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
                               ),
                             ),
                           ],

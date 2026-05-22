@@ -290,9 +290,7 @@ void main() {
     expect(find.text('Chime (Zen Bowl)'), findsOneWidget);
   });
 
-  testWidgets('can pick sound tone chip in sound studio', (
-    tester,
-  ) async {
+  testWidgets('can pick sound tone chip in sound studio', (tester) async {
     tester.view.physicalSize = const Size(800, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
