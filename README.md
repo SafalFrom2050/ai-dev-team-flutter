@@ -299,32 +299,32 @@ Status mode is read-only and branch-aware. The Assistant starts with
 `docs/features/status-index.md`, handoffs, outboxes, and git refs instead of
 crawling app source or generated platform folders.
 
-### Role Activation In Action
+### Role Involvement In Action
 
 Every role announces itself before work starts. The CEO example shows office
-governance activation, while the Office Assistant examples show unstructured
+governance involvement, while the Office Assistant examples show unstructured
 status prompts being routed through a lightweight, read-only status protocol.
 The same contract is portable across tools: Codex gets it through `AGENTS.md`,
 while Gemini CLI gets it through `GEMINI.md`.
 
 **CEO**
 
-![CEO activation](docs/assets/readme/ceo-activation.png)
+![CEO involvement](docs/assets/readme/ceo-activation.png)
 
 **Office Assistant - Codex**
 
-![Office Assistant activation in Codex](docs/assets/readme/office-assistant-activation.png)
+![Office Assistant involvement in Codex](docs/assets/readme/office-assistant-activation.png)
 
 **Office Assistant - Gemini CLI**
 
-![Office Assistant activation in Gemini CLI](docs/assets/readme/office-assistant-activation-gemini.png)
+![Office Assistant involvement in Gemini CLI](docs/assets/readme/office-assistant-activation-gemini.png)
 
 ### What A Packet Looks Like
 
 The Office Assistant outputs prompts like this for each agent:
 
 ```text
-Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.
@@ -377,12 +377,12 @@ Start here if you are visiting:
 - `docs/ai-office/org-branch-model.md`: how the company structure stays stable
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
-- `docs/ai-office/role-activation.md`: visible chat banners for activated
+- `docs/ai-office/role-activation.md`: visible chat banners for involved
   roles.
 - `docs/ai-office/status-protocol.md`: lightweight branch-aware progress checks.
 - `docs/ai-office/commit-guidelines.md`: the office commit message standard.
 - `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
-- `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
+- `docs/ai-office/user-activation.md`: what to type in a brand-new AI session (User Involvement Contract).
 - `docs/ai-office/workflow.md`: branch and handoff model.
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
 - `docs/ai-office/runtime-adapters.md`: native sub-agent harnesses and packet

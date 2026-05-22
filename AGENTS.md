@@ -78,7 +78,7 @@ Developers should treat the design contract as part of the spec.
   role contracts. Use a native sub-agent harness when the current tool supports
   one and the user is asking for execution. Otherwise output ready-to-paste
   packets. Do not implement the specialist task yourself.
-- **CEO Activation**: The CEO role must be activated whenever the task involves organizational setup, team structure, office configuration, or modifying files in `docs/ai-office/`, `AGENTS.md`, or `CEO_OVERVIEW.md`, or if the user explicitly asks for CEO-level decisions. Print the CEO activation banner sequentially following the Office Assistant banner.
+- **CEO Involvement/Activation**: The CEO role must be involved/activated whenever the task involves organizational setup, team structure, office configuration, or modifying files in `docs/ai-office/`, `AGENTS.md`, or `CEO_OVERVIEW.md`, or if the user explicitly asks for CEO-level decisions. Print the CEO involvement banner sequentially following the Office Assistant banner.
 - **Strict Sub-Agent Independence**: You must never collapse multiple specialist roles (e.g. UX Designer, Product Engineer, Junior Flutter Developer) into a single generic sub-agent (such as `Feature Team Sub-agent`). You must invoke each specialist role as a distinct, separate sub-agent with its own disjoint branch and file ownership to ensure clean, focused parallel execution. If parallel limits apply, run them sequentially in dependency order rather than collapsing them.
 - If a user message begins with a role name followed by a colon (for example,
   `Senior Flutter Engineer: implement the auth screen`), activate that role
@@ -93,14 +93,14 @@ Developers should treat the design contract as part of the spec.
   next step. Pause only for missing requirements, unsafe/destructive actions,
   credentials, unavailable tooling, merge conflicts, failed gates that need a
   decision, or final release approval.
-- Every role must announce its activation banner before any tool call, command,
+- Every role must announce its involvement banner before any tool call, command,
   file read, analysis, plan, or implementation note. The banner is the first
   visible line of the session's task work.
 - The Office Assistant must announce itself before routing output. Every native
   sub-agent launch or fallback packet must include the specialist role's
-  activation banner as the first line of that role's contract.
+  involvement banner as the first line of that role's contract.
 - Before any specialist role starts task work in chat, it must announce itself
-  with the activation banner defined in `docs/ai-office/role-activation.md`.
+  with the involvement banner defined in `docs/ai-office/role-activation.md`.
 - If users ask for status or progress, use the branch-aware status protocol in
   `docs/ai-office/status-protocol.md`. Start with
   `docs/features/status-index.md`, then inspect git refs, feature status files,
@@ -142,8 +142,7 @@ Before code reaches `main`, expect:
 - Unit, widget, and integration tests appropriate to the change.
 - Final release builds pass, at least `fvm flutter build web` for web-capable
   apps plus the target platform build when relevant.
-- Browser smoke testing covers the primary user flow when the app supports web
-  and the active tool has browser automation.
+- **Mandatory Browser Smoke & UI Verification**: Browser smoke testing and visual checking are mandatory for all user-facing visual and UI changes when browser tools are supported in the environment. Run/open the app in the browser, execute the primary user flows, verify the layout, capture screenshots of all primary states, and link them in the walkthrough/PR. If the active tool lacks browser capability, document that limitation clearly.
 - UI states reviewed against the design contract.
 - Accessibility and responsive behavior checked for user-facing screens.
 - Release notes or a short product summary for user-visible changes.

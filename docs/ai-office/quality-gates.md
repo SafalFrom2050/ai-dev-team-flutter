@@ -11,8 +11,7 @@ Before anything merges to `main`:
 - Relevant unit and widget tests pass.
 - Release build checks pass for the target platform.
 - Important UI states match the design contract.
-- Browser smoke testing covers the primary flow when the app supports web and
-  the active agent runtime has browser tools.
+- **Mandatory Browser Smoke & UI Verification**: For all visual and user-facing UI changes, interactive browser testing is mandatory. Open the app in the browser using the browser tool, click through all primary user flows, verify that no layout overflows occur, capture screenshots of all primary visual states, and link/embed them in the walkthrough or final PR. If browser capability is missing in the environment, document this limitation explicitly.
 - Accessibility and responsive behavior have been checked for user-facing UI.
 - Known risks are documented in the PR.
 
@@ -36,17 +35,16 @@ fvm flutter build apk --debug
 Pop-Location
 ```
 
-For a web-capable feature, the Release Engineer or QA/Test Engineer should also
-run a browser smoke check when the active tool supports browser automation:
+For any visual or user-facing feature, the active specialist (e.g. Junior Flutter Developer, UI/UX Designer) and the QA/Test Engineer **must** perform a rigorous UI verification pass using browser automation or manual browser tools:
 
-1. Build or run the web app.
-2. Open the app in a browser.
-3. Exercise the primary user flow and the main changed state.
-4. Capture the result in `docs/features/<feature-slug>/handoff.md` or
-   `docs/features/<feature-slug>/async/outbox/qa-test-engineer.md`.
+1. Build or run the web app (e.g. `fvm flutter run -d chrome` or `npm run dev`).
+2. Open the app's local dev address in the browser tool.
+3. Exercise the primary user flow, empty states, error states, and the main changed visual state.
+4. Interactively check for visual defects, layout overflows, text truncations, or alignment issues.
+5. Capture screenshots of each verified state using the browser screenshot tool, save them under `docs/features/<feature-slug>/assets/` or copy them to the artifacts directory, and embed them using standard markdown syntax `![caption](absolute_path)` in the walkthrough/outbox.
+6. Record the test evidence and screenshots explicitly in `docs/features/<feature-slug>/handoff.md` or the outbox.
 
-If browser tooling is unavailable, record that honestly instead of marking the
-browser gate green.
+If browser tooling is completely unavailable in the active tool environment, document this limitation honestly in the PR instead of marking the gate green, and specify the manual verification required by the user.
 
 ## PR Review Gate
 

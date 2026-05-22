@@ -89,7 +89,7 @@ context in files, not hidden chat transcripts.
 
 If an AI role performs work:
 
-- Start with the role activation banner.
+- Start with the role involvement banner.
 - Keep file ownership explicit.
 - Update handoff/outbox docs when relevant.
 - Do not let the Office Assistant perform specialist implementation work.

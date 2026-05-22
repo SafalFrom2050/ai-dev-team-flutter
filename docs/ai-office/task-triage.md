@@ -56,7 +56,7 @@ PACKET 1: <Role>
 =================
 Launch this as a native sub-agent, or paste it into a new agent session:
 
-<Matching activation banner from docs/ai-office/role-activation.md>
+<Matching involvement banner from docs/ai-office/role-activation.md>
 
 You are the <Role> for this project.
 Read AGENTS.md for team rules.
@@ -77,7 +77,7 @@ PACKET 2: <Role>
 [...]
 ```
 
-Each packet should be under 200 words when practical. The activation banner is
+Each packet should be under 200 words when practical. The involvement banner is
 part of the packet, not optional decoration. The agent will read the codebase
 itself. The packet sets boundaries and intent.
 
@@ -85,7 +85,7 @@ itself. The packet sets boundaries and intent.
 
 Every role contract or fallback packet must answer these five questions:
 
-1. **Who are you?** (activation banner, first line)
+1. **Who are you?** (involvement banner, first line)
 2. **What is your job?** (mission, one to three sentences)
 3. **What branch?** (prevents commit collisions)
 4. **What files are yours and what is off-limits?** (prevents edit collisions)
