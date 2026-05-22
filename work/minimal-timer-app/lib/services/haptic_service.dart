@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:vibration/vibration.dart';
@@ -8,6 +9,7 @@ class HapticService {
   HapticService._internal();
 
   bool _hapticsEnabled = true;
+  Timer? _heartbeatTimer;
 
   /// Globally toggle haptic feedback accessibility state.
   void setHapticsEnabled(bool enabled) {
@@ -56,6 +58,29 @@ class HapticService {
     } catch (_) {}
   }
 
+  /// Starts repeating heartbeat haptic tick at varying speed levels.
+  /// Level 1: 1500ms, Level 2: 1000ms, Level 3: 500ms.
+  Future<void> startProgressiveHeartbeatHaptics({
+    required int speedLevel,
+  }) async {
+    _heartbeatTimer?.cancel();
+    if (!_hapticsEnabled) return;
+
+    final duration = switch (speedLevel) {
+      1 => const Duration(milliseconds: 1500),
+      2 => const Duration(milliseconds: 1000),
+      3 => const Duration(milliseconds: 500),
+      _ => const Duration(milliseconds: 1000),
+    };
+
+    // Trigger immediately
+    await doubleBeat();
+
+    _heartbeatTimer = Timer.periodic(duration, (timer) async {
+      await doubleBeat();
+    });
+  }
+
   /// Triggers repeating heavy pulses when the timer reaches zero.
   /// Falls back to physical device vibration loops.
   Future<void> startAlarmVibration() async {
@@ -73,6 +98,8 @@ class HapticService {
 
   /// Gracefully cancels any ongoing vibration loops.
   Future<void> cancelVibration() async {
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
     if (kIsWeb) return;
     try {
       await Vibration.cancel();

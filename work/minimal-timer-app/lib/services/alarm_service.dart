@@ -39,6 +39,7 @@ class AlarmService {
   static const String _prefsKey = 'alarm_config';
 
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _ambientPlayer = AudioPlayer();
   Timer? _autoSilenceTimer;
   bool _isPlaying = false;
 
@@ -47,6 +48,88 @@ class AlarmService {
 
   /// Returns true if the alarm is currently active (ringing or vibrating).
   bool get isPlaying => _isPlaying;
+
+  String? _getAssetPath(String soundId) {
+    return switch (soundId) {
+      'rain' => 'audio/chime.wav',
+      'waves' => 'audio/echo.wav',
+      'chime' => 'audio/chime.wav',
+      'echo' => 'audio/echo.wav',
+      'beep' => 'audio/beep.wav',
+      'silent' => null,
+      _ => 'audio/chime.wav',
+    };
+  }
+
+  /// Mock interface for managing screen wakelock.
+  Future<void> setScreenWakelock(bool enabled) async {
+    debugPrint('Screen Wakelock set to: $enabled');
+  }
+
+  /// Plays an ambient sound loop.
+  Future<void> playAmbientSound(String soundId) async {
+    await stopAmbientSound();
+    final assetPath = _getAssetPath(soundId);
+    if (assetPath == null) return;
+    if (_isTest) return;
+    try {
+      await _ambientPlayer.setReleaseMode(ReleaseMode.loop);
+      await _ambientPlayer.setVolume(1.0);
+      await _ambientPlayer.play(AssetSource(assetPath));
+    } catch (e) {
+      debugPrint('Error playing ambient sound: $e');
+    }
+  }
+
+  /// Stops ambient sound playback.
+  Future<void> stopAmbientSound() async {
+    if (_isTest) return;
+    try {
+      await _ambientPlayer.stop();
+    } catch (e) {
+      debugPrint('Error stopping ambient sound: $e');
+    }
+  }
+
+  /// Adjusts ambient sound volume.
+  Future<void> setAmbientVolume(double volume) async {
+    if (_isTest) return;
+    try {
+      await _ambientPlayer.setVolume(volume);
+    } catch (e) {
+      debugPrint('Error setting ambient volume: $e');
+    }
+  }
+
+  /// Plays a progressive wake alarm.
+  Future<void> playProgressiveAlarm(
+    String soundId, {
+    required double volume,
+  }) async {
+    await stopAlarm();
+    _isPlaying = true;
+    final assetPath = _getAssetPath(soundId) ?? 'audio/chime.wav';
+    if (!_isTest) {
+      try {
+        await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+        await _audioPlayer.setVolume(volume);
+        await _audioPlayer.play(AssetSource(assetPath));
+      } catch (e) {
+        debugPrint('Error playing progressive alarm: $e');
+      }
+    }
+    _startAutoSilenceTimer();
+  }
+
+  /// Adjusts alarm sound volume.
+  Future<void> setAlarmVolume(double volume) async {
+    if (_isTest) return;
+    try {
+      await _audioPlayer.setVolume(volume);
+    } catch (e) {
+      debugPrint('Error setting alarm volume: $e');
+    }
+  }
 
   /// Fetch the alarm config from SharedPreferences.
   Future<AlarmConfig> getAlarmConfig() async {
@@ -83,7 +166,10 @@ class AlarmService {
     try {
       await _audioPlayer.setReleaseMode(ReleaseMode.release);
       await _audioPlayer.setVolume(1.0);
-      await _audioPlayer.play(AssetSource('audio/$soundId.wav'));
+      final assetPath = _getAssetPath(soundId);
+      if (assetPath != null) {
+        await _audioPlayer.play(AssetSource(assetPath));
+      }
     } catch (e) {
       debugPrint('Error playing sound preview: $e');
     }
@@ -103,7 +189,10 @@ class AlarmService {
         try {
           await _audioPlayer.setReleaseMode(ReleaseMode.loop);
           await _audioPlayer.setVolume(1.0);
-          await _audioPlayer.play(AssetSource('audio/${config.soundId}.wav'));
+          final assetPath = _getAssetPath(config.soundId);
+          if (assetPath != null) {
+            await _audioPlayer.play(AssetSource(assetPath));
+          }
         } catch (e) {
           debugPrint('Error playing looping alarm: $e');
         }
