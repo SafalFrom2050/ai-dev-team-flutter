@@ -76,5 +76,21 @@ hidden chat history.
 - Handoff: `docs/features/fluent-minimal-redesign/handoff.md`
 - Last updated: `2026-05-20 by Senior Flutter Engineer`
 
+## Sleep Tracker
+
+- Slug: `sleep-tracker`
+- App workspace: `work/minimal-timer-app/`
+- Source of truth: `product/sleep-tracker`
+- State: `brief authored`
+- Last quality gates: `N/A`
+- Manual QA: `not started`
+- Current owner: `Product Lead`
+- Open risks: wake-up alarm exact scheduling, background isolate power/battery optimization limits, crescendo sound/haptic reliability
+- Docs: `docs/features/sleep-tracker/`
+- Brief: `docs/features/sleep-tracker/brief.md`
+- Handoff: `missing`
+- Last updated: `2026-05-22 by Product Lead`
+
+
 
 
