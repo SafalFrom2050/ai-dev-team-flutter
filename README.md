@@ -323,8 +323,8 @@ while Gemini CLI gets it through `GEMINI.md`.
 
 The Office Assistant outputs prompts like this for each agent:
 
-```text
-Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.

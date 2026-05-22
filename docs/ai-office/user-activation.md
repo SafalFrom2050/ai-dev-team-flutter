@@ -109,7 +109,7 @@ feature docs, and git state.
 In a fresh session, the Office Assistant:
 
 1. Announces:
-   `Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.`
+   `### ⚡ **Office Assistant Involved**`
 2. Reads `AGENTS.md` for team rules.
 3. Reads `CEO_OVERVIEW.md` for current office state and open items.
 4. Reads `docs/ai-office/role-activation.md` for banner text.

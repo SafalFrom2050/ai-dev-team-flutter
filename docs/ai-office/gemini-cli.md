@@ -16,8 +16,8 @@ how is our app doing?
 
 Gemini's first visible response line should be exactly:
 
-```text
-Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
 It should not start with "Researching", "Assessing", or a tool call.
