@@ -344,13 +344,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           ),
           const SizedBox(height: 24),
           // Sound Chip Selectors
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               _buildOnboardingSoundChip('chime', 'Zen Bowl'),
-              const SizedBox(width: 8),
               _buildOnboardingSoundChip('echo', 'Classic Bell'),
-              const SizedBox(width: 8),
               _buildOnboardingSoundChip('beep', 'Synth Beep'),
             ],
           ),

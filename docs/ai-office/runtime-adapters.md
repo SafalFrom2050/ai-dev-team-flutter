@@ -94,6 +94,11 @@ Use Antigravity 2.0 when available for:
 - Keeping the main chat as the orchestrator while sub-agents own focused work.
 - Turning the same Markdown role contracts into repeatable SDK or CLI workflows.
 
+### CRITICAL ANTIGRAVITY 2.0 WARNING: SUB-AGENT COLLAPSING
+- **DO NOT collapse multiple specialist roles** into a single generic sub-agent (e.g. UX designer, Product engineer, and Junior dev collapsed into a single `Feature Team Sub-agent`). Doing so violates the office design, leads to context bloat, and defeats the goal of parallel, disjoint workflows.
+- **You MUST spawn separate, independent sub-agents** for each distinct specialist role required in your plan. If you need a UX designer and a Junior developer, use the sub-agent harness tool (`invoke_subagent`) to invoke them as separate sub-agents, passing their specific role contracts.
+- **Limit/Parallelization Constraint**: If Antigravity limits the number of active sub-agents, run them sequentially in order of their workflow dependencies (e.g. UX Designer completes first and writes an outbox, then Product Engineer runs, then developers start) rather than blending them into one.
+
 The office has not yet been fully tested across every other provider's harness.
 The contract should still work across Codex, Claude Code plugins, Gemini, Cursor,
 and future tools because it only depends on Markdown instructions, git branches,
