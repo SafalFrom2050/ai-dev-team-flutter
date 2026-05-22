@@ -6,12 +6,12 @@ The Office Assistant should answer "where are we?" without loading a large app
 into context. It should use the repository's lightweight status artifacts first,
 then only inspect code when the user explicitly asks for code-level detail.
 
-## Activation
+## Involvement
 
 The first visible line must be:
 
 ```text
-Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
 ```
 
 This line comes before any shell command, file read, git query, or summary.
