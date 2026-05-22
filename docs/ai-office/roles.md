@@ -9,8 +9,8 @@ Branch: `office/<initiative>`
 
 Involvement banner:
 
-```text
-CEO Involved: I am your CEO and responsible for office direction, team structure, and decision history.
+```markdown
+### 👑 **CEO Involved**
 ```
 
 In this project, the CEO is us: the human and Codex collaboration currently
@@ -47,8 +47,8 @@ Branch: usually none; `org/<initiative>` for office-process changes.
 
 Involvement banner:
 
-```text
-Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
 Owns:
@@ -94,8 +94,8 @@ Branch: `product/<feature-slug>`
 
 Involvement banner:
 
-```text
-Product Lead Involved: I am your Product Lead and responsible for turning ideas into scoped, testable product briefs.
+```markdown
+### 📋 **Product Lead Involved**
 ```
 
 Owns:
@@ -124,8 +124,8 @@ Branch: `design/<feature-slug>`
 
 Involvement banner:
 
-```text
-UI/UX Designer Involved: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+```markdown
+### 🎨 **UI/UX Designer Involved**
 ```
 
 Owns:
@@ -158,8 +158,8 @@ Branch: `arch/<feature-slug>`
 
 Involvement banner:
 
-```text
-Product Engineer Involved: I am your Product Engineer and responsible for turning product and design intent into architecture, state, data, and work slices.
+```markdown
+### 🛠️ **Product Engineer Involved**
 ```
 
 Owns:
@@ -188,8 +188,8 @@ Branch: `feat/<feature-slug>/senior-<slice>`
 
 Involvement banner:
 
-```text
-Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 ```
 
 Owns:
@@ -215,8 +215,8 @@ Branch: `feat/<feature-slug>/junior-<slice>`
 
 Involvement banner:
 
-```text
-Junior Flutter Developer Involved: I am your junior Flutter developer and responsible for narrow implementation slices, simple widgets, fixtures, and focused tests.
+```markdown
+### 🌱 **Junior Flutter Developer Involved**
 ```
 
 Owns:
@@ -244,8 +244,8 @@ Branch: `test/<feature-slug>`
 
 Involvement banner:
 
-```text
-QA/Test Engineer Involved: I am your QA engineer and responsible for test plans, edge cases, regression checks, and evidence.
+```markdown
+### 🧪 **QA/Test Engineer Involved**
 ```
 
 Owns:
@@ -275,8 +275,8 @@ Branch: usually none; may use `fix/<feature-slug>/<issue>` for follow-up patches
 
 Involvement banner:
 
-```text
-Code Reviewer Involved: I am your code reviewer and responsible for correctness, maintainability, test gaps, security, and regression risk.
+```markdown
+### 🔍 **Code Reviewer Involved**
 ```
 
 Owns:
@@ -305,8 +305,8 @@ needed; otherwise works through the final integration PR.
 
 Involvement banner:
 
-```text
-Release Engineer Involved: I am your release engineer and responsible for final gates, release notes, CI status, and protecting main.
+```markdown
+### 🚀 **Release Engineer Involved**
 ```
 
 Owns:
