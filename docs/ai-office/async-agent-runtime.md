@@ -55,7 +55,7 @@ context container.
 
 The execution order is:
 
-1. The main chat activates as CEO, Office Assistant, or the requested role.
+1. The main chat is involved as CEO, Office Assistant, or the requested role.
 2. It creates a role contract for each specialist.
 3. If native sub-agents are available, it starts those agents with the role
    contracts. **CRITICAL**: Launch each specialist role as a distinct, separate sub-agent. Never collapse or blend multiple roles into a single "Feature Team Sub-agent" or generalist sub-agent.
@@ -68,8 +68,8 @@ sub-agent prompt. A human receives it as a packet to paste into another tool.
 
 Native sub-agents do not replace the repo protocol:
 
-- The main chat must still show which roles are being activated.
-- Each sub-agent must still announce its activation banner before task work.
+- The main chat must still show which roles are involved.
+- Each sub-agent must still announce its involvement banner before task work.
 - Each sub-agent must still use the assigned branch and file ownership.
 - Each sub-agent must still write an outbox or handoff when done.
 - Status-only prompts remain read-only, even if the runtime can spawn agents.
@@ -167,7 +167,7 @@ runtime supports native sub-agents, the contract is used as the sub-agent prompt
 When it does not, the same contract is printed as a ready-to-paste packet. Each
 contract answers five questions:
 
-1. **Who are you?** (activation banner)
+1. **Who are you?** (involvement banner)
 2. **What is your job?** (mission)
 3. **What branch?** (prevents commit collisions)
 4. **What files are yours and what is off-limits?** (prevents edit collisions)
@@ -176,7 +176,7 @@ contract answers five questions:
 Example packet:
 
 ```text
-Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.
@@ -190,7 +190,7 @@ When done: commit using docs/ai-office/commit-guidelines.md and write summary to
   docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
-Packets should be under 200 words when practical. The activation banner remains
+Packets should be under 200 words when practical. The involvement banner remains
 required even in short packets and native sub-agent prompts. The agent reads the
 codebase itself. The packet sets boundaries and intent.
 

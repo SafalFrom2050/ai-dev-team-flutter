@@ -17,7 +17,7 @@ how is our app doing?
 Gemini's first visible response line should be exactly:
 
 ```text
-Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
 ```
 
 It should not start with "Researching", "Assessing", or a tool call.
@@ -65,7 +65,7 @@ To confirm the file is loaded:
 Codex reads `AGENTS.md` as project instructions. Gemini CLI does not use that
 file as its default context contract; it uses `GEMINI.md`. Without the shim,
 Gemini may use the Dart MCP server and read app code before it has loaded the
-office activation and status rules.
+office involvement and status rules.
 
 The `.gemini/settings.json` file configures tools. It does not replace
 `GEMINI.md` as the behavioral instruction layer.

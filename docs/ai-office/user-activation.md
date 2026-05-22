@@ -1,4 +1,4 @@
-# User Activation Contract
+# User Involvement Contract
 
 The user should not need to remember role names, branch names, workflow steps,
 packet paths, or template formats.
@@ -29,13 +29,34 @@ I found a layout bug in the dashboard. The timer overflows at 61 minutes.
 status
 ```
 
+
+## Just Type Your Task
+
+No prefix needed. These all activate the Office Assistant:
+
+```text
+I want to start an idea for a habit tracker app.
+```
+
+```text
+add onboarding to the timer app
+```
+
+```text
+I found a layout bug in the dashboard. The timer overflows at 61 minutes.
+```
+
+```text
+status
+```
+
 ```text
 give me progress on the onboarding feature
 ```
 
 ## Direct Role Invocation
 
-To skip the Office Assistant and activate a specific role, start your message
+To skip the Office Assistant and involve a specific role, start your message
 with the role name and a colon:
 
 ```text
@@ -57,7 +78,7 @@ For any unstructured task, the Office Assistant produces:
 2. **Native sub-agent launches** when the current tool supports them.
 3. **Ready-to-paste packets** as the fallback when native sub-agents are not
    available.
-4. Each role contract starts with the role's activation banner.
+4. Each role contract starts with the role's involvement banner.
 5. Each contract includes: role, mission, branch, file ownership, boundaries,
    concurrent agent awareness, and output location.
 
@@ -88,7 +109,7 @@ feature docs, and git state.
 In a fresh session, the Office Assistant:
 
 1. Announces:
-   `Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.`
+   `Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.`
 2. Reads `AGENTS.md` for team rules.
 3. Reads `CEO_OVERVIEW.md` for current office state and open items.
 4. Reads `docs/ai-office/role-activation.md` for banner text.
@@ -121,12 +142,12 @@ Assistant behavior:
 <task>
 
 You are the Office Assistant for this project. Read AGENTS.md for rules.
-First print the Office Assistant activation banner from
+First print the Office Assistant involvement banner from
 docs/ai-office/role-activation.md before using tools. Analyze the lightweight
 project docs, determine the role sequence and file ownership, and create role
 contracts. If this tool can start native sub-agents, launch the relevant roles
 with those contracts. If it cannot, output ready-to-paste packets. Each contract
-or packet must start with the target role's activation banner. Do not implement
+or packet must start with the target role's involvement banner. Do not implement
 the specialist task yourself.
 ```
 
