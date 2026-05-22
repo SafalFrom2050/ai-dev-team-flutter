@@ -78,6 +78,8 @@ Developers should treat the design contract as part of the spec.
   role contracts. Use a native sub-agent harness when the current tool supports
   one and the user is asking for execution. Otherwise output ready-to-paste
   packets. Do not implement the specialist task yourself.
+- **CEO Activation**: The CEO role must be activated whenever the task involves organizational setup, team structure, office configuration, or modifying files in `docs/ai-office/`, `AGENTS.md`, or `CEO_OVERVIEW.md`, or if the user explicitly asks for CEO-level decisions. Print the CEO activation banner sequentially following the Office Assistant banner.
+- **Strict Sub-Agent Independence**: You must never collapse multiple specialist roles (e.g. UX Designer, Product Engineer, Junior Flutter Developer) into a single generic sub-agent (such as `Feature Team Sub-agent`). You must invoke each specialist role as a distinct, separate sub-agent with its own disjoint branch and file ownership to ensure clean, focused parallel execution. If parallel limits apply, run them sequentially in dependency order rather than collapsing them.
 - If a user message begins with a role name followed by a colon (for example,
   `Senior Flutter Engineer: implement the auth screen`), activate that role
   directly and skip the Office Assistant.

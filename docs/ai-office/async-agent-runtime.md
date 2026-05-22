@@ -58,7 +58,7 @@ The execution order is:
 1. The main chat activates as CEO, Office Assistant, or the requested role.
 2. It creates a role contract for each specialist.
 3. If native sub-agents are available, it starts those agents with the role
-   contracts.
+   contracts. **CRITICAL**: Launch each specialist role as a distinct, separate sub-agent. Never collapse or blend multiple roles into a single "Feature Team Sub-agent" or generalist sub-agent.
 4. If native sub-agents are not available, it prints ready-to-paste packets.
 5. Every role writes back through branches, commits, handoffs, outboxes, and
    status files.
@@ -73,6 +73,7 @@ Native sub-agents do not replace the repo protocol:
 - Each sub-agent must still use the assigned branch and file ownership.
 - Each sub-agent must still write an outbox or handoff when done.
 - Status-only prompts remain read-only, even if the runtime can spawn agents.
+- **Strict Independence**: Sub-agents must never edit overlapping files or cross into other roles' scopes without a documented handoff.
 
 Use packets when:
 
@@ -81,6 +82,7 @@ Use packets when:
 - The role needs a separate account, model, IDE, emulator, or device.
 - The task is sensitive and the user wants to review every prompt before launch.
 - The native harness cannot guarantee disjoint file ownership.
+- The tool runtime is prone to blending multiple roles into a single generic sub-agent (collapsing UX designer, Product Engineer, and Junior dev into a generic 'Feature Team Sub-agent' is strictly forbidden).
 
 ## Autonomous Feature Run
 
