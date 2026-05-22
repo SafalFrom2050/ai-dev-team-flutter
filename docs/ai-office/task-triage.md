@@ -110,6 +110,11 @@ If any condition is missing, output packets instead. The packet fallback is not 
 lesser workflow; it is the compatibility layer that keeps the office portable
 across Codex, Antigravity, Claude Code, Gemini, Cursor, and future tools.
 
+### CRITICAL: STRICT SUB-AGENT INDEPENDENCE
+- **NEVER collapse multiple specialist roles** (e.g. UX Designer, Product Engineer, Junior Flutter Dev) into a single generic "Feature Team Sub-agent", generalist, or multi-role agent. Doing so violates the office design, leads to context bloat, and defeats the goal of parallel, disjoint workflows.
+- **Always spawn separate, independent sub-agents** for each distinct specialist role required in your plan. Each sub-agent must have its own disjoint branch, dedicated file ownership, and clear role contract.
+- If the runtime limit prevents launching the required number of parallel sub-agents, execute them sequentially in order of dependencies (e.g. UX Designer first, then Product Engineer, then Junior Flutter Developer) rather than blending them.
+
 Status-only prompts never spawn implementation sub-agents. They remain
 branch-aware and read-only.
 

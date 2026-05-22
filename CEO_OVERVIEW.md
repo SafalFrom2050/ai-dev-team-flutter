@@ -840,6 +840,22 @@ Result:
 - `main`: current product production branch.
 - `org/main`: reusable company operating system branch.
 
+### 2026-05-22: Prevent Sub-Agent Collapsing and Clarify CEO Activation Rules
+
+Decision: prohibit collapsing multiple specialist roles into a single generic sub-agent (like `Feature Team Sub-agent`) in Antigravity 2.0 or other harnesses. Always spawn separate, independent sub-agents for UX Designer, Product Engineer, Junior Flutter Developer, etc., to maintain clean parallel workflows. Also, require the main agent to activate the CEO role sequentially for organizational and governance tasks.
+
+Why: during testing on Antigravity 2.0, the orchestrator collapsed specialist roles into one `Feature Team Sub-agent`, bloating the context window and breaking disjoint branch and file ownership. Furthermore, governance tasks were executed under the Office Assistant persona instead of activating the CEO role.
+
+Updated:
+
+- `AGENTS.md`
+- `GEMINI.md`
+- `docs/ai-office/role-activation.md`
+- `docs/ai-office/task-triage.md`
+- `docs/ai-office/async-agent-runtime.md`
+- `docs/ai-office/runtime-adapters.md`
+- `CEO_OVERVIEW.md`
+
 ## Current Open CEO Items
 
 - Review and merge `integrate/minimal-timer-app` into `main` when the release
