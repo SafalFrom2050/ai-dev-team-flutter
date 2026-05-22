@@ -46,6 +46,16 @@ class HapticService {
     } catch (_) {}
   }
 
+  /// Double-beat haptic trigger.
+  Future<void> doubleBeat() async {
+    if (!_hapticsEnabled) return;
+    try {
+      await HapticFeedback.lightImpact();
+      await Future.delayed(const Duration(milliseconds: 60));
+      await HapticFeedback.lightImpact();
+    } catch (_) {}
+  }
+
   /// Triggers repeating heavy pulses when the timer reaches zero.
   /// Falls back to physical device vibration loops.
   Future<void> startAlarmVibration() async {

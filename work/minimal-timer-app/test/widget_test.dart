@@ -98,7 +98,7 @@ void main() {
       ),
     );
 
-    expect(find.text('Timer'), findsOneWidget);
+    expect(find.byKey(const Key('timer-screen-title')), findsOneWidget);
     expect(find.text('05:00'), findsOneWidget);
     expect(find.text('Ready'), findsOneWidget);
     expect(find.text('Duration 5 min'), findsOneWidget);
@@ -107,6 +107,13 @@ void main() {
   });
 
   testWidgets('changes duration with presets and steppers', (tester) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     await tester.pumpWidget(
       TimerApp(
         timerService: mockService,
@@ -224,7 +231,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Should navigate to Timer screen
-    expect(find.text('Timer'), findsOneWidget);
+    expect(find.byKey(const Key('timer-screen-title')), findsOneWidget);
     verify(mockPrefs.setBool('onboarding_complete', true)).called(1);
   });
 
@@ -261,6 +268,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    // Navigate to Studio tab where mute toggle resides
+    await tester.tap(find.text('Studio'));
+    await tester.pumpAndSettle();
+
     // Verify initial mute status is showing Chime (Zen Bowl)
     expect(find.text('Chime (Zen Bowl)'), findsOneWidget);
 
@@ -279,7 +290,7 @@ void main() {
     expect(find.text('Chime (Zen Bowl)'), findsOneWidget);
   });
 
-  testWidgets('can expand sound selector and pick sound tone chip', (
+  testWidgets('can pick sound tone chip in sound studio', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(800, 1000);
@@ -298,11 +309,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // Sound chips should initially be collapsed/hidden
-    expect(find.byKey(const Key('sound-chip-chime')), findsNothing);
-
-    // Tap expand button
-    await tester.tap(find.byKey(const Key('expand-sound-selector-button')));
+    // Navigate to Studio tab
+    await tester.tap(find.text('Studio'));
     await tester.pumpAndSettle();
 
     // Sound chips should now be visible
@@ -315,7 +323,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Label should update to Beep (Digital)
-    expect(find.text('Beep (Digital)'), findsNWidgets(2));
+    expect(find.text('Beep (Digital)'), findsOneWidget);
   });
 
   testWidgets('shows RingingOverlay at zero and dismissing resets timer', (
