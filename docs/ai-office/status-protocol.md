@@ -10,8 +10,8 @@ then only inspect code when the user explicitly asks for code-level detail.
 
 The first visible line must be:
 
-```text
-Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
 This line comes before any shell command, file read, git query, or summary.

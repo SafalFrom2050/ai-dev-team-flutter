@@ -175,8 +175,8 @@ contract answers five questions:
 
 Example packet:
 
-```text
-Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.

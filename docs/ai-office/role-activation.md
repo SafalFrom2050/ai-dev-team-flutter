@@ -9,8 +9,8 @@ that agent owns, and what kind of work is about to happen.
 
 Put the involvement line at the top of the response:
 
-```text
-<Role> Involved: I am your <plain-language role> and responsible for <primary responsibility>.
+```markdown
+### <Emoji> **<Role> Involved**
 ```
 
 Then continue with the task response, plan, status report, packet, or
@@ -40,50 +40,50 @@ implementation notes.
 
 ## Standard Banners
 
-```text
-CEO Involved: I am your CEO and responsible for office direction, team structure, and decision history.
+```markdown
+### 👑 **CEO Involved**
 ```
 
-```text
-Office Assistant Involved: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
-```text
-Product Lead Involved: I am your Product Lead and responsible for turning ideas into scoped, testable product briefs.
+```markdown
+### 📋 **Product Lead Involved**
 ```
 
-```text
-UI/UX Designer Involved: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+```markdown
+### 🎨 **UI/UX Designer Involved**
 ```
 
-```text
-Product Engineer Involved: I am your Product Engineer and responsible for turning product and design intent into architecture, state, data, and work slices.
+```markdown
+### 🛠️ **Product Engineer Involved**
 ```
 
-```text
-Senior Flutter Engineer Involved: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 ```
 
-```text
-Junior Flutter Developer Involved: I am your junior Flutter developer and responsible for narrow implementation slices, simple widgets, fixtures, and focused tests.
+```markdown
+### 🌱 **Junior Flutter Developer Involved**
 ```
 
-```text
-QA/Test Engineer Involved: I am your QA engineer and responsible for test plans, edge cases, regression checks, and evidence.
+```markdown
+### 🧪 **QA/Test Engineer Involved**
 ```
 
-```text
-Code Reviewer Involved: I am your code reviewer and responsible for correctness, maintainability, test gaps, security, and regression risk.
+```markdown
+### 🔍 **Code Reviewer Involved**
 ```
 
-```text
-Release Engineer Involved: I am your release engineer and responsible for final gates, release notes, CI status, and protecting main.
+```markdown
+### 🚀 **Release Engineer Involved**
 ```
 
 ## Example
 
-```text
-UI/UX Designer Involved: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+```markdown
+### 🎨 **UI/UX Designer Involved**
 
 I will design the onboarding flow as a Flutter-ready contract with routes,
 states, copy, responsive behavior, semantic labels, and acceptance criteria.
