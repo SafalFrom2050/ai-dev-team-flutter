@@ -6,8 +6,33 @@ on:
       - main
     paths:
       - 'work/**'
+      - 'docs/**'
+      - '.codex/**'
+      - '.claude/**'
+      - '.github/**'
+      - 'tools/**'
+      - 'AGENTS.md'
+      - 'CEO_OVERVIEW.md'
+      - 'CLAUDE.md'
+      - 'GEMINI.md'
+      - 'README.md'
 
 jobs:
+  office_readiness:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate office runtime configuration
+        run: python tools/office-readiness/check.py
+
   analyze_and_test:
     runs-on: ubuntu-latest
 

@@ -14,7 +14,9 @@ Instead of reading old chat history, the main orchestrator (or handoff role) wri
 docs/features/<feature-slug>/async/context-summary.md
 ```
 
-Subsequent agents read ONLY this summary and the active branch codebase, keeping their context budgets clean.
+Subsequent agents should treat this file as the single compressed source of
+truth for the current feature. They read it first, then the active branch
+codebase and only the specific source files needed for their role.
 
 ## When to Use
 
@@ -65,4 +67,5 @@ Condensed TODO list for the next active role:
 Before booting a subagent (such as Codex or Claude Code), the main orchestrator must:
 1. Verify if `context-summary.md` exists and is up to date.
 2. If stale or missing, compile the recent outbox reports and write an updated `context-summary.md`.
-3. Provide ONLY the path to the summary file as the input context for the next subagent, rather than pasting historical logs.
+3. Provide the summary path as the first context item for the next subagent,
+   rather than pasting historical logs.

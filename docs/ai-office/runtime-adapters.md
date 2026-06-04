@@ -133,6 +133,15 @@ MCP setup:
 codex mcp add dart -- fvm dart mcp-server --force-roots-fallback
 ```
 
+This repo also checks in the project-scoped Codex MCP config at
+`.codex/config.toml`:
+
+```toml
+[mcp_servers.dart]
+command = "fvm"
+args = ["dart", "mcp-server", "--force-roots-fallback"]
+```
+
 Sub-agent protocol: each office role runs as a separate Codex agent. The role
 contract is passed as the agent prompt. Each agent has shell, git, and file
 access. The orchestrator monitors progress via git refs and outbox files.
@@ -141,9 +150,9 @@ Use the `/agent` command to switch between agent threads in the Codex
 interface.
 
 TOML-based agent configs live in `.codex/agents/` for persistent role
-definitions. These files define the role name, system prompt, allowed tools,
-and model preferences so roles can be launched repeatedly without rewriting
-contracts.
+definitions. Each file defines `name`, `description`, `developer_instructions`,
+and optional model/sandbox preferences so roles can be launched repeatedly
+without rewriting contracts. The office keeps one file per standard role.
 
 Model selection: use `codex --model <model-name>` to pick a role-specific
 model. Heavier roles like architecture or review can use a stronger model while
@@ -175,6 +184,10 @@ Standard sub-agents: define agents as `.claude/agents/*.md` files. Each file
 contains a custom system prompt, tool allowlist, and model preference for one
 role. Claude Code discovers these automatically.
 
+This repo checks in project-level Claude agents for every standard office role
+under `.claude/agents/`. Claude also reads the root `.mcp.json` for project MCP
+servers and `.claude/settings.json` for Claude-specific settings.
+
 Agent Teams (experimental): enable via the environment variable
 `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. This activates a Team Lead plus
 Teammates model with direct Mailbox communication between agents.
@@ -197,6 +210,14 @@ workflows. The output is printed to stdout without an interactive session.
 
 The same role contracts used by other runtimes apply here. Keep plugin-specific
 state disposable. The role contract and repo handoff are the durable interface.
+
+### Local Semantic Memory
+
+Codex memories and Claude project memories are useful personal recall layers, but
+required team guidance must stay in checked-in docs. For repo-local semantic
+recall, use `docs/ai-office/local-memory.md` and the scripts under
+`tools/office-memory/`. They build a local FastEmbed/ONNX index over office docs
+and return source paths for citation.
 
 ### Gemini CLI / Antigravity CLI, Cursor, And Other Tools
 
