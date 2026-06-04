@@ -283,6 +283,12 @@ void main() {
     );
 
     test('alarm triggers when target wake time matches current time', () async {
+      // Avoid minute boundary race conditions
+      final now = DateTime.now();
+      if (now.second >= 55) {
+        await Future.delayed(Duration(seconds: 60 - now.second));
+      }
+
       // Set target wake time to current time
       final nowTime = TimeOfDay.fromDateTime(DateTime.now());
       controller.setTargetWakeTime(nowTime);
