@@ -197,6 +197,7 @@ Owns:
 - Complex screens, shared widgets, state management, navigation, performance, and
   platform-specific risk.
 - Establishing patterns for junior agents to follow.
+- Agentic hot reload loop for live UI development and verification.
 
 Definition of done:
 
@@ -225,6 +226,7 @@ Owns:
 - Simple widgets.
 - Fixture updates.
 - Focused tests.
+- Agentic hot reload loop for verifying visual changes.
 
 Definition of done:
 
