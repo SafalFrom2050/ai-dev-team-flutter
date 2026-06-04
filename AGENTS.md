@@ -101,6 +101,11 @@ Developers should treat the design contract as part of the spec.
   involvement banner as the first line of that role's contract.
 - Before any specialist role starts task work in chat, it must announce itself
   with the involvement banner defined in `docs/ai-office/role-activation.md`.
+- **MANDATORY: Banner Before Any Action**: The involvement banner must be the
+  very first visible line of every response. Printing any other text, calling
+  any tool, reading any file, or running any command before the banner is a
+  protocol error. This rule applies to the main chat, native sub-agents, and
+  pasted packet sessions.
 - If users ask for status or progress, use the branch-aware status protocol in
   `docs/ai-office/status-protocol.md`. Start with
   `docs/features/status-index.md`, then inspect git refs, feature status files,
@@ -120,6 +125,9 @@ Developers should treat the design contract as part of the spec.
   Antigravity, Claude Code, Gemini, Cursor, or future agent harnesses. Packets
   remain the fallback and the portable source of truth for each role's mission,
   branch, ownership, and handoff location.
+- Claude Code users should read `CLAUDE.md` for Claude-specific office
+  behavior. Claude Code Agent Teams and sub-agents map to the same role
+  contracts used by other runtimes.
 - Every agent updates `handoff.md` before asking for review.
 - Every PR declares its role, scope, changed files, test evidence, and known
   risks.
@@ -165,3 +173,6 @@ Before code reaches `main`, expect:
 - Reviewer agents should look for Flutter-specific failure modes: excessive
   rebuilds, layout overflows, missing mounted checks after async gaps, unstable
   keys, inaccessible controls, brittle golden tests, and platform assumptions.
+- Developer agents should use the agentic hot reload loop
+  (`docs/ai-office/agentic-hot-reload.md`) for live UI development instead of
+  blind code-build-check cycles.
