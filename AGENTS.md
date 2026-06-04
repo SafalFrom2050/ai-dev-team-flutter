@@ -101,6 +101,9 @@ Developers should treat the design contract as part of the spec.
   involvement banner as the first line of that role's contract.
 - Before any specialist role starts task work in chat, it must announce itself
   with the involvement banner defined in `docs/ai-office/role-activation.md`.
+- If a runtime displays CJK/private-use characters instead of role-banner
+  emojis, treat it as a text-encoding display issue and use the UTF-8 banners
+  and code points in `docs/ai-office/role-activation.md`.
 - **MANDATORY: Banner Before Any Action**: The involvement banner must be the
   very first visible line of every response. Printing any other text, calling
   any tool, reading any file, or running any command before the banner is a
@@ -121,6 +124,12 @@ Developers should treat the design contract as part of the spec.
   `CEO_OVERVIEW.md`.
 - Async role sessions must communicate through repo files, branch diffs, and
   handoff/outbox notes instead of hidden chat history.
+- When a role makes a durable decision or learning that future agents should
+  recall, it should write a tracked memory entry with
+  `tools/office-memory/remember.py`. If rebuilding/searching the local vector
+  index requires FastEmbed model initialization and `.agent-memory/model-ready.json`
+  is missing, ask the user first and explain the advantages before running any
+  command with `--allow-download`.
 - Native sub-agents are preferred when available in tools such as Codex,
   Antigravity, Claude Code, Gemini, Cursor, or future agent harnesses. Packets
   remain the fallback and the portable source of truth for each role's mission,

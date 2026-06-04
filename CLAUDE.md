@@ -35,6 +35,9 @@ or perform any analysis before this line is visible to the user.
 If the user starts with a role name and colon, print that role's involvement
 banner from `docs/ai-office/role-activation.md` before any tool use.
 
+If the terminal displays CJK/private-use characters instead of banner emojis,
+use the UTF-8 banners and code points in `docs/ai-office/role-activation.md`.
+
 ## Office Behavior
 
 - Read `AGENTS.md` for the full office rules after the activation banner.
@@ -52,6 +55,7 @@ banner from `docs/ai-office/role-activation.md` before any tool use.
 
 Claude Code supports sub-agents via the **Task tool** or the `/agent` command.
 When Agent Teams are available, use them for parallel role execution.
+Project-level role agents live in `.claude/agents/`.
 
 ### Strict Sub-Agent Independence
 
@@ -122,6 +126,14 @@ fvm dart mcp-server --force-roots-fallback
 
 Use it for hot reload, screenshots, runtime error inspection, widget tree
 analysis, and symbol resolution during development loops.
+
+## Local Memory
+
+For durable decisions or useful project learnings, write a tracked memory entry
+with `tools/office-memory/remember.py`. Do not initialize FastEmbed or rebuild
+the vector index unless the user has approved model download/initialization. If
+approval is needed, explain that the benefit is semantic recall over office
+decisions, faster history lookup, and fewer broad doc crawls.
 
 ## Mandatory UI Verification
 

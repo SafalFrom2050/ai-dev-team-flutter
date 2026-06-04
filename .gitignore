@@ -8,6 +8,10 @@
 .pub/
 build/
 coverage/
+.agent-memory/
+.agent-memory-cache/
+__pycache__/
+*.pyc
 
 # Android
 android/.gradle/

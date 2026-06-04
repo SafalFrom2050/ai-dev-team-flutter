@@ -40,45 +40,23 @@ implementation notes.
 
 ## Standard Banners
 
-```markdown
-### 👑 **CEO Involved**
-```
+These banners are UTF-8. If a Windows terminal or tool transcript shows CJK or
+private-use characters instead of emoji, the source file is being displayed with
+the wrong code page. Use a UTF-8-aware reader, or reconstruct the emoji from the
+code point listed beside each role.
 
-```markdown
-### ⚡ **Office Assistant Involved**
-```
-
-```markdown
-### 📋 **Product Lead Involved**
-```
-
-```markdown
-### 🎨 **UI/UX Designer Involved**
-```
-
-```markdown
-### 🛠️ **Product Engineer Involved**
-```
-
-```markdown
-### 💻 **Senior Flutter Engineer Involved**
-```
-
-```markdown
-### 🌱 **Junior Flutter Developer Involved**
-```
-
-```markdown
-### 🧪 **QA/Test Engineer Involved**
-```
-
-```markdown
-### 🔍 **Code Reviewer Involved**
-```
-
-```markdown
-### 🚀 **Release Engineer Involved**
-```
+| Role | Required banner | Emoji code point |
+| --- | --- | --- |
+| CEO | `### 👑 **CEO Involved**` | `U+1F451` |
+| Office Assistant | `### ⚡ **Office Assistant Involved**` | `U+26A1` |
+| Product Lead | `### 📋 **Product Lead Involved**` | `U+1F4CB` |
+| UI/UX Designer | `### 🎨 **UI/UX Designer Involved**` | `U+1F3A8` |
+| Product Engineer | `### 🛠️ **Product Engineer Involved**` | `U+1F6E0 U+FE0F` |
+| Senior Flutter Engineer | `### 💻 **Senior Flutter Engineer Involved**` | `U+1F4BB` |
+| Junior Flutter Developer | `### 🌱 **Junior Flutter Developer Involved**` | `U+1F331` |
+| QA/Test Engineer | `### 🧪 **QA/Test Engineer Involved**` | `U+1F9EA` |
+| Code Reviewer | `### 🔍 **Code Reviewer Involved**` | `U+1F50D` |
+| Release Engineer | `### 🚀 **Release Engineer Involved**` | `U+1F680` |
 
 ## Example
 

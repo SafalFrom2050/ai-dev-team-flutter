@@ -87,6 +87,9 @@ configuration:
 
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
+- `.claude/settings.json`
+- `.mcp.json`
+- `.codex/config.toml`
 - `GEMINI.md`
 
 The MCP configs point to `fvm dart mcp-server --force-roots-fallback`.
@@ -94,6 +97,13 @@ The MCP configs point to `fvm dart mcp-server --force-roots-fallback`.
 `GEMINI.md` is not an MCP config. It is Gemini CLI's project context file. It
 exists so Gemini sees the office activation and status-mode rules before using
 MCP tools.
+
+`CLAUDE.md` is not an MCP config either. It is Claude Code's project instruction
+shim. Claude Code also reads project sub-agent files under `.claude/agents/`.
+
+`.mcp.json` is the Claude Code project MCP config shape documented by Claude
+Code. `.claude/settings.json` remains as the Claude-specific project settings
+shim. `.codex/config.toml` is the Codex project config for trusted checkouts.
 
 Note: Gemini CLI standard tier reaches end-of-life June 18, 2026. The
 successor Antigravity CLI (`agy`) is backward compatible with `.gemini/`
@@ -157,6 +167,8 @@ Use the layers like this:
 - `AGENTS.md`: durable team rules for every agent.
 - `docs/ai-office/runtime-adapters.md`: optional native sub-agent harnesses and
   packet fallback behavior.
+- `docs/ai-office/local-memory.md`: local FastEmbed/ONNX semantic recall over
+  office docs.
 - `GEMINI.md`: Gemini CLI-specific guardrails for first response and status
   mode.
 - `.fvmrc`: repo-local Flutter SDK pin.
@@ -202,6 +214,7 @@ When a native harness is not available, print packets and continue normally.
 - [x] Run `fvm dart mcp-server --help` once to verify the command exists.
 - [ ] Add the MCP server to Codex, Cursor, Gemini CLI, or the preferred agent
       client.
+- [x] Check in project-level MCP config for Codex and Claude Code.
 - [x] Install official Flutter and Dart skills into `.agents/skills`.
 - [ ] Create Flutter app scaffolds under `work/<app-slug>/`.
 - [ ] Run `fvm flutter analyze` and `fvm flutter test` from the app workspace.

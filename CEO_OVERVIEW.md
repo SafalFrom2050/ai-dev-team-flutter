@@ -854,11 +854,55 @@ Updated:
 - `AGENTS.md` and `GEMINI.md` to harden banner enforcement and add tool references.
 - `docs/ai-office/flutter-specialization.md`, `quality-gates.md`, `roles.md`, `status-protocol.md`, `runtime-adapters.md`, `async-agent-runtime.md`, and `mcp-and-skills.md`.
 
+### 2026-06-04: Complete Runtime Agents, Local Memory, And Office Readiness Checks
+
+Decision: finish the multi-runtime office wiring by adding one project-level
+Codex agent and one project-level Claude Code agent per standard office role,
+adding a local FastEmbed/ONNX semantic memory layer for office docs, making
+`async/context-summary.md` the preferred compressed feature source, and adding a
+cross-platform office readiness validator to CI.
+
+Why: the office had the right architecture, but parts of the runtime layer were
+still aspirational. Codex role configs were partial, Claude Code had settings
+but no reusable project agents, feature status over-claimed verification in some
+places, and there was no automated check to prevent future adapter drift.
+
+Created:
+- `.claude/agents/*.md` for CEO, Office Assistant, Product Lead, UI/UX Designer,
+  Product Engineer, Senior Flutter Engineer, Junior Flutter Developer,
+  QA/Test Engineer, Code Reviewer, and Release Engineer.
+- Missing `.codex/agents/*.toml` role configs and updated existing configs to
+  the current `developer_instructions` schema.
+- `.mcp.json` for Claude Code project MCP configuration.
+- `docs/ai-office/local-memory.md` and `tools/office-memory/` for optional local
+  semantic memory over office docs. The index is pointer-first and manually
+  generated; CI does not download FastEmbed models or build vector files.
+  Agents write durable decisions to `docs/ai-office/memory-history/` and ask the
+  user before any FastEmbed model download/initialization.
+- `tools/office-readiness/check.py` for runtime, status, context-summary, and
+  banner encoding checks.
+- `docs/ai-office/templates/context-summary.md`.
+- `docs/features/android-background-timer/handoff.md`.
+
+Updated:
+- `docs/features/status-index.md` to avoid release-grade claims where manual or
+  browser/device QA evidence is missing.
+- `docs/ai-office/role-activation.md` with UTF-8/code-point guidance for banner
+  mojibake.
+- `docs/ai-office/runtime-adapters.md`, `mcp-and-skills.md`,
+  `async-agent-runtime.md`, `context-compression.md`, and
+  `docs/features/README.md`.
+- `.github/workflows/quality-gates.yml` and `.github/PULL_REQUEST_TEMPLATE.md`
+  to include office-readiness checks and stronger UI/build evidence prompts.
+
 ## Current Open CEO Items
 
-- Review and merge `integrate/minimal-timer-app` into `main` when the release
-  gate is green.
-- Decide whether timer completion needs sound, haptics, or notifications.
+- Complete QA verification for `android-background-timer`, especially Android
+  emulator/device background behavior.
+- Complete release-grade browser/manual QA evidence for UI-heavy features whose
+  status is currently code-complete but not visually verified.
+- Decide whether timer completion needs additional product treatment beyond the
+  existing alarms work.
 
 ## CEO Rule
 

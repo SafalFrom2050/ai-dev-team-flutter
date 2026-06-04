@@ -124,6 +124,7 @@ docs/features/<feature-slug>/
   test-plan.md
   handoff.md
   async/
+    context-summary.md
     runbook.md
     status.md
     ownership.md
@@ -155,6 +156,11 @@ used directly by a native sub-agent harness or pasted manually into a separate
 agent session.
 
 `outbox/` is where each role writes the result of the session.
+
+`context-summary.md` is the single compressed source of truth for the active
+feature. It should summarize current phase, completed roles, key decisions, file
+ownership, remaining tasks, and reference links. New sub-agents should read it
+before old outbox files whenever it exists.
 
 `status.md`, `ownership.md`, and `decisions.md` are the coordination layer.
 `docs/features/status-index.md` is the cross-feature dashboard that lets the
