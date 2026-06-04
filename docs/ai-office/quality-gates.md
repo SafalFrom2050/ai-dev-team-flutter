@@ -46,6 +46,20 @@ For any visual or user-facing feature, the active specialist (e.g. Junior Flutte
 
 If browser tooling is completely unavailable in the active tool environment, document this limitation honestly in the PR instead of marking the gate green, and specify the manual verification required by the user.
 
+## Agentic Hot Reload Evidence
+
+Screenshots captured during agentic hot reload sessions are valid UI
+verification evidence. Developer agents should:
+
+- Capture screenshots after each significant visual change using the MCP
+  `take_screenshot` tool.
+- Save screenshots to `docs/features/<feature-slug>/assets/`.
+- Link screenshots in the handoff using standard markdown image syntax.
+- Reference `docs/ai-office/agentic-hot-reload.md` for the full workflow.
+
+Hot reload screenshots complement but do not replace browser smoke testing
+for the final release gate.
+
 ## PR Review Gate
 
 Each PR should answer:

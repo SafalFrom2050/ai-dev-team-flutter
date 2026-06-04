@@ -132,6 +132,38 @@ Flutter review should look for:
 - Fragile tests that depend on incidental widget structure.
 - Dependencies that duplicate Flutter or Dart built-ins.
 
+## Live App Inspection
+
+Flutter developer agents should prefer the agentic hot reload loop over blind
+code-and-hope. The Dart MCP server provides live tools:
+
+- `hot_reload`: apply code changes without restarting the app.
+- `take_screenshot`: capture the current UI state for verification.
+- `get_runtime_errors`: fetch live errors with full stack traces.
+- `widget_tree_inspection`: inspect the live widget tree at runtime.
+- `resolve_symbol`: look up Dart and Flutter API documentation.
+
+The workflow is: write code, hot reload, screenshot, verify, fix errors,
+repeat. This replaces the previous pattern of writing code, building manually,
+checking visually, and repeating.
+
+See `docs/ai-office/agentic-hot-reload.md` for the full protocol.
+
+## Widget Previews
+
+Use the `flutter-add-widget-preview` skill to create interactive widget
+previews for new UI components. Previews serve as:
+
+- Living documentation for the design contract.
+- Interactive testing surfaces for QA.
+- Visual regression baselines for golden tests.
+- Design-developer alignment tools.
+
+The UI/UX Designer should reference preview expectations in the design
+contract. The Senior Flutter Engineer should create previews for shared
+widgets. The QA/Test Engineer should use previews to verify component states
+in isolation.
+
 ## Flutter Feature Definition Of Ready
 
 A Flutter feature is ready for implementation when it has:
