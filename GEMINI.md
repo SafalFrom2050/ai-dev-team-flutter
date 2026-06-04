@@ -1,5 +1,10 @@
 # Gemini CLI Instructions For This Repo
 
+> **Note**: Gemini CLI standard tier reaches end-of-life on June 18, 2026.
+> The successor is Antigravity CLI (`agy`). This file remains backward
+> compatible. See `docs/ai-office/antigravity-migration.md` for migration
+> details.
+
 This file is the Gemini CLI compatibility shim for the AI Flutter office.
 Follow it before using any tools.
 
@@ -23,6 +28,10 @@ MCP tools, or code search before this line is visible to the user.
 
 If the user starts with a role name and colon, print that role's involvement
 banner from `docs/ai-office/role-activation.md` before any tool use.
+
+**MANDATORY**: The involvement banner MUST be the very first visible line of
+your response. Printing any other text, calling any tool, reading any file,
+or running any command before the banner is a protocol error.
 
 ## Status And Progress Prompts
 
