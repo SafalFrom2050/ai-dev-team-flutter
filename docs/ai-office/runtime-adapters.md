@@ -125,9 +125,36 @@ The repo remains the source of truth.
 
 ### Codex
 
-Use native sub-agents when the user asks to run delegated or parallel role work.
-Each sub-agent gets exactly one role contract and a narrow ownership scope.
-Packets remain the fallback for tools or environments without sub-agent support.
+Instruction file: `AGENTS.md` is read automatically by Codex at project root.
+
+MCP setup:
+
+```powershell
+codex mcp add dart -- fvm dart mcp-server --force-roots-fallback
+```
+
+Sub-agent protocol: each office role runs as a separate Codex agent. The role
+contract is passed as the agent prompt. Each agent has shell, git, and file
+access. The orchestrator monitors progress via git refs and outbox files.
+
+Use the `/agent` command to switch between agent threads in the Codex
+interface.
+
+TOML-based agent configs live in `.codex/agents/` for persistent role
+definitions. These files define the role name, system prompt, allowed tools,
+and model preferences so roles can be launched repeatedly without rewriting
+contracts.
+
+Model selection: use `codex --model <model-name>` to pick a role-specific
+model. Heavier roles like architecture or review can use a stronger model while
+narrow implementation tasks can use a faster one.
+
+Config: `.codex/config.toml` supports `max_threads` and `max_depth` settings
+to control parallelism and recursion depth.
+
+Session logs are stored in `~/.codex/sessions/` as JSONL files. These are
+useful for post-run auditing but are not the durable office record. The repo
+remains the source of truth.
 
 ### Antigravity 2.0, CLI, And SDK
 
@@ -136,16 +163,61 @@ background work, managed agents, and SDK-driven workflows. Keep all role
 definitions in repo Markdown. If Antigravity creates extra artifacts, summarize
 the durable parts into outboxes, status files, and commits.
 
-### Claude Code With Plugins
+### Claude Code
 
-Use plugin or harness sub-agents when available. Keep plugin-specific state
-disposable. The role contract and repo handoff are the durable interface.
+Instruction file: `CLAUDE.md` at the project root. Claude Code reads this
+automatically for office behavior rules, activation banners, and status-mode
+guardrails.
 
-### Gemini, Cursor, And Other Tools
+MCP config: `.claude/settings.json` for project-level MCP server definitions.
+
+Standard sub-agents: define agents as `.claude/agents/*.md` files. Each file
+contains a custom system prompt, tool allowlist, and model preference for one
+role. Claude Code discovers these automatically.
+
+Agent Teams (experimental): enable via the environment variable
+`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. This activates a Team Lead plus
+Teammates model with direct Mailbox communication between agents.
+
+> **Warning**: Agent Teams can consume 3–7× the tokens of a single-agent
+> session. Use for complex multi-role features, not simple tasks.
+
+Agent View: press `\` in the Claude Code terminal to open a dashboard of
+active and parallel agents.
+
+Backgrounded agents: agents can continue execution without terminal streaming,
+freeing the terminal for other work.
+
+Adversarial Verification: use reviewer agents to audit worker output before
+commits. The reviewer reads the diff and outbox, flags issues, and blocks the
+merge until resolved.
+
+Headless mode: run `claude --print -p "Product Lead: <task>"` for batch or CI
+workflows. The output is printed to stdout without an interactive session.
+
+The same role contracts used by other runtimes apply here. Keep plugin-specific
+state disposable. The role contract and repo handoff are the durable interface.
+
+### Gemini CLI / Antigravity CLI, Cursor, And Other Tools
 
 If native sub-agents exist, use them. If not, paste the packets into separate
 sessions. The workflow should still function with only Markdown, shell, editor,
 and git.
+
+> **Note**: Gemini CLI standard tier reaches end-of-life on June 18, 2026. The
+> successor is Antigravity CLI (`agy`). See
+> `docs/ai-office/antigravity-migration.md` for the full migration plan.
+
+Import existing Gemini configs into Antigravity CLI:
+
+```powershell
+agy plugin import gemini
+```
+
+Antigravity CLI is backward compatible: `GEMINI.md` and `.gemini/settings.json`
+are still read. The new convention prefers the `.agents/` directory for skills
+and agent definitions, but existing Gemini-era configs continue to work without
+changes.
 
 ## Main Chat Responsibilities
 

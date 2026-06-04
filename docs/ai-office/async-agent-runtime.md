@@ -310,6 +310,56 @@ Each branch should merge into `integrate/<feature-slug>`, not directly into
 Exception: company-structure changes should merge into `org/main`, then sync
 into product `main` through an explicit org sync branch.
 
+## Git Worktrees For Parallel Agents
+
+Git worktrees are the recommended isolation primitive for parallel agent
+execution. They allow multiple agents to work on different branches
+simultaneously without branch switching.
+
+This repo already has a `.worktrees/` directory for this purpose.
+
+Create a worktree for a developer agent:
+
+```powershell
+git worktree add .worktrees/feat-sleep-ui feat/sleep-tracker/senior-ui
+```
+
+The agent works in the worktree directory without affecting the main checkout:
+
+```powershell
+Push-Location .worktrees/feat-sleep-ui
+# ... make changes, commit ...
+Pop-Location
+```
+
+Clean up after merge:
+
+```powershell
+git worktree remove .worktrees/feat-sleep-ui
+```
+
+Naming convention:
+
+```text
+.worktrees/
+  feat-sleep-ui/        # Senior Flutter Engineer worktree
+  feat-sleep-widgets/    # Junior Flutter Developer worktree
+  test-sleep/            # QA/Test Engineer worktree
+```
+
+When to use worktrees:
+
+- Two or more developer agents need to work on the same feature simultaneously.
+- The native harness supports parallel agents but not isolated checkouts.
+- Long-running background tasks such as test suites or builds need a stable
+  working directory.
+
+When to skip worktrees:
+
+- The native harness already provides workspace isolation (e.g., Antigravity
+  branched workspaces).
+- Only one agent is active at a time.
+
 ## Context Budgeting
 
 Use small curated context instead of dumping the whole repo into every session.
@@ -377,6 +427,10 @@ handoff path. If native sub-agents are not available, use a fresh chat per role
 with the packet. If MCP is available, use
 `fvm dart mcp-server --force-roots-fallback`.
 
+Codex also supports TOML-based agent definitions in `.codex/agents/` for
+persistent role configurations. See `docs/ai-office/runtime-adapters.md` for
+details.
+
 ### Antigravity
 
 Use Antigravity 2.0, Antigravity CLI, or the Antigravity SDK as a runtime
@@ -391,6 +445,10 @@ When Claude Code plugins or sub-agent harnesses are available, start one
 sub-agent per role contract. Keep plugin-specific state optional. If the runtime
 cannot create a sub-agent, print the packet and let the user paste it into a new
 Claude Code session.
+
+Claude Code reads `CLAUDE.md` at the project root for office behavior rules.
+Agent Teams (experimental) enable parallel teammate execution with direct
+Mailbox communication. See `docs/ai-office/runtime-adapters.md` for setup.
 
 ### Gemini CLI
 
@@ -409,6 +467,11 @@ After pulling office-rule changes inside an existing Gemini session, run:
 
 Use `/memory list` or `/memory show` to verify that the root `GEMINI.md` is
 loaded.
+
+Note: Gemini CLI standard tier reaches end-of-life on June 18, 2026. The
+successor is Antigravity CLI (`agy`). See `docs/ai-office/antigravity-migration.md`
+for migration details. `GEMINI.md` and `.gemini/settings.json` are backward
+compatible with Antigravity CLI.
 
 ### Cursor
 

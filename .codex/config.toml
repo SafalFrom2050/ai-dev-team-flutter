@@ -1,0 +1,7 @@
+# AI Flutter Office — Codex CLI configuration
+# See docs/ai-office/runtime-adapters.md for details.
+
+[agents]
+max_threads = 3
+max_depth = 2
+job_max_runtime_seconds = 600
