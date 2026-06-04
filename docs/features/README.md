@@ -26,6 +26,7 @@ For async or parallel role sessions, add:
 
 ```text
 async/
+  context-summary.md
   runbook.md
   status.md
   ownership.md

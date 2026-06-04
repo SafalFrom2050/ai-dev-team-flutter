@@ -29,6 +29,13 @@ MCP tools, or code search before this line is visible to the user.
 If the user starts with a role name and colon, print that role's involvement
 banner from `docs/ai-office/role-activation.md` before any tool use.
 
+If the terminal displays CJK/private-use characters instead of banner emojis,
+use the UTF-8 banners and code points in `docs/ai-office/role-activation.md`.
+
+For durable decisions or useful project learnings, write a tracked memory entry
+with `tools/office-memory/remember.py`. Do not initialize FastEmbed or rebuild
+the vector index unless the user has approved model download/initialization.
+
 **MANDATORY**: The involvement banner MUST be the very first visible line of
 your response. Printing any other text, calling any tool, reading any file,
 or running any command before the banner is a protocol error.

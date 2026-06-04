@@ -10,10 +10,10 @@ hidden chat history.
 - App workspace: `work/minimal-timer-app/`
 - Source of truth: `main`
 - Historical branch: `integrate/minimal-timer-app`
-- State: `shipped to main`
+- State: `shipped to main; interactive browser/emulator QA evidence incomplete`
 - Last quality gates: `fvm flutter pub get`, `fvm dart format --set-exit-if-changed .`, `fvm flutter analyze`, and `fvm flutter test` were recorded as passing in `docs/features/minimal-timer-app/handoff.md`
 - Manual QA: `partial`; web server smoke was recorded, but interactive emulator/browser QA was not completed in the original handoff
-- Current owner: `Release Engineer`
+- Current owner: `QA/Test Engineer`
 - Open risks: background timing and persistence were out of scope for the original minimal timer slice
 - Docs: `docs/features/minimal-timer-app/`
 - Handoff: `docs/features/minimal-timer-app/handoff.md`
@@ -25,14 +25,14 @@ hidden chat history.
 - App workspace: `work/minimal-timer-app/`
 - Source of truth: `main`
 - Historical branch: `feat/android-background-timer/impl`
-- State: `implemented on main; needs verification pass`
+- State: `code present on main; release verification pending`
 - Last quality gates: `unknown from docs`; run the Flutter quality gates before release claims
 - Manual QA: `not started`; physical device or Android emulator background behavior still needs validation
 - Current owner: `QA/Test Engineer`
 - Open risks: Android foreground-service policy, notification permission flow, isolate communication, and battery/background behavior
 - Docs: `docs/features/android-background-timer/`
-- Handoff: `missing`; create or update `docs/features/android-background-timer/handoff.md`
-- Last updated: `2026-05-19 by CEO`
+- Handoff: `docs/features/android-background-timer/handoff.md`
+- Last updated: `2026-06-04 by CEO`
 
 ## Timer Onboarding
 
@@ -64,24 +64,26 @@ hidden chat history.
 
 - Slug: `fluent-minimal-redesign`
 - App workspace: `work/minimal-timer-app/`
-- Source of truth: `integrate/fluent-minimal-redesign`
-- State: `fully implemented, formatted, and verified via passing test suite`
+- Source of truth: `main`
+- Historical branch: `integrate/fluent-minimal-redesign`
+- State: `code/design docs present; release-grade UI verification pending`
 - Last quality gates: `fvm dart format .`, `fvm flutter analyze` (clean), and `fvm flutter test` (all 9 tests passed)
-- Manual QA: `N/A`
-- Current owner: `Release Engineer`
+- Manual QA: `not started in current evidence`; browser screenshots are still required before release-grade UI claims
+- Current owner: `QA/Test Engineer`
 - Open risks: balancing intense physics-based animations (springs, glows) with low-end device performance; ensuring seamless Android/iOS background persistence is maintained after visual restructuring
 - Docs: `docs/features/fluent-minimal-redesign/`
 - Brief: `docs/features/fluent-minimal-redesign/brief.md`
 - Design Contract: `docs/features/fluent-minimal-redesign/design-contract.md`
 - Handoff: `docs/features/fluent-minimal-redesign/handoff.md`
-- Last updated: `2026-05-20 by Senior Flutter Engineer`
+- Last updated: `2026-06-04 by CEO`
 
 ## Sleep Tracker
 
 - Slug: `sleep-tracker`
 - App workspace: `work/minimal-timer-app/`
-- Source of truth: `integrate/sleep-tracker`
-- State: `fully implemented, formatted, and verified via clean static analysis`
+- Source of truth: `main`
+- Historical branch: `integrate/sleep-tracker`
+- State: `code present; QA and release verification pending`
 - Last quality gates: `fvm dart format .` (clean), `fvm flutter analyze` (clean - no warnings or errors)
 - Manual QA: `not started`
 - Current owner: `QA/Test Engineer`
@@ -89,7 +91,7 @@ hidden chat history.
 - Docs: `docs/features/sleep-tracker/`
 - Brief: `docs/features/sleep-tracker/brief.md`
 - Handoff: `docs/features/sleep-tracker/handoff.md`
-- Last updated: `2026-05-22 by Junior Flutter Developer`
+- Last updated: `2026-06-04 by CEO`
 
 
 

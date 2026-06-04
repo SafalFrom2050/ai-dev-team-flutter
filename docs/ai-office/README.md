@@ -90,6 +90,8 @@ For Flutter-specific behavior, start with:
 
 - `flutter-specialization.md`
 - `mcp-and-skills.md`
+- `local-memory.md`
+- `memory-history/`
 - `package-decisions.md`
 - `gemini-cli.md`
 

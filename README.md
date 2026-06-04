@@ -224,6 +224,9 @@ Current verified local setup:
 
 Project-local MCP configs are included for tools that support them:
 
+- `.codex/config.toml`
+- `.mcp.json`
+- `.claude/settings.json`
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
 - `GEMINI.md`
@@ -238,8 +241,27 @@ fvm dart mcp-server --force-roots-fallback
 active role before tools and keeps status prompts on lightweight docs instead of
 scanning app source.
 
+Claude Code role agents are checked in under `.claude/agents/`, and Codex role
+agents are checked in under `.codex/agents/`. Both sets map to the same office
+roles and role contracts.
+
 Official Flutter and Dart agent skills are installed in `.agents/skills`, with
 their hashes recorded in `skills-lock.json`.
+
+Local semantic memory is available as an optional FastEmbed/ONNX recall layer:
+
+```powershell
+python -m pip install -r tools/office-memory/requirements.txt
+python tools/office-memory/index.py --allow-download
+python tools/office-memory/search.py "background timer verification"
+```
+
+The generated index lives in `.agent-memory/`, is pointer-first, and is not
+committed. CI does not run FastEmbed indexing; it only validates the office
+runtime configuration. Agents must ask before the first model
+download/initialization. Durable decision memories are written as Markdown under
+`docs/ai-office/memory-history/` and become searchable after the next approved
+index rebuild.
 
 ## How To Fire Up The Office
 
@@ -389,6 +411,7 @@ Start here if you are visiting:
   fallback behavior.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
 - `docs/ai-office/mcp-and-skills.md`: MCP and official skills setup.
+- `docs/ai-office/local-memory.md`: local semantic memory over office docs.
 - `docs/ai-office/gemini-cli.md`: Gemini CLI context loading and status
   guardrails.
 - `docs/features/README.md`: where feature work lives.
@@ -406,8 +429,13 @@ work/minimal-timer-app/
 
 Current product state:
 
-1. `minimal-timer-app` is shipped to `main`.
-2. `android-background-timer` is implemented on `main` and needs a verification
-   pass, especially Android emulator/device background behavior.
-3. `docs/features/status-index.md` is the lightweight source for progress
+1. `minimal-timer-app` is on `main`, with interactive browser/emulator QA
+   evidence still incomplete.
+2. `android-background-timer` has code present on `main`, but release
+   verification is pending. See
+   `docs/features/android-background-timer/handoff.md`.
+3. `fluent-minimal-redesign` and `sleep-tracker` have implementation/design
+   evidence, but still need release-grade UI/manual QA evidence before stronger
+   release claims.
+4. `docs/features/status-index.md` is the lightweight source for progress
    checks.

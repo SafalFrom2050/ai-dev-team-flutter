@@ -5,3 +5,7 @@
 max_threads = 3
 max_depth = 2
 job_max_runtime_seconds = 600
+
+[mcp_servers.dart]
+command = "fvm"
+args = ["dart", "mcp-server", "--force-roots-fallback"]

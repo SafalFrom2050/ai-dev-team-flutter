@@ -43,6 +43,7 @@ Who else is running concurrently and what do they own?
 Read these files before starting:
 
 - `AGENTS.md`
+- `docs/features/<feature-slug>/async/context-summary.md` if it exists
 - <task-specific context files>
 
 ## When Done
