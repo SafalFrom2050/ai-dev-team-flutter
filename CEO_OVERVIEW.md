@@ -856,6 +856,26 @@ Updated:
 - `docs/ai-office/runtime-adapters.md`
 - `CEO_OVERVIEW.md`
 
+### 2026-06-04: Implement Unified Multi-Runtime Configuration and Quality Gate Enhancements
+
+Decision: Create instruction shims (`CLAUDE.md`, `.claude/settings.json`), TOML-based configurations for Codex agents (`.codex/agents/*.toml`), CI/CD Actions workflow (`quality-gates.yml`), Agentic Hot Reload Protocol, and A2A Evaluation documentation. Update existing operating guidelines (`AGENTS.md`, `GEMINI.md`, and `docs/ai-office/` sub-documents) to support multiple developer runtimes seamlessly.
+
+Why: The office needs to operate consistently across different agent platforms (Codex, Antigravity, Claude Code, Gemini/Cursor). Standardizing configurations, adding formal hot-reload protocols, enforcing activation banners, and documenting migration paths to Antigravity CLI prevents vendor lock-in and improves developer workflow efficiency.
+
+Created:
+- `CLAUDE.md` and `.claude/settings.json` for Claude Code compatibility.
+- `.codex/config.toml` and `.codex/agents/` configs for Codex.
+- `.github/workflows/quality-gates.yml` for automated CI validation.
+- `docs/ai-office/agentic-hot-reload.md` for live hot reload protocol.
+- `docs/ai-office/antigravity-migration.md` for Gemini CLI EOL transition.
+- `docs/ai-office/templates/outbox-schema.md` for JSON handoff schema.
+- `docs/ai-office/context-compression.md` for long-running context budgeting.
+- `docs/ai-office/a2a-evaluation.md` for Agent-to-Agent standard assessment.
+
+Updated:
+- `AGENTS.md` and `GEMINI.md` to harden banner enforcement and add tool references.
+- `docs/ai-office/flutter-specialization.md`, `quality-gates.md`, `roles.md`, `status-protocol.md`, `runtime-adapters.md`, `async-agent-runtime.md`, and `mcp-and-skills.md`.
+
 ## Current Open CEO Items
 
 - Review and merge `integrate/minimal-timer-app` into `main` when the release
