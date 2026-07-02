@@ -64,6 +64,18 @@ Every PR should include:
 
 Use `.github/PULL_REQUEST_TEMPLATE.md`.
 
+## Discoverability
+
+When a contribution changes the public story of the project, update the GitHub
+surface too:
+
+- Keep the README's first screen aligned with the actual project.
+- Update `docs/github-discoverability.md` when adding a new supported AI tool,
+  Flutter workflow, major office capability, or public release milestone.
+- Use searchable but natural language in release notes and PR titles, especially
+  for AI agents, Flutter, Codex, Claude Code, Gemini CLI, MCP, QA gates, and
+  repo-backed memory.
+
 ## Commit Messages
 
 Use Conventional Commits:
