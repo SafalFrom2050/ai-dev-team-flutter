@@ -34,6 +34,7 @@ For UI changes, include browser smoke screenshots or explain why UI verification
 
 - [ ] I used a Conventional Commit-style title or commit message.
 - [ ] I updated docs, handoffs, or status files when project state changed.
+- [ ] I updated README/discoverability guidance when the public project story changed.
 - [ ] I ran the relevant checks or explained why they were not run.
 - [ ] I ran `flutter build web` for web-capable app changes or explained why it was not applicable.
 - [ ] I attached browser smoke/screenshots for UI changes or explained why they were not applicable.
