@@ -2,9 +2,22 @@
 
 ![AI Dev Team Flutter: from idea to production main](docs/assets/readme/featured.png)
 
-An experimental Flutter studio where AI agents work like a real product team,
-with role-specific sub-agents, repo-backed memory, Flutter quality gates, and a
-production `main` branch.
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.38-blue.svg)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.10-blue.svg)](https://dart.dev)
+[![AI agents](https://img.shields.io/badge/AI%20agents-role%20based-purple.svg)](#what-this-project-is)
+[![Quality gates](https://img.shields.io/badge/quality-format%20analyze%20test%20build-informational.svg)](#quality-gates)
+
+AI Dev Team Flutter is an open-source **AI agent team framework for Flutter**
+that turns a product idea into production-ready app code through role-specific
+sub-agents, product/design/architecture contracts, repo-backed memory, MCP
+tooling, and release gates.
+
+Use this repo if you are searching for an AI software team for Flutter, a
+multi-agent coding workflow, a Codex or Claude Code agent setup, a Gemini CLI
+Flutter office, an Antigravity-ready sub-agent harness, or a practical example
+of AI-assisted product engineering with Dart, Flutter, tests, code review, and
+release discipline.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration
 system for taking a rough idea, shaping it through product and design, building
@@ -13,6 +26,46 @@ production-ready work into `main`.
 
 The ambition is simple and slightly dangerous in the best engineering way:
 build the best Flutter AI dev team in the world.
+
+## Who This Helps
+
+- Flutter developers who want AI coding agents that understand routes, widgets,
+  state, tests, platform builds, and release checks.
+- Product builders who want product, UX, architecture, implementation, QA, code
+  review, and release roles to work from the same repo-backed contracts.
+- Teams experimenting with Codex, Claude Code, Gemini CLI, Cursor, Antigravity,
+  MCP servers, local memory, or parallel sub-agent workflows.
+- Open-source maintainers who want AI-assisted contributions to leave durable
+  handoffs instead of hiding decisions inside chat history.
+
+## What You Get
+
+- A role-based AI office for Flutter product development.
+- Branch, handoff, and PR rules for safe multi-agent work on GitHub.
+- Product brief, design contract, technical plan, QA, and release templates.
+- Codex, Claude, Gemini, Cursor, and MCP configuration examples.
+- Flutter quality gates for format, analyze, tests, web builds, and browser
+  smoke checks.
+- Optional local semantic memory for durable decisions and searchable context.
+
+## GitHub Discovery Signals
+
+Suggested repository description:
+
+```text
+AI agent team framework for Flutter with Codex, Claude, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
+```
+
+Suggested GitHub topics:
+
+```text
+flutter dart ai-agents coding-agents agentic-ai codex claude-code gemini-cli
+cursor antigravity mcp subagents developer-tools mobile-app-development
+flutter-app test-automation product-engineering code-review release-engineering
+open-source
+```
+
+More discoverability notes live in `docs/github-discoverability.md`.
 
 ## The Big Idea
 
@@ -426,21 +479,23 @@ Start here if you are visiting:
   guardrails.
 - `docs/features/README.md`: where feature work lives.
 - `work/README.md`: where product app scaffolds live.
+- `docs/github-discoverability.md`: GitHub description, topics, social preview,
+  and release-discovery checklist.
 
 ## Current Status
 
-This branch is the reusable office starting point. A new product should replace
-this section with its own feature status once work begins.
+The README is intentionally branch-neutral and should stay the same across
+`main`, `org/main`, integration branches, and feature branches. Branch-specific
+product state, release evidence, role handoffs, and parallel work notes belong
+under `docs/`, especially:
 
 ```text
+docs/features/status-index.md
 docs/features/<feature-slug>/
-work/<app-slug>/
+docs/features/<feature-slug>/async/
 ```
 
-Example product state:
-
-1. `docs/features/status-index.md` lists active features, branches, and release
-   readiness.
-2. Feature folders live under `docs/features/<feature-slug>/`.
-3. App workspaces live under `work/<app-slug>/`.
-4. Release readiness is recorded in each feature handoff.
+Use `docs/features/status-index.md` as the lightweight dashboard for active
+branches. Use each feature folder for briefs, design contracts, technical plans,
+QA evidence, outboxes, and handoffs. That keeps parallel work visible without
+turning the README into a branch-specific status report.
