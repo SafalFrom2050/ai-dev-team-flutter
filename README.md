@@ -49,25 +49,6 @@ build the best Flutter AI dev team in the world.
   smoke checks.
 - Optional local semantic memory for durable decisions and searchable context.
 
-## GitHub Discovery Signals
-
-Suggested repository description:
-
-```text
-AI agent team framework for Flutter with Codex, Claude Code, Antigravity, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
-```
-
-Suggested GitHub topics:
-
-```text
-flutter dart ai-agents coding-agents agentic-ai codex claude-code gemini-cli
-cursor antigravity mcp subagents developer-tools mobile-app-development
-flutter-app test-automation product-engineering code-review release-engineering
-open-source
-```
-
-More discoverability notes live in `docs/github-discoverability.md`.
-
 ## The Big Idea
 
 This project is not a prompt collection and not a single chatbot with a bigger
