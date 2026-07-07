@@ -5,12 +5,16 @@ prompt activates it. Users do not need to type `Office Assistant:` or remember
 role names, branch conventions, or workflow steps.
 
 The Office Assistant reads lightweight office and feature docs, determines the
-right role sequence, and creates role contracts. Ready-to-paste packets are the
-portable default. The Office Assistant starts native sub-agents only when the
-current runtime policy allows it. In Codex, `multi_agent_v1.spawn_agent` is
-allowed only when the user explicitly asks for sub-agents, delegation, or
-parallel agent work, or when runtime metadata otherwise permits native
-spawning.
+right role sequence, assigns a task tier, and creates role contracts.
+Ready-to-paste packets are the portable default. The Office Assistant starts
+native sub-agents only when the current runtime policy allows it. In Codex,
+`multi_agent_v1.spawn_agent` is allowed only when the user explicitly asks for
+sub-agents, delegation, or parallel agent work, or when runtime metadata
+otherwise permits native spawning.
+
+Use `docs/ai-office/token-budgeting.md` for every prompt. The tier determines
+how much context to read, whether native sub-agents are justified, and which
+model route should be used.
 
 ## Default Mode Rule
 
@@ -59,6 +63,8 @@ Phase 1 (sequential/parallel):
   - <Role> -> <one-line mission>
 Phase 2 (after Phase 1):
   - <Role> -> <one-line mission>
+Task tier: <T0/T1/T2/T3/T4>
+Model route: <speed/balanced/quality>
 
 PACKET 1: <Role>
 =================
@@ -72,10 +78,12 @@ Read AGENTS.md for team rules.
 
 Mission: <what to accomplish>
 Branch: <branch-name>
+Task tier: <T0/T1/T2/T3/T4 from docs/ai-office/token-budgeting.md>
+Model route: <recommended Codex model/reasoning route>
 You own: <specific file paths>
 Do NOT edit: <specific file paths>
 Other agents working now: <who and what they own>
-Context: read <specific file paths for context>
+Context: read <specific file paths for context; use context-summary first for T3/T4>
 When done: commit using docs/ai-office/commit-guidelines.md, update
   docs/features/status-index.md if feature state changed, and write your
   summary to
@@ -89,6 +97,24 @@ PACKET 2: <Role>
 Each packet should be under 200 words when practical. The involvement banner is
 part of the packet, not optional decoration. The agent will read the codebase
 itself. The packet sets boundaries and intent.
+
+### Task Tiers
+
+- **T0 status**: status, progress, branch health. Read only
+  `docs/features/status-index.md`, git refs, active feature status/outboxes, and
+  handoffs. No sub-agents. Default route: `gpt-5.4-mini`.
+- **T1 docs/readme**: small docs, README, copy, metadata, simple config notes.
+  Read target files plus `rg` results. No native sub-agents. Default route:
+  `gpt-5.4-mini`.
+- **T2 planning**: briefs, UX plans, architecture planning, and scoped
+  governance. Use feature docs plus directly relevant office docs. Packets are
+  default; native sub-agents only when explicitly requested or clearly earned.
+- **T3 implementation**: code, tests, QA follow-up, and risky debugging. Require
+  `docs/features/<feature-slug>/async/context-summary.md` first, then only the
+  files named in the contract.
+- **T4 release**: review, final gates, release readiness, and merge prep. Read
+  context summary, branch diff, handoffs, test evidence, and release notes.
+  Use stronger review/release models.
 
 ### Essential Packet Fields
 
@@ -105,6 +131,7 @@ Optional fields that help for complex tasks:
 - Context references (brief, design contract, prior outbox)
 - Commands to run (quality gates)
 - Stop conditions (when to pause and write a blocker)
+- Context budget (tier, model route, memory cap, and extra-read policy)
 
 ## Native Harness Or Packet Fallback
 
@@ -112,6 +139,8 @@ The Office Assistant should use native sub-agents only when all of these are
 true:
 
 - The user is asking to execute work, not only asking for status.
+- The task is T2 or higher. T0 and T1 work stays single-agent unless the user
+  explicitly asks for delegated work.
 - The current AI tool can create sub-agents or delegated worker sessions.
 - The active runtime policy allows native spawning. In Codex, this currently
   means the user explicitly asked for sub-agents, delegation, or parallel agent
@@ -146,6 +175,14 @@ Codex-specific launch rules:
 Status-only prompts never spawn implementation sub-agents. They remain
 branch-aware and read-only.
 
+## Context Summary Gate
+
+Before starting T3 implementation, T3 QA, T4 review, or T4 release, ensure
+`docs/features/<feature-slug>/async/context-summary.md` exists and is current.
+If it is missing or stale, compile the latest feature docs and outboxes into a
+summary before launching or printing the dependent role packet. Do not paste old
+chat logs into the packet.
+
 ## Execution Prompts Run To A Useful Stop
 
 For build, fix, implement, verify, or release prompts, the Office Assistant
@@ -178,6 +215,8 @@ The Office Assistant decides which roles are needed:
 - Review request: Code Reviewer.
 - Release or branch readiness: Release Engineer.
 - Office/process/tooling change: CEO through `org/<initiative>`.
+- Token budget, model routing, or runtime agent config change: CEO through
+  `office/<initiative>` or `org/<initiative>`, depending on branch scope.
 
 ## Parallelization Decisions
 

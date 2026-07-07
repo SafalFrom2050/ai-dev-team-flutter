@@ -1,6 +1,8 @@
 # Quality Gates
 
 These gates define what "production ready on main" means for the AI dev office.
+Use `docs/ai-office/token-budgeting.md` to keep verification effort proportional
+to the task tier.
 
 ## Main Branch Gate
 
@@ -45,6 +47,11 @@ For any visual or user-facing feature, the active specialist (e.g. Junior Flutte
 6. Record the test evidence and screenshots explicitly in `docs/features/<feature-slug>/handoff.md` or the outbox.
 
 If browser tooling is completely unavailable in the active tool environment, document this limitation honestly in the PR instead of marking the gate green, and specify the manual verification required by the user.
+
+Simple README/docs image updates do not need repeated browser or image
+inspection loops unless the rendered asset is the deliverable. Keep source SVGs
+or design files when possible, render once, and reserve iterative visual QA for
+product UI and design-sensitive assets.
 
 ## Agentic Hot Reload Evidence
 

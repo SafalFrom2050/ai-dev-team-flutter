@@ -17,6 +17,15 @@ Current Branch: `<branch-name>`
 - Completed roles: <role list>
 - Current owner: <role>
 
+## Context Budget Snapshot
+
+Use `docs/ai-office/token-budgeting.md` for the tier definitions.
+
+- Task tier: <T2/T3/T4>
+- Recommended model route: <speed/balanced/quality>
+- Next roles should read first: `docs/features/<feature-slug>/async/context-summary.md`
+- Extra context allowed: <specific files or folders only>
+
 ## Key Decisions And Specifications
 
 - <decision 1>

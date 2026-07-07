@@ -195,14 +195,17 @@ interfaces that expose threads, use `/agent` to switch between agent threads.
 
 TOML-based agent configs live in `.codex/agents/` for persistent role
 definitions. Each file defines `name`, `description`, `developer_instructions`,
-and optional model/sandbox preferences so Codex can expose matching role types
-for repeated launch. The `spawn_agent` call receives the role type name in
-`agent_type`, not the TOML file itself. The office keeps one file per standard
-role.
+and optional `nickname_candidates`, model, reasoning, and sandbox preferences so
+Codex can expose matching role types for repeated launch. The `spawn_agent` call
+receives the role type name in `agent_type`, not the TOML file itself. The
+office keeps one file per standard role.
 
-Model selection: use `codex --model <model-name>` to pick a role-specific
-model. Heavier roles like architecture or review can use a stronger model while
-narrow implementation tasks can use a faster one.
+Model selection: follow `docs/ai-office/token-budgeting.md`. Use
+`gpt-5.4-mini` for T0/T1, packet generation, narrow implementation, normal QA,
+and read-heavy scans. Use `gpt-5.5` for design quality, architecture, senior
+implementation risk, review, release, and governance. Agent TOML defaults encode
+the normal route; a role contract can still request escalation for a specific
+task.
 
 Config: `.codex/config.toml` supports `max_threads` and `max_depth` settings
 to control parallelism and recursion depth.
@@ -238,7 +241,7 @@ Agent Teams (experimental): enable via the environment variable
 `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. This activates a Team Lead plus
 Teammates model with direct Mailbox communication between agents.
 
-> **Warning**: Agent Teams can consume 3–7× the tokens of a single-agent
+> **Warning**: Agent Teams can consume 3-7x the tokens of a single-agent
 > session. Use for complex multi-role features, not simple tasks.
 
 Agent View: press `\` in the Claude Code terminal to open a dashboard of

@@ -9,20 +9,33 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-ROLES = {
-    "ceo": "### 👑 **CEO Involved**",
-    "office-assistant": "### ⚡ **Office Assistant Involved**",
-    "product-lead": "### 📋 **Product Lead Involved**",
-    "ui-ux-designer": "### 🎨 **UI/UX Designer Involved**",
-    "product-engineer": "### 🛠️ **Product Engineer Involved**",
-    "senior-flutter-engineer": "### 💻 **Senior Flutter Engineer Involved**",
-    "junior-flutter-developer": "### 🌱 **Junior Flutter Developer Involved**",
-    "qa-test-engineer": "### 🧪 **QA/Test Engineer Involved**",
-    "code-reviewer": "### 🔍 **Code Reviewer Involved**",
-    "release-engineer": "### 🚀 **Release Engineer Involved**",
+ROLE_NAMES = {
+    "ceo": "CEO",
+    "office-assistant": "Office Assistant",
+    "product-lead": "Product Lead",
+    "ui-ux-designer": "UI/UX Designer",
+    "product-engineer": "Product Engineer",
+    "senior-flutter-engineer": "Senior Flutter Engineer",
+    "junior-flutter-developer": "Junior Flutter Developer",
+    "qa-test-engineer": "QA/Test Engineer",
+    "code-reviewer": "Code Reviewer",
+    "release-engineer": "Release Engineer",
 }
 
-MOJIBAKE_MARKERS = ("笞", "", "窶", "繝", "�")
+CODEX_AGENT_ROUTES = {
+    "ceo": ("gpt-5.5", "high"),
+    "office-assistant": ("gpt-5.4-mini", "medium"),
+    "product-lead": ("gpt-5.4-mini", "medium"),
+    "ui-ux-designer": ("gpt-5.5", "medium"),
+    "product-engineer": ("gpt-5.5", "high"),
+    "senior-flutter-engineer": ("gpt-5.5", "high"),
+    "junior-flutter-developer": ("gpt-5.4-mini", "medium"),
+    "qa-test-engineer": ("gpt-5.4-mini", "medium"),
+    "code-reviewer": ("gpt-5.5", "high"),
+    "release-engineer": ("gpt-5.5", "high"),
+}
+
+MOJIBAKE_MARKERS = ("隨・", "﨟・", "遯ｶ", "郢・", "・ｽ")
 
 
 def read(path: str) -> str:
@@ -38,10 +51,22 @@ def ok(message: str) -> None:
     print(f"OK: {message}")
 
 
+def role_banners() -> dict[str, str]:
+    text = read("docs/ai-office/role-activation.md")
+    banners_by_name = {
+        name.strip(): banner.strip()
+        for name, banner in re.findall(r"\| ([^|]+) \| `([^`]+)` \|", text)
+    }
+    return {
+        role: banners_by_name.get(display_name, "")
+        for role, display_name in ROLE_NAMES.items()
+    }
+
+
 def check_role_activation(failures: list[str]) -> None:
     text = read("docs/ai-office/role-activation.md")
-    for role, banner in ROLES.items():
-        if banner not in text:
+    for role, banner in role_banners().items():
+        if not banner or banner not in text:
             fail(f"role banner missing for {role}", failures)
     if any(marker in text for marker in MOJIBAKE_MARKERS):
         fail("role-activation.md contains mojibake markers", failures)
@@ -50,7 +75,7 @@ def check_role_activation(failures: list[str]) -> None:
 
 
 def check_codex_agents(failures: list[str]) -> None:
-    for role, banner in ROLES.items():
+    for role, banner in role_banners().items():
         path = ROOT / ".codex" / "agents" / f"{role}.toml"
         if not path.exists():
             fail(f"missing Codex agent {path.relative_to(ROOT)}", failures)
@@ -62,11 +87,18 @@ def check_codex_agents(failures: list[str]) -> None:
             fail(f"{path.relative_to(ROOT)} uses stale [instructions] table", failures)
         if banner not in text:
             fail(f"{path.relative_to(ROOT)} lacks canonical banner", failures)
+        if "nickname_candidates" not in text:
+            fail(f"{path.relative_to(ROOT)} lacks display nickname candidates", failures)
+        model, effort = CODEX_AGENT_ROUTES[role]
+        if f'model = "{model}"' not in text:
+            fail(f"{path.relative_to(ROOT)} should route to {model}", failures)
+        if f'model_reasoning_effort = "{effort}"' not in text:
+            fail(f"{path.relative_to(ROOT)} should use {effort} reasoning", failures)
     ok("Codex role agent files checked")
 
 
 def check_claude_agents(failures: list[str]) -> None:
-    for role, banner in ROLES.items():
+    for role, banner in role_banners().items():
         path = ROOT / ".claude" / "agents" / f"{role}.md"
         if not path.exists():
             fail(f"missing Claude agent {path.relative_to(ROOT)}", failures)
@@ -94,6 +126,8 @@ def check_mcp_configs(failures: list[str]) -> None:
     codex_config = read(".codex/config.toml")
     if "[mcp_servers.dart]" not in codex_config:
         fail(".codex/config.toml does not configure the Dart MCP server", failures)
+    if "max_depth = 1" not in codex_config:
+        fail(".codex/config.toml should keep agent max_depth at 1", failures)
     ok("MCP configs checked")
 
 
@@ -102,6 +136,7 @@ def check_context_summary_wiring(failures: list[str]) -> None:
         "docs/features/README.md",
         "docs/ai-office/async-agent-runtime.md",
         "docs/ai-office/context-compression.md",
+        "docs/ai-office/token-budgeting.md",
         "docs/ai-office/templates/agent-session-packet.md",
         "docs/ai-office/templates/context-summary.md",
     ]
@@ -109,6 +144,45 @@ def check_context_summary_wiring(failures: list[str]) -> None:
         if "context-summary.md" not in read(path):
             fail(f"{path} does not reference context-summary.md", failures)
     ok("context summary wiring checked")
+
+
+def check_token_budgeting_wiring(failures: list[str]) -> None:
+    if not (ROOT / "docs/ai-office/token-budgeting.md").exists():
+        fail("missing docs/ai-office/token-budgeting.md", failures)
+        return
+
+    referenced_by = [
+        "AGENTS.md",
+        "docs/ai-office/README.md",
+        "docs/ai-office/task-triage.md",
+        "docs/ai-office/runtime-adapters.md",
+        "docs/ai-office/async-agent-runtime.md",
+        "docs/ai-office/context-compression.md",
+        "docs/ai-office/templates/agent-session-packet.md",
+        "docs/ai-office/templates/agent-outbox.md",
+        "docs/ai-office/templates/context-summary.md",
+        "docs/ai-office/local-memory.md",
+        "docs/ai-office/quality-gates.md",
+    ]
+    for path in referenced_by:
+        if "token-budgeting.md" not in read(path):
+            fail(f"{path} does not reference token-budgeting.md", failures)
+
+    tier_doc = read("docs/ai-office/token-budgeting.md")
+    triage_doc = read("docs/ai-office/task-triage.md")
+    for tier in ["T0", "T1", "T2", "T3", "T4"]:
+        if tier not in tier_doc:
+            fail(f"token-budgeting.md does not define {tier}", failures)
+        if tier not in triage_doc:
+            fail(f"task-triage.md does not route {tier}", failures)
+
+    packet = read("docs/ai-office/templates/agent-session-packet.md")
+    outbox = read("docs/ai-office/templates/agent-outbox.md")
+    if "Model route" not in packet or "Task tier" not in packet:
+        fail("agent-session-packet.md lacks task tier/model route fields", failures)
+    if "Token telemetry" not in outbox:
+        fail("agent-outbox.md lacks token telemetry field", failures)
+    ok("token budgeting wiring checked")
 
 
 def check_local_memory_wiring(failures: list[str]) -> None:
@@ -194,6 +268,7 @@ def main() -> int:
     check_claude_agents(failures)
     check_mcp_configs(failures)
     check_context_summary_wiring(failures)
+    check_token_budgeting_wiring(failures)
     check_local_memory_wiring(failures)
     check_status_index(failures)
     check_mojibake(failures)

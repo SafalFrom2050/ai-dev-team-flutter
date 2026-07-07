@@ -24,6 +24,13 @@ For permitted Codex native sub-agents, this banner must be the first line of the
 
 What should this role accomplish? Keep to one to three sentences.
 
+## Context Budget
+
+- Task tier: <T0/T1/T2/T3/T4 from docs/ai-office/token-budgeting.md>
+- Model route: <recommended Codex model/reasoning route>
+- Memory cap: <none / top 3-5 hits, then read source files>
+- Native sub-agent: <not allowed / allowed if requested / required and why>
+
 ## Branch
 
 `<branch-name>`
@@ -61,7 +68,7 @@ Who else is running concurrently and what do they own?
 Read these files before starting:
 
 - `AGENTS.md`
-- `docs/features/<feature-slug>/async/context-summary.md` if it exists
+- `docs/features/<feature-slug>/async/context-summary.md` first for T3/T4 work
 - <task-specific context files>
 
 ## When Done

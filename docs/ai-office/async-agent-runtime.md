@@ -380,31 +380,34 @@ When to skip worktrees:
 ## Context Budgeting
 
 Use small curated context instead of dumping the whole repo into every session.
+For tiered budgets and model routing, use
+`docs/ai-office/token-budgeting.md`.
 
 ### Small Packet
 
-Use for narrow changes:
+Use for T0 status and T1 narrow docs/config changes:
 
-- `AGENTS.md`
 - Role packet
-- One feature file
-- Relevant source files
+- Target files
+- `rg` results
+- One directly relevant policy file only when needed
 
 ### Medium Packet
 
-Use for product, design, architecture, and normal implementation:
+Use for T2 product/design/architecture planning and straightforward T3 work:
 
 - `README.md`
 - `CEO_OVERVIEW.md`
 - `AGENTS.md`
 - Relevant `docs/ai-office/` files
 - Feature folder
+- `docs/features/<feature-slug>/async/context-summary.md` for T3 work
 - Relevant source files
 - Relevant `work/<app-slug>/` files
 
 ### Large Packet
 
-Use only for cross-cutting review, release, or architecture changes:
+Use only for T4 release/review or cross-cutting architecture changes:
 
 - Medium packet
 - Current branch diff

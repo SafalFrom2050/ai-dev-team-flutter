@@ -956,6 +956,43 @@ Updated:
   `mcp-and-skills.md`, `task-triage.md`, `user-activation.md`, and
   `templates/agent-session-packet.md`.
 
+### 2026-07-07: Add Token Budget Tiers And Codex Model Routing
+
+Decision: make token-budget discipline a first-class office rule. The office
+now routes work through T0-T4 task tiers, requires `async/context-summary.md`
+before implementation/QA/review/release agents, keeps packets path-based and
+short, caps memory search to pointer-first top hits, and records context-budget
+evidence in packets and outboxes.
+
+Why: native sub-agents and large office protocols are powerful but expensive.
+Small status/docs tasks should not pay the context cost of a full feature loop,
+and parallel agents should be reserved for tasks where independent context or
+parallelism is worth the extra model work.
+
+Codex routing:
+
+- Project Codex agents now use `nickname_candidates` so spawned agent labels
+  match office roles while preserving the stable `name`/`agent_type` slugs.
+- `gpt-5.4-mini` is the default for Office Assistant routing, Product Lead
+  briefs, Junior Flutter slices, normal QA, T0 status, T1 docs, and read-heavy
+  scans.
+- `gpt-5.5` remains the default for CEO governance, UX/design quality, Product
+  Engineer architecture, Senior Flutter risk, Code Reviewer, and Release
+  Engineer gates.
+- `.codex/config.toml` keeps `max_depth = 1` to prevent recursive fan-out.
+
+Updated:
+
+- `AGENTS.md`
+- `.codex/config.toml` and `.codex/agents/*.toml`
+- `docs/ai-office/token-budgeting.md`
+- `docs/ai-office/task-triage.md`, `runtime-adapters.md`,
+  `async-agent-runtime.md`, `context-compression.md`, `quality-gates.md`, and
+  `local-memory.md`
+- `docs/ai-office/templates/agent-session-packet.md`,
+  `templates/context-summary.md`, and `templates/agent-outbox.md`
+- `tools/office-readiness/check.py`
+
 ## Current Open CEO Items
 
 - Complete QA verification for `android-background-timer`, especially Android

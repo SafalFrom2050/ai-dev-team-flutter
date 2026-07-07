@@ -15,15 +15,23 @@ __pycache__/
 
 # Android
 android/.gradle/
+**/android/.gradle/
+**/android/local.properties
 android/app/debug
 android/app/profile
 android/app/release
 
 # iOS and macOS
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/ephemeral/
 ios/Flutter/.last_build_id
 ios/Pods/
 ios/.symlinks/
 macos/Flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/linux/flutter/ephemeral/
+**/windows/flutter/ephemeral/
 macos/Pods/
 
 # Generated

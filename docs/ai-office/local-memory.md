@@ -119,12 +119,16 @@ overwrites the previous `.agent-memory/` files instead of appending to them.
 
 ## Search
 
+Use `docs/ai-office/token-budgeting.md` for the default memory cap.
+
 ```powershell
-python tools/office-memory/search.py "Android background timer verification"
+python tools/office-memory/search.py "Android background timer verification" --top 5
 ```
 
 The search output includes score, path, line number, and a short excerpt. Use the
 path and line number as the evidence trail for the final answer or role packet.
+Start with top 3-5 hits; only widen the search when the cited source files do
+not answer the question.
 
 If the model has not been approved/initialized yet, search will stop and ask for
 user approval before running with `--allow-download`.
@@ -166,6 +170,8 @@ will not initialize FastEmbed or rebuild vectors.
 - Do not store secrets or private customer data in office docs or memory files.
 - Do not treat semantic search output as confirmed truth until the source file is
   read.
+- Do not dump full memory or history into packets. Pass source paths and line
+  references whenever possible.
 - Rebuild the index after major changes to `docs/`, `.codex/`, `.claude/`, or
   feature handoffs.
 - For release/status answers, prefer `docs/features/status-index.md` first, then

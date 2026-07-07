@@ -16,7 +16,9 @@ through review.
    keeps the team structure coherent.
 1. Office Assistant is the default mode. Any unstructured prompt activates it.
    It reads the codebase, determines the role sequence, and creates role
-   contracts. Ready-to-paste packets are the portable default. It starts native
+   contracts. It assigns a task tier from `docs/ai-office/token-budgeting.md`
+   so small work stays small and expensive context is reserved for work that
+   earns it. Ready-to-paste packets are the portable default. It starts native
    sub-agents only when the runtime policy permits that launch. In Codex,
    `multi_agent_v1.spawn_agent` is permitted only when the user explicitly asks
    for sub-agents, delegation, or parallel agent work, or when a future runtime
@@ -99,6 +101,14 @@ Developers should treat the design contract as part of the spec.
   mirrored by `.codex/agents/` when available, keep `fork_context` off unless
   the role truly needs the main chat transcript, and monitor completion through
   tool results plus repo outboxes.
+- Use `docs/ai-office/token-budgeting.md` for every task. T0 status and T1
+  docs/readme work should read only the target files, `rg` results, and one
+  directly relevant policy file when needed. T3 implementation, QA, review, and
+  T4 release work must read `docs/features/<feature-slug>/async/context-summary.md`
+  first and avoid pasted chat history.
+- Model routing is part of the role contract. Prefer cheaper/faster Codex
+  defaults for T0/T1/narrow T3 work and reserve stronger settings for design
+  quality, architecture, risky debugging, review, release, and governance.
 - For execution prompts, the office should run the feature loop end to end:
   product, design, architecture, implementation, QA, review, release readiness,
   and handoff. Do not stop after a role or toolchain step just to ask for the
@@ -142,6 +152,8 @@ Developers should treat the design contract as part of the spec.
   index requires FastEmbed model initialization and `.agent-memory/model-ready.json`
   is missing, ask the user first and explain the advantages before running any
   command with `--allow-download`.
+- Memory search should stay capped and pointer-first: top 3-5 hits first, then
+  read the cited source files before treating a memory result as true.
 - Native sub-agents are useful when allowed in tools such as Codex,
   Antigravity, Claude Code, Gemini, Cursor, or future agent harnesses. Packets
   remain the portable default and source of truth for each role's mission,

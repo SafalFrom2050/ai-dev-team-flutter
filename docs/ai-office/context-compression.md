@@ -2,6 +2,10 @@
 
 This protocol addresses the challenge of context accumulation in long-running feature loops. As an initiative moves through Product, Design, Architecture, Implementation, and QA, the chat context becomes bloated. This protocol defines how to compress that history into a single, structured summary so subsequent roles can spin up instantly.
 
+Use this alongside `docs/ai-office/token-budgeting.md`; token budgeting decides
+when the summary is mandatory, and this protocol defines what the summary
+contains.
+
 ## The Problem
 
 When a developer agent takes over a feature branch, reading the entire conversation history of the Product Lead, UX Designer, and Product Engineer uses up valuable context space. This leads to model distraction, higher token costs, and slow response times.
@@ -22,6 +26,8 @@ codebase and only the specific source files needed for their role.
 
 - **First Compression**: Immediately after the Product Lead, Designer, and Architect finish the planning phase (before developers start coding).
 - **Updates**: After each major role handoff (e.g., Senior Developer handoff to QA).
+- **Mandatory Gate**: Before T3 implementation, T3 QA, T4 review, or T4
+  release work begins.
 - **Handoff Rules**: Refer to [Async Agent Runtime](file:///d:/Workspace/Personal/ai-dev-team-flutter/docs/ai-office/async-agent-runtime.md) for context budgeting limits.
 
 ## Context Summary Template
@@ -69,3 +75,4 @@ Before booting a subagent (such as Codex or Claude Code), the main orchestrator 
 2. If stale or missing, compile the recent outbox reports and write an updated `context-summary.md`.
 3. Provide the summary path as the first context item for the next subagent,
    rather than pasting historical logs.
+4. For T3 and T4 work, block the launch or packet until the summary is present.
