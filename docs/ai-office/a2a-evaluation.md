@@ -4,7 +4,7 @@ This document evaluates the emerging Agent-to-Agent (A2A) Protocol standard and 
 
 ## What is the A2A Protocol?
 
-The **A2A Protocol** (v1.0) is a Linux Foundation-governed open standard initiated by Google and other industry partners to establish a unified protocol for agent interoperability. 
+The **A2A Protocol** (v1.0) is a Linux Foundation-governed open standard initiated by Google and other industry partners to establish a unified protocol for agent interoperability.
 - While the Model Context Protocol (MCP) defines how an agent talks to tools (`Agent <-> Tool`), A2A defines how agents discover, negotiate, and communicate with each other (`Agent <-> Agent`).
 - A2A aims to make agent messaging, streaming, task delegation, and capabilities negotiation vendor-neutral.
 

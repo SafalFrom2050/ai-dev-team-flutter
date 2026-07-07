@@ -484,23 +484,18 @@ Start here if you are visiting:
 
 ## Current Status
 
-The office is built, and the current product branch contains a Minimal Timer
-Flutter app tracked under:
+The README is intentionally branch-neutral and should stay the same across
+`main`, `org/main`, integration branches, and feature branches. Branch-specific
+product state, release evidence, role handoffs, and parallel work notes belong
+under `docs/`, especially:
 
 ```text
-docs/features/minimal-timer-app/
-work/minimal-timer-app/
+docs/features/status-index.md
+docs/features/<feature-slug>/
+docs/features/<feature-slug>/async/
 ```
 
-Current product state:
-
-1. `minimal-timer-app` is on `main`, with interactive browser/emulator QA
-   evidence still incomplete.
-2. `android-background-timer` has code present on `main`, but release
-   verification is pending. See
-   `docs/features/android-background-timer/handoff.md`.
-3. `fluent-minimal-redesign` and `sleep-tracker` have implementation/design
-   evidence, but still need release-grade UI/manual QA evidence before stronger
-   release claims.
-4. `docs/features/status-index.md` is the lightweight source for progress
-   checks.
+Use `docs/features/status-index.md` as the lightweight dashboard for active
+branches. Use each feature folder for briefs, design contracts, technical plans,
+QA evidence, outboxes, and handoffs. That keeps parallel work visible without
+turning the README into a branch-specific status report.
