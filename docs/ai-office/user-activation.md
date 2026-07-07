@@ -5,9 +5,11 @@ packet paths, or template formats.
 
 Any unstructured prompt is an Office Assistant prompt. The Office Assistant
 reads lightweight project docs, determines the role sequence, and creates role
-contracts. If the current tool can start native sub-agents, the Office Assistant
-uses those contracts to launch the team. If not, it outputs ready-to-paste agent
-packets.
+contracts. Ready-to-paste packets are the portable default. The Office
+Assistant starts native sub-agents only when the active runtime policy allows
+it. In Codex, that means the user explicitly asks for sub-agents, delegation,
+or parallel agent work, or runtime metadata otherwise permits
+`multi_agent_v1.spawn_agent`.
 
 ## Just Type Your Task
 
@@ -75,15 +77,16 @@ This goes directly to that specialist. The Office Assistant does not intervene.
 For any unstructured task, the Office Assistant produces:
 
 1. A **phase plan** showing which roles run and in what order.
-2. **Native sub-agent launches** when the current tool supports them.
-3. **Ready-to-paste packets** as the fallback when native sub-agents are not
-   available.
+2. **Ready-to-paste packets** as the portable default.
+3. **Native sub-agent launches** only when the runtime supports and permits
+   them.
 4. Each role contract starts with the role's involvement banner.
 5. Each contract includes: role, mission, branch, file ownership, boundaries,
    concurrent agent awareness, and output location.
 
-When native sub-agents are available, the main chat starts those agents for you.
-When they are not, you copy-paste each packet into a separate agent session
+When native sub-agents are permitted, the main chat starts those agents for you.
+Each specialist role gets its own sub-agent, branch, file ownership, and handoff
+path. Otherwise, you copy-paste each packet into a separate agent session
 (Codex, Cursor, Gemini CLI, Antigravity CLI, Claude Code, or any AI coding tool)
 and the agent works within its defined boundaries.
 
@@ -119,10 +122,11 @@ In a fresh session, the Office Assistant:
 7. If a feature folder exists, reads its lightweight docs and handoffs for prior
    context.
 8. Checks whether the current tool can create native sub-agents for the selected
-   roles.
+   roles and whether the active runtime policy allows spawning.
 
-Then it produces the phase plan. If native sub-agents are available and the task
-is an execution task, it starts them. If not, it prints the packet fallbacks.
+Then it produces the phase plan and packets. If native sub-agents are available,
+allowed, and useful for the execution task, it starts them. Otherwise, it keeps
+the packets as the handoff mechanism.
 
 For execution tasks, the Office Assistant or main chat keeps orchestrating the
 next clear step. It only stops to ask the user when a blocker, permission,
@@ -145,10 +149,12 @@ You are the Office Assistant for this project. Read AGENTS.md for rules.
 First print the Office Assistant involvement banner from
 docs/ai-office/role-activation.md before using tools. Analyze the lightweight
 project docs, determine the role sequence and file ownership, and create role
-contracts. If this tool can start native sub-agents, launch the relevant roles
-with those contracts. If it cannot, output ready-to-paste packets. Each contract
-or packet must start with the target role's involvement banner. Do not implement
-the specialist task yourself.
+contracts. Output ready-to-paste packets by default. Launch native sub-agents
+only when this runtime supports and permits them. In Codex, use
+multi_agent_v1.spawn_agent only when the user explicitly asks for sub-agents,
+delegation, or parallel agent work, or when runtime policy otherwise permits
+native spawning. Each contract or packet must start with the target role's
+involvement banner. Do not implement the specialist task yourself.
 ```
 
 This prompt is optional when `AGENTS.md` is already loaded as a project rule.
@@ -177,9 +183,9 @@ Do not ask the user to choose internal office mechanics.
 ## Summary
 
 ```text
-Unstructured prompt -> Office Assistant -> role contracts -> native sub-agents
-or packet fallback -> agents work within boundaries -> gates and review ->
-release-ready handoff or blocker
+Unstructured prompt -> Office Assistant -> role contracts -> packets by default
+or permitted native sub-agents -> agents work within boundaries -> gates and
+review -> release-ready handoff or blocker
 ```
 
 The user calls the office. The office produces the instructions.

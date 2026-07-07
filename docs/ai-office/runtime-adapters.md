@@ -20,10 +20,13 @@ A runtime adapter is only the way a role gets executed.
 
 Use this order:
 
-1. **Native sub-agent harness**: if the current tool can start role-specific
-   sub-agents, the main chat should launch them directly.
-2. **Packet fallback**: if the tool cannot launch sub-agents, the main chat
-   prints ready-to-paste packets.
+1. **Packet fallback**: the main chat prints ready-to-paste packets as the
+   portable default for every role contract.
+2. **Native sub-agent harness**: if the current tool can start role-specific
+   sub-agents and the active runtime policy permits it, the main chat may launch
+   them directly. In Codex, `multi_agent_v1.spawn_agent` is allowed only when
+   the user explicitly asks for sub-agents, delegation, or parallel agent work,
+   or when runtime metadata otherwise permits native spawning.
 3. **Manual handoff**: if the tool cannot edit files, the user or CEO copies the
    final handoff back into the repo.
 
@@ -80,29 +83,37 @@ flowchart LR
     Main --> Release --> Repo
 ```
 
-## Antigravity 2.0 Fit
+## Native Runtime Fit
 
-Antigravity 2.0 is the strongest fit for this architecture right now because it
-is built around an agent harness: dynamic sub-agents, background or managed
-agent work, CLI/SDK entry points, and Markdown-defined agent instructions map
-cleanly onto this office's role-contract model.
+Codex native sub-agents are the concrete operational path for Codex when
+`multi_agent_v1.spawn_agent` is available and the current runtime policy permits
+native spawning. The Office Assistant creates the same role contracts it would
+print as packets, then launches one Codex sub-agent per specialist role with the
+matching Codex `agent_type` only when that launch is allowed.
 
-Use Antigravity 2.0 when available for:
+Antigravity remains a strong optional runtime because it is built around an
+agent harness: dynamic sub-agents, background or managed agent work, CLI/SDK
+entry points, and Markdown-defined agent instructions map cleanly onto this
+office's role-contract model.
+
+Use native harnesses such as Codex or Antigravity when available and allowed
+for:
 
 - Starting multiple specialist roles from one main chat.
 - Running long QA, review, or verification jobs in the background.
 - Keeping the main chat as the orchestrator while sub-agents own focused work.
 - Turning the same Markdown role contracts into repeatable SDK or CLI workflows.
 
-### CRITICAL ANTIGRAVITY 2.0 WARNING: SUB-AGENT COLLAPSING
+### Critical Native-Harness Guardrail: Sub-Agent Collapsing
 - **DO NOT collapse multiple specialist roles** into a single generic sub-agent (e.g. UX designer, Product engineer, and Junior dev collapsed into a single `Feature Team Sub-agent`). Doing so violates the office design, leads to context bloat, and defeats the goal of parallel, disjoint workflows.
-- **You MUST spawn separate, independent sub-agents** for each distinct specialist role required in your plan. If you need a UX designer and a Junior developer, use the sub-agent harness tool (`invoke_subagent`) to invoke them as separate sub-agents, passing their specific role contracts.
-- **Limit/Parallelization Constraint**: If Antigravity limits the number of active sub-agents, run them sequentially in order of their workflow dependencies (e.g. UX Designer completes first and writes an outbox, then Product Engineer runs, then developers start) rather than blending them into one.
+- **When spawning is permitted, you MUST spawn separate, independent sub-agents** for each distinct specialist role required in your plan. In Codex, call `multi_agent_v1.spawn_agent` once per role contract. In Antigravity, invoke each role as its own sub-agent.
+- **Limit/Parallelization Constraint**: If the runtime limits the number of active sub-agents, run them sequentially in order of their workflow dependencies (e.g. UX Designer completes first and writes an outbox, then Product Engineer runs, then developers start) rather than blending them into one.
 
-The office has not yet been fully tested across every other provider's harness.
-The contract should still work across Codex, Claude Code plugins, Gemini, Cursor,
-and future tools because it only depends on Markdown instructions, git branches,
-repo files, shell commands, and handoff notes. Treat those integrations as
+The office has Codex-native role definitions under `.codex/agents/` and can use
+Codex sub-agents when `multi_agent_v1.spawn_agent` is exposed and allowed. The
+same contract should still work across Claude Code plugins, Gemini, Cursor, and
+future tools because it only depends on Markdown instructions, git branches,
+repo files, shell commands, and handoff notes. Treat non-Codex integrations as
 portable but still to be proven in real project runs.
 
 ## Adapter Contract
@@ -127,6 +138,37 @@ The repo remains the source of truth.
 
 Instruction file: `AGENTS.md` is read automatically by Codex at project root.
 
+Native sub-agent tool: when the `multi_agent_v1` tools are available, the
+Office Assistant starts specialist roles with `spawn_agent` only if the user
+explicitly asked for sub-agents, delegation, or parallel agent work, or runtime
+metadata otherwise permits native spawning. Otherwise it prints the same role
+contracts as packets.
+
+Operational rules:
+
+- Spawn exactly one Codex sub-agent per specialist role contract.
+- Do not call `spawn_agent` merely because the tool exists; Codex tool metadata
+  currently requires an explicit user request for sub-agents, delegation, or
+  parallel agent work unless a runtime policy says otherwise.
+- Use the matching Codex role type as `agent_type` when available
+  (`product-lead`, `ui-ux-designer`, `product-engineer`,
+  `senior-flutter-engineer`, `junior-flutter-developer`,
+  `qa-test-engineer`, `code-reviewer`, `release-engineer`, or `ceo`).
+  These role types mirror `.codex/agents/` definitions; the TOML files are not
+  passed to `spawn_agent`.
+- Put the complete role contract in `message` or `items`; the first visible
+  line must be the role activation banner.
+- Keep branch, owned paths, files to avoid, context paths, and handoff path in
+  the prompt. These boundaries are mandatory, even for native agents.
+- Leave `fork_context` false unless the role truly needs prior hidden chat
+  context. Prefer repo files, packets, and outboxes as shared memory.
+- Do not use the generic `worker` or `default` type for a standard office role
+  when a role-specific Codex agent type exists.
+- If a concurrency limit prevents parallel spawning, run the same role contracts
+  sequentially. Never combine roles to fit the limit.
+- When a spawned agent finishes, inspect its changed paths and outbox before
+  launching dependent roles.
+
 MCP setup:
 
 ```powershell
@@ -144,15 +186,19 @@ args = ["dart", "mcp-server", "--force-roots-fallback"]
 
 Sub-agent protocol: each office role runs as a separate Codex agent. The role
 contract is passed as the agent prompt. Each agent has shell, git, and file
-access. The orchestrator monitors progress via git refs and outbox files.
+access according to its configured sandbox. The orchestrator monitors progress
+via `wait_agent`, git refs, changed paths, and outbox files.
 
-Use the `/agent` command to switch between agent threads in the Codex
-interface.
+Use `wait_agent` for agent completion when the result is on the critical path,
+and close completed agents when they are no longer needed. In interactive Codex
+interfaces that expose threads, use `/agent` to switch between agent threads.
 
 TOML-based agent configs live in `.codex/agents/` for persistent role
 definitions. Each file defines `name`, `description`, `developer_instructions`,
-and optional model/sandbox preferences so roles can be launched repeatedly
-without rewriting contracts. The office keeps one file per standard role.
+and optional model/sandbox preferences so Codex can expose matching role types
+for repeated launch. The `spawn_agent` call receives the role type name in
+`agent_type`, not the TOML file itself. The office keeps one file per standard
+role.
 
 Model selection: use `codex --model <model-name>` to pick a role-specific
 model. Heavier roles like architecture or review can use a stronger model while
@@ -221,9 +267,9 @@ and return source paths for citation.
 
 ### Gemini CLI / Antigravity CLI, Cursor, And Other Tools
 
-If native sub-agents exist, use them. If not, paste the packets into separate
-sessions. The workflow should still function with only Markdown, shell, editor,
-and git.
+If native sub-agents exist and launch policy allows them, use them. If not,
+paste the packets into separate sessions. The workflow should still function
+with only Markdown, shell, editor, and git.
 
 > **Note**: Gemini CLI standard tier reaches end-of-life on June 18, 2026. The
 > successor is Antigravity CLI (`agy`). See
@@ -248,7 +294,7 @@ It should:
 
 - Decide which roles are needed.
 - Create role contracts.
-- Start native sub-agents when available.
+- Start native sub-agents when available and allowed.
 - Print packet fallbacks when needed.
 - Monitor outboxes, status files, and branch diffs.
 - Escalate blockers to the CEO or user.
@@ -262,6 +308,6 @@ It should not:
 
 ## Packet Fallback Rule
 
-Every native sub-agent launch should have an equivalent packet form. If the
-runtime fails, the user should be able to continue by copying the packet into a
-new session without changing the workflow.
+Every native sub-agent launch should have an equivalent packet form. If native
+launch is unavailable, disallowed, or fails, the user should be able to continue
+by copying the packet into a new session without changing the workflow.

@@ -175,6 +175,9 @@ The CEO approved these layers:
 - `.cursor/mcp.json` and `.gemini/settings.json`: project-local MCP configs for
   clients that support checked-in MCP settings.
 - `skills-lock.json`: reproducible record of installed skills.
+- Codex native sub-agent spawning: first-class native harness support for role
+  contracts, alongside Antigravity, Claude Code, Gemini/Cursor-compatible
+  flows, and packet fallback.
 
 Current local tool status:
 
@@ -916,6 +919,42 @@ Updated:
   `docs/features/README.md`.
 - `.github/workflows/quality-gates.yml` and `.github/PULL_REQUEST_TEMPLATE.md`
   to include office-readiness checks and stronger UI/build evidence prompts.
+
+### 2026-07-02: Treat Codex As A First-Class Native Sub-Agent Harness
+
+Decision: Codex now has native sub-agent spawning available for this office, so
+the office should treat Codex as a first-class native harness alongside
+Antigravity, Claude Code, Gemini/Cursor-compatible flows, and future agent
+harnesses.
+
+Why: the office already uses portable role contracts and repo-backed handoffs.
+Codex can now launch specialist roles directly from those contracts, reducing
+manual packet copy/paste while keeping the same durable branch, ownership, and
+handoff model.
+
+Rules:
+
+- Native Codex sub-agents are used when `multi_agent_v1.spawn_agent` is
+  available and the active launch policy permits native spawning; they receive
+  the same role contracts that packet sessions receive.
+- Packet output remains the universal fallback for runtimes without native
+  spawning, unavailable sub-agent tools, or cases where the user wants portable
+  handoff text.
+- Strict role independence still applies: never collapse Product Lead,
+  UI/UX Designer, Product Engineer, Flutter developer, QA, Review, or Release
+  work into one generic worker.
+- Parallel Codex sub-agents need disjoint file ownership whenever possible; if
+  roles need the same file, coordinate order through the integration owner.
+- Repo files, branches, status docs, handoffs, outboxes, and PR evidence remain
+  the source of truth. Native harness chat state is not the office memory.
+
+Updated:
+
+- `AGENTS.md`, `README.md`, and `CEO_OVERVIEW.md`.
+- `.codex/agents/*.toml` role configs.
+- `docs/ai-office/runtime-adapters.md`, `async-agent-runtime.md`,
+  `mcp-and-skills.md`, `task-triage.md`, `user-activation.md`, and
+  `templates/agent-session-packet.md`.
 
 ## Current Open CEO Items
 

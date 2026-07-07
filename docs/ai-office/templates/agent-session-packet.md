@@ -1,7 +1,12 @@
 # Agent Role Contract: <role>
 
-Use this file as a native sub-agent prompt when the runtime supports sub-agents.
-If not, paste it into a separate agent session as the packet fallback.
+Use this file as the portable packet for a role session. When the runtime
+supports and permits native sub-agents, the same completed packet can be used as
+the sub-agent prompt. In Codex, pass it to `multi_agent_v1.spawn_agent` only
+when the user explicitly asks for sub-agents, delegation, or parallel agent
+work, or when runtime policy otherwise permits native spawning. If native
+spawning is not available or not allowed, paste it into a separate agent session
+as the packet fallback.
 
 ## Role
 
@@ -11,6 +16,9 @@ If not, paste it into a separate agent session as the packet fallback.
 
 Paste the matching line from `docs/ai-office/role-activation.md` as the first
 visible line in the role session or sub-agent prompt.
+
+For permitted Codex native sub-agents, this banner must be the first line of the
+`spawn_agent` prompt.
 
 ## Mission
 
@@ -37,6 +45,16 @@ These files are owned by other agents or are out of scope:
 Who else is running concurrently and what do they own?
 
 - <concurrent role ownership, or "none">
+
+## Native Harness Notes
+
+- Codex: launch with one `multi_agent_v1.spawn_agent` call for this role only
+  when the user explicitly asks for sub-agents, delegation, or parallel agent
+  work, or runtime policy otherwise permits native spawning.
+- Use the matching role-specific Codex `agent_type` when available.
+- Do not combine this role with another specialist role in one agent.
+- Keep `fork_context` false unless this packet explicitly requires hidden chat
+  history.
 
 ## Context
 
