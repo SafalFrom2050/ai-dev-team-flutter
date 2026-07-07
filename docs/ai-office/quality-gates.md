@@ -9,7 +9,9 @@ Before anything merges to `main`:
 - Code is formatted.
 - Static analysis passes.
 - Relevant unit and widget tests pass.
+- Release build checks pass for the target platform.
 - Important UI states match the design contract.
+- **Mandatory Browser Smoke & UI Verification**: For all visual and user-facing UI changes, interactive browser testing is mandatory. Open the app in the browser using the browser tool, click through all primary user flows, verify that no layout overflows occur, capture screenshots of all primary visual states, and link/embed them in the walkthrough or final PR. If browser capability is missing in the environment, document this limitation explicitly.
 - Accessibility and responsive behavior have been checked for user-facing UI.
 - Known risks are documented in the PR.
 
@@ -21,17 +23,42 @@ fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+fvm flutter build web
 Pop-Location
 ```
 
-Add platform build checks as the app matures:
+Add target-platform build checks for the release target:
 
 ```powershell
 Push-Location work/<app-slug>
-fvm flutter build web
 fvm flutter build apk --debug
 Pop-Location
 ```
+
+For any visual or user-facing feature, the active specialist (e.g. Junior Flutter Developer, UI/UX Designer) and the QA/Test Engineer **must** perform a rigorous UI verification pass using browser automation or manual browser tools:
+
+1. Build or run the web app (e.g. `fvm flutter run -d chrome` or `npm run dev`).
+2. Open the app's local dev address in the browser tool.
+3. Exercise the primary user flow, empty states, error states, and the main changed visual state.
+4. Interactively check for visual defects, layout overflows, text truncations, or alignment issues.
+5. Capture screenshots of each verified state using the browser screenshot tool, save them under `docs/features/<feature-slug>/assets/` or copy them to the artifacts directory, and embed them using standard markdown syntax `![caption](absolute_path)` in the walkthrough/outbox.
+6. Record the test evidence and screenshots explicitly in `docs/features/<feature-slug>/handoff.md` or the outbox.
+
+If browser tooling is completely unavailable in the active tool environment, document this limitation honestly in the PR instead of marking the gate green, and specify the manual verification required by the user.
+
+## Agentic Hot Reload Evidence
+
+Screenshots captured during agentic hot reload sessions are valid UI
+verification evidence. Developer agents should:
+
+- Capture screenshots after each significant visual change using the MCP
+  `take_screenshot` tool.
+- Save screenshots to `docs/features/<feature-slug>/assets/`.
+- Link screenshots in the handoff using standard markdown image syntax.
+- Reference `docs/ai-office/agentic-hot-reload.md` for the full workflow.
+
+Hot reload screenshots complement but do not replace browser smoke testing
+for the final release gate.
 
 ## PR Review Gate
 

@@ -40,6 +40,46 @@ Why this matters for the AI office:
 - Agents can run tests, format code, and analyze results through Flutter/Dart
   tooling.
 
+## MCP Tool-To-Role Mapping
+
+The Dart MCP server exposes many tools. Each office role should know which
+tools are relevant to its work:
+
+| MCP Tool | Primary Roles | Use Case |
+|---|---|---|
+| `hot_reload` | Senior Flutter Engineer, Junior Flutter Developer | Apply code changes without restart |
+| `take_screenshot` | All developer roles, QA/Test Engineer | Capture UI state for verification |
+| `get_runtime_errors` | Senior Flutter Engineer, Junior Flutter Developer | Fetch live errors during development |
+| `widget_tree_inspection` | Senior Flutter Engineer, QA/Test Engineer | Inspect widget hierarchy at runtime |
+| `resolve_symbol` | All developer roles | Look up Dart/Flutter API docs |
+| `pub_search` | Product Engineer, Senior Flutter Engineer | Search pub.dev for packages |
+| `pub_add` | Senior Flutter Engineer, Junior Flutter Developer | Add dependencies to pubspec |
+| `dart_fix` | QA/Test Engineer, Code Reviewer | Apply automated code fixes |
+| `analyze` | QA/Test Engineer, Release Engineer | Run static analysis |
+| `test` | QA/Test Engineer | Run tests through MCP |
+
+See `docs/ai-office/agentic-hot-reload.md` for the recommended hot reload
+workflow.
+
+## Community MCP Tools
+
+### flutter_mcp_toolkit (pub.dev)
+
+A community package that provides client-side MCP server interaction with
+running Flutter apps.
+
+Setup:
+- Initialize: `flutter-mcp-toolkit codegen-init`
+- Bootstrap: `MCPToolkitBinding.instance.bootstrapFlutter(runApp: () => runApp(const MyApp()))`
+- Tools are prefixed with `fmt_` (e.g., `fmt_hot_reload`, `fmt_get_widget_tree`)
+
+Evaluation status: not yet adopted. The official Dart MCP server covers the
+primary use cases. Consider `flutter_mcp_toolkit` if deeper app introspection
+is needed beyond what the official server provides.
+
+Decision: monitor. Revisit if the official MCP server lacks needed
+capabilities.
+
 ## Project-Local MCP Configs
 
 This repo includes project-local examples for tools that support checked-in MCP
@@ -47,6 +87,9 @@ configuration:
 
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
+- `.claude/settings.json`
+- `.mcp.json`
+- `.codex/config.toml`
 - `GEMINI.md`
 
 The MCP configs point to `fvm dart mcp-server --force-roots-fallback`.
@@ -54,6 +97,17 @@ The MCP configs point to `fvm dart mcp-server --force-roots-fallback`.
 `GEMINI.md` is not an MCP config. It is Gemini CLI's project context file. It
 exists so Gemini sees the office activation and status-mode rules before using
 MCP tools.
+
+`CLAUDE.md` is not an MCP config either. It is Claude Code's project instruction
+shim. Claude Code also reads project sub-agent files under `.claude/agents/`.
+
+`.mcp.json` is the Claude Code project MCP config shape documented by Claude
+Code. `.claude/settings.json` remains as the Claude-specific project settings
+shim. `.codex/config.toml` is the Codex project config for trusted checkouts.
+
+Note: Gemini CLI standard tier reaches end-of-life June 18, 2026. The
+successor Antigravity CLI (`agy`) is backward compatible with `.gemini/`
+configs. See `docs/ai-office/antigravity-migration.md`.
 
 ## Installed Official Agent Skills
 
@@ -111,6 +165,10 @@ can discover the new skills.
 Use the layers like this:
 
 - `AGENTS.md`: durable team rules for every agent.
+- `docs/ai-office/runtime-adapters.md`: optional native sub-agent harnesses and
+  packet fallback behavior.
+- `docs/ai-office/local-memory.md`: local FastEmbed/ONNX semantic recall over
+  office docs.
 - `GEMINI.md`: Gemini CLI-specific guardrails for first response and status
   mode.
 - `.fvmrc`: repo-local Flutter SDK pin.
@@ -119,9 +177,47 @@ Use the layers like this:
   decisions, and analysis fixes.
 - MCP server: live tool access to analyzer, tests, package search, docs,
   runtime errors, and widget tree inspection.
+- Native agent harnesses: optional execution engines for launching role
+  sub-agents in tools such as Codex, Antigravity, Claude Code, Gemini, or Cursor.
+- Codex native sub-agents: when the user explicitly asks for sub-agents,
+  delegation, or parallel agent work, or runtime policy otherwise permits
+  native spawning, use `multi_agent_v1.spawn_agent` with the role-specific
+  Codex `agent_type` mirrored by `.codex/agents/`, one specialist role per
+  call, and the packet text as the prompt.
+- Browser automation: optional release/QA tooling for web-capable Flutter apps.
+  Use it to open the app and exercise the primary user flow after build gates.
 
-Rules define the team culture. Skills define how to do a specific job. MCP gives
-agents hands and eyes inside the Flutter toolchain.
+Rules define the team culture. Runtime adapters decide how roles are launched.
+Skills define how to do a specific job. MCP gives agents hands and eyes inside
+the Flutter toolchain.
+
+## Native Harnesses Stay Optional
+
+Antigravity 2.0, Antigravity CLI/SDK, Claude Code plugins, Claude Code Agent
+Teams, Codex sub-agents, Codex TOML-based agent configs, and future harnesses
+can reduce manual packet passing. They should not replace the repo protocol.
+
+When a native harness is available and launch policy allows it:
+
+- Use the same role contract that would have been printed as a packet.
+- Give each sub-agent one role, one branch, clear file ownership, and a handoff
+  path.
+- For Codex, prefer the matching role-specific `agent_type` mirrored by
+  `.codex/agents/` over generic `worker` or `default` agents.
+- Spawn roles separately. If the runtime cannot run them in parallel, run them
+  sequentially instead of combining responsibilities.
+- Preserve activation banners and status-mode read-only rules.
+- Write durable results back to feature docs, outboxes, commits, and PRs.
+- Claude Code Agent Teams add Mailbox-based inter-agent communication.
+  See `docs/ai-office/runtime-adapters.md` for setup and token-cost warnings.
+- Codex TOML configs in `.codex/agents/` define persistent role behavior so
+  Codex can expose matching `agent_type` names for repeatable launches. See
+  `docs/ai-office/runtime-adapters.md` for details.
+
+When a native harness is not available, print packets and continue normally.
+In Codex, also print packets when `spawn_agent` exists but the user did not
+explicitly request sub-agents, delegation, or parallel agent work and no runtime
+policy grants spawning.
 
 ## Setup Checklist
 
@@ -131,6 +227,7 @@ agents hands and eyes inside the Flutter toolchain.
 - [x] Run `fvm dart mcp-server --help` once to verify the command exists.
 - [ ] Add the MCP server to Codex, Cursor, Gemini CLI, or the preferred agent
       client.
+- [x] Check in project-level MCP config for Codex and Claude Code.
 - [x] Install official Flutter and Dart skills into `.agents/skills`.
 - [ ] Create Flutter app scaffolds under `work/<app-slug>/`.
 - [ ] Run `fvm flutter analyze` and `fvm flutter test` from the app workspace.

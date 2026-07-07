@@ -1,0 +1,99 @@
+<svg width="1200" height="520" viewBox="0 0 1200 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AI Flutter Office production path</title>
+  <desc id="desc">A dark pipeline diagram showing how an idea becomes a product brief, design contract, technical plan, Flutter implementation, QA evidence, code review, release candidate, and production main branch.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fafafa"/>
+    </marker>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#737373"/>
+    </marker>
+    <style>
+      .title { font: 800 34px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 500 16px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; }
+      .label { font: 800 17px Inter, Segoe UI, Arial, sans-serif; fill: #ffffff; }
+      .body { font: 500 13px Inter, Segoe UI, Arial, sans-serif; fill: #d4d4d4; }
+      .small { font: 800 11px Inter, Segoe UI, Arial, sans-serif; fill: #a3a3a3; letter-spacing: 1px; }
+      .mono { font: 700 12px "JetBrains Mono", Consolas, monospace; fill: #ffffff; }
+      .card { fill: #111111; stroke: #3f3f46; stroke-width: 1.5; }
+      .lane { fill: #0a0a0a; stroke: #262626; stroke-width: 1.5; }
+      .flow { stroke: #fafafa; stroke-width: 2.3; marker-end: url(#arrow); }
+      .muted { stroke: #737373; stroke-width: 1.8; marker-end: url(#arrow-muted); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="520" rx="28" fill="#050505"/>
+  <rect x="30" y="30" width="1140" height="460" rx="24" fill="#080808" stroke="#262626" stroke-width="2"/>
+
+  <text x="72" y="82" class="title">The Production Path</text>
+  <text x="72" y="112" class="subtitle">Each agent leaves a durable artifact before code moves closer to production.</text>
+
+  <g transform="translate(72 146)">
+    <rect x="0" y="0" width="1056" height="178" rx="18" class="lane"/>
+    <text x="24" y="32" class="small">SPECIFICATION BEFORE IMPLEMENTATION</text>
+
+    <rect x="28" y="62" width="130" height="76" rx="14" fill="#171717" stroke="#f472b6" stroke-width="2"/>
+    <text x="93" y="92" text-anchor="middle" class="label">Idea</text>
+    <text x="93" y="116" text-anchor="middle" class="body">raw intent</text>
+
+    <line x1="158" y1="100" x2="202" y2="100" class="flow"/>
+
+    <rect x="202" y="62" width="152" height="76" rx="14" class="card"/>
+    <text x="278" y="90" text-anchor="middle" class="label">Brief</text>
+    <text x="278" y="114" text-anchor="middle" class="body">scope and tests</text>
+    <text x="278" y="132" text-anchor="middle" class="mono">product/*</text>
+
+    <line x1="354" y1="100" x2="398" y2="100" class="flow"/>
+
+    <rect x="398" y="62" width="152" height="76" rx="14" class="card"/>
+    <text x="474" y="90" text-anchor="middle" class="label">Design</text>
+    <text x="474" y="114" text-anchor="middle" class="body">states and UX</text>
+    <text x="474" y="132" text-anchor="middle" class="mono">design/*</text>
+
+    <line x1="550" y1="100" x2="594" y2="100" class="flow"/>
+
+    <rect x="594" y="62" width="152" height="76" rx="14" class="card"/>
+    <text x="670" y="90" text-anchor="middle" class="label">Tech plan</text>
+    <text x="670" y="114" text-anchor="middle" class="body">state and slices</text>
+    <text x="670" y="132" text-anchor="middle" class="mono">arch/*</text>
+
+    <line x1="746" y1="100" x2="790" y2="100" class="flow"/>
+
+    <rect x="790" y="62" width="238" height="76" rx="14" fill="#101010" stroke="#a3e635" stroke-width="2"/>
+    <text x="909" y="90" text-anchor="middle" class="label">Integration workbench</text>
+    <text x="909" y="114" text-anchor="middle" class="body">parallel branches meet here</text>
+    <text x="909" y="132" text-anchor="middle" class="mono">integrate/&lt;feature&gt;</text>
+  </g>
+
+  <g transform="translate(72 356)">
+    <rect x="0" y="0" width="1056" height="96" rx="18" class="lane"/>
+    <text x="24" y="30" class="small">QUALITY GATES TO MAIN</text>
+
+    <rect x="28" y="46" width="150" height="34" rx="11" class="card"/>
+    <text x="103" y="68" text-anchor="middle" class="label">Flutter build</text>
+
+    <rect x="228" y="46" width="150" height="34" rx="11" class="card"/>
+    <text x="303" y="68" text-anchor="middle" class="label">QA evidence</text>
+
+    <rect x="428" y="46" width="150" height="34" rx="11" class="card"/>
+    <text x="503" y="68" text-anchor="middle" class="label">Code review</text>
+
+    <rect x="628" y="46" width="150" height="34" rx="11" class="card"/>
+    <text x="703" y="68" text-anchor="middle" class="label">Release PR</text>
+
+    <rect x="828" y="42" width="200" height="42" rx="12" fill="#1c1917" stroke="#f59e0b" stroke-width="2"/>
+    <text x="928" y="68" text-anchor="middle" class="label">production main</text>
+
+    <line x1="178" y1="63" x2="228" y2="63" class="flow"/>
+    <line x1="378" y1="63" x2="428" y2="63" class="flow"/>
+    <line x1="578" y1="63" x2="628" y2="63" class="flow"/>
+    <line x1="778" y1="63" x2="828" y2="63" class="flow"/>
+  </g>
+
+  <path d="M981 324 C981 342 928 342 928 356" class="muted"/>
+  <path d="M909 324 C909 342 103 342 103 356" class="muted"/>
+
+  <g transform="translate(72 468)">
+    <text x="0" y="0" class="body">Rule: no direct-to-main agent work. The integration branch absorbs collaboration; release is the only gate into production.</text>
+  </g>
+</svg>

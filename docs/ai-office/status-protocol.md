@@ -6,12 +6,12 @@ The Office Assistant should answer "where are we?" without loading a large app
 into context. It should use the repository's lightweight status artifacts first,
 then only inspect code when the user explicitly asks for code-level detail.
 
-## Activation
+## Involvement
 
 The first visible line must be:
 
-```text
-Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
 This line comes before any shell command, file read, git query, or summary.
@@ -110,3 +110,42 @@ Evidence: <small list of files/commits read>
 
 Avoid implementation packets unless the user asks to continue work. Status means
 report first; action comes after explicit follow-up.
+
+## Branch-Aware Status Check
+
+Feature work often lives on integration or feature branches. The status
+protocol must check across branches to avoid stale reports.
+
+1. Read `docs/features/status-index.md` on the current branch.
+2. List active integration branches:
+   `git branch --list 'integrate/*'`
+3. For each active integration branch, read its status-index:
+   `git show integrate/<slug>:docs/features/status-index.md`
+4. Compare timestamps and state fields to identify the freshest status.
+5. Report the most current state for each feature, noting which branch
+   holds the latest information.
+
+If the current branch status-index is stale compared to an integration
+branch, explicitly note this in the status report:
+
+> Feature X status on `main` is outdated. The latest state is on
+> `integrate/<slug>`: <current state>.
+
+## Forbidden Paths For Status Mode
+
+Status-only prompts must NOT read these paths unless the user explicitly
+asks for code inspection:
+
+- `work/**/lib/**`
+- `work/**/test/**`
+- `work/**/pubspec.yaml`
+- `work/**/pubspec.lock`
+- `work/**/android/**`
+- `work/**/ios/**`
+- `work/**/macos/**`
+- `work/**/windows/**`
+- `work/**/linux/**`
+- Generated files, lockfiles, build folders, and platform manifests.
+
+This list is referenced by all instruction shims (AGENTS.md, GEMINI.md,
+CLAUDE.md) and applies uniformly.

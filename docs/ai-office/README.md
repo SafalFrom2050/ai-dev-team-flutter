@@ -52,7 +52,8 @@ design close to implementation without pretending design is only code.
 
 - CEO: owns the office vision, team structure, decision history, and
   `CEO_OVERVIEW.md`.
-- Office Assistant: turns unstructured tasks into ready-to-paste role packets.
+- Office Assistant: turns unstructured tasks into role contracts, starts native
+  sub-agents when available, and prints ready-to-paste packets as fallback.
 - Product Lead: decides what problem is worth solving.
 - UI/UX Designer: defines how the experience should feel and behave.
 - Product Engineer: bridges product/design intent into buildable architecture.
@@ -78,6 +79,7 @@ For task triage, use:
 - `user-activation.md`
 - `role-activation.md`
 - `status-protocol.md`
+- `runtime-adapters.md`
 
 For commits and handoffs, use:
 
@@ -88,9 +90,12 @@ For Flutter-specific behavior, start with:
 
 - `flutter-specialization.md`
 - `mcp-and-skills.md`
+- `local-memory.md`
+- `memory-history/`
 - `package-decisions.md`
 - `gemini-cli.md`
 
 For parallel or multi-session role execution, use:
 
 - `async-agent-runtime.md`
+- `runtime-adapters.md`

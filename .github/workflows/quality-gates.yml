@@ -1,0 +1,66 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'work/**'
+      - 'docs/**'
+      - '.codex/**'
+      - '.claude/**'
+      - '.github/**'
+      - 'tools/**'
+      - 'AGENTS.md'
+      - 'CEO_OVERVIEW.md'
+      - 'CLAUDE.md'
+      - 'GEMINI.md'
+      - 'README.md'
+
+jobs:
+  office_readiness:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate office runtime configuration
+        run: python tools/office-readiness/check.py
+
+  analyze_and_test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: work/minimal-timer-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build web
+        run: flutter build web

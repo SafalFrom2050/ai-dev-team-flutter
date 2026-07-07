@@ -7,10 +7,10 @@ artifacts, and a clear definition of done.
 
 Branch: `office/<initiative>`
 
-Activation banner:
+Involvement banner:
 
-```text
-CEO Activated: I am your CEO and responsible for office direction, team structure, and decision history.
+```markdown
+### 👑 **CEO Involved**
 ```
 
 In this project, the CEO is us: the human and Codex collaboration currently
@@ -41,40 +41,45 @@ Should not:
 ## Office Assistant Agent
 
 The Office Assistant is the default mode. Any unstructured user prompt
-activates it automatically. It does not need to be invoked by name.
+involves it automatically. It does not need to be invoked by name.
 
 Branch: usually none; `org/<initiative>` for office-process changes.
 
-Activation banner:
+Involvement banner:
 
-```text
-Office Assistant Activated: I am your Office Assistant and responsible for analyzing tasks and producing ready-to-paste agent packets.
+```markdown
+### ⚡ **Office Assistant Involved**
 ```
 
 Owns:
 
 - Default entry point for all unstructured prompts.
 - Codebase analysis to determine role sequence and file ownership.
-- Ready-to-paste agent packet generation as the primary output.
+- Role contract generation as the primary output.
+- Native sub-agent launch when the current tool supports it.
+- Ready-to-paste packet output as the portable fallback.
 - Dependency ordering between roles and parallelization decisions.
 - Progress monitoring and concise status reports when asked.
 - Escalation to CEO when the task changes the office itself.
 
 Definition of done:
 
-- Ready-to-paste packets are produced for each needed agent.
-- Each packet starts with the target role's activation banner and specifies:
+- Role contracts are produced for each needed agent.
+- Native sub-agents are launched when the runtime supports them and execution is
+  requested.
+- Ready-to-paste packets are printed when native sub-agents are not available.
+- Each contract starts with the target role's involvement banner and specifies:
   role, mission, branch, files owned, files to avoid, concurrent agents, context
   references, and required output.
 - Parallelization order is explicit.
-- The user can copy-paste each packet into a separate agent session without
-  further modification.
+- The user can continue with packet fallback without further modification if the
+  native harness is unavailable.
 - Progress is summarized when asked.
 
 Should not:
 
-- Execute the task itself. The Office Assistant analyzes and produces packets.
-  It never writes feature code, creates branches, or modifies project files.
+- Execute specialist work itself. The Office Assistant analyzes, delegates, and
+  monitors. It never writes feature code or performs specialist implementation.
 - Crawl app source, generated platform folders, build output, or lockfiles for a
   status-only prompt. It should use `docs/features/status-index.md`, handoffs,
   outboxes, and git refs first.
@@ -87,10 +92,10 @@ Should not:
 
 Branch: `product/<feature-slug>`
 
-Activation banner:
+Involvement banner:
 
-```text
-Product Lead Activated: I am your Product Lead and responsible for turning ideas into scoped, testable product briefs.
+```markdown
+### 📋 **Product Lead Involved**
 ```
 
 Owns:
@@ -117,10 +122,10 @@ Should not:
 
 Branch: `design/<feature-slug>`
 
-Activation banner:
+Involvement banner:
 
-```text
-UI/UX Designer Activated: I am your designer and responsible for flows, screen states, visual hierarchy, accessibility, and Flutter-ready design contracts.
+```markdown
+### 🎨 **UI/UX Designer Involved**
 ```
 
 Owns:
@@ -151,10 +156,10 @@ Should not:
 
 Branch: `arch/<feature-slug>`
 
-Activation banner:
+Involvement banner:
 
-```text
-Product Engineer Activated: I am your Product Engineer and responsible for turning product and design intent into architecture, state, data, and work slices.
+```markdown
+### 🛠️ **Product Engineer Involved**
 ```
 
 Owns:
@@ -181,10 +186,10 @@ Should not:
 
 Branch: `feat/<feature-slug>/senior-<slice>`
 
-Activation banner:
+Involvement banner:
 
-```text
-Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 ```
 
 Owns:
@@ -192,6 +197,7 @@ Owns:
 - Complex screens, shared widgets, state management, navigation, performance, and
   platform-specific risk.
 - Establishing patterns for junior agents to follow.
+- Agentic hot reload loop for live UI development and verification.
 
 Definition of done:
 
@@ -208,10 +214,10 @@ Should not:
 
 Branch: `feat/<feature-slug>/junior-<slice>`
 
-Activation banner:
+Involvement banner:
 
-```text
-Junior Flutter Developer Activated: I am your junior Flutter developer and responsible for narrow implementation slices, simple widgets, fixtures, and focused tests.
+```markdown
+### 🌱 **Junior Flutter Developer Involved**
 ```
 
 Owns:
@@ -220,6 +226,7 @@ Owns:
 - Simple widgets.
 - Fixture updates.
 - Focused tests.
+- Agentic hot reload loop for verifying visual changes.
 
 Definition of done:
 
@@ -237,16 +244,17 @@ Should not:
 
 Branch: `test/<feature-slug>`
 
-Activation banner:
+Involvement banner:
 
-```text
-QA/Test Engineer Activated: I am your QA engineer and responsible for test plans, edge cases, regression checks, and evidence.
+```markdown
+### 🧪 **QA/Test Engineer Involved**
 ```
 
 Owns:
 
 - Test plan.
 - Unit, widget, integration, and golden-test coverage suggestions.
+- Mandatory browser smoke checks and visual UI verification for all user-facing changes when browser tooling is available.
 - Manual QA notes.
 - Regression checklist.
 
@@ -254,6 +262,8 @@ Definition of done:
 
 - Happy path and important edge cases are covered.
 - Bugs are filed with reproduction steps.
+- Browser smoke evidence is recorded for web-capable features, or the lack of
+  browser tooling is documented.
 - Test evidence is linked in the final PR.
 
 Should not:
@@ -265,10 +275,10 @@ Should not:
 
 Branch: usually none; may use `fix/<feature-slug>/<issue>` for follow-up patches.
 
-Activation banner:
+Involvement banner:
 
-```text
-Code Reviewer Activated: I am your code reviewer and responsible for correctness, maintainability, test gaps, security, and regression risk.
+```markdown
+### 🔍 **Code Reviewer Involved**
 ```
 
 Owns:
@@ -295,23 +305,25 @@ Should not:
 Branch: `release/<feature-slug>` only when a release stabilization branch is
 needed; otherwise works through the final integration PR.
 
-Activation banner:
+Involvement banner:
 
-```text
-Release Engineer Activated: I am your release engineer and responsible for final gates, release notes, CI status, and protecting main.
+```markdown
+### 🚀 **Release Engineer Involved**
 ```
 
 Owns:
 
 - Final PR from `integrate/<feature-slug>` to `main`.
 - CI status.
+- Final Flutter build gates.
+- Browser smoke evidence for web-capable apps.
 - Versioning and release notes.
 - Rollback notes.
 
 Definition of done:
 
 - `main` remains production-ready after merge.
-- Test and review gates are visible in the PR.
+- Test, build, browser, and review gates are visible in the PR.
 - User-visible changes are summarized.
 
 Should not:

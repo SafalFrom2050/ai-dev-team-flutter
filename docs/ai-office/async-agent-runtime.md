@@ -6,11 +6,13 @@ coordination.
 
 The best default is simple:
 
-> Use the repository as the shared memory, branches as workspaces, and Markdown
-> packets as the cross-agent protocol.
+> Produce Markdown packets as the portable role contract. Use a native agent
+> harness only when the current tool has one and the active runtime policy
+> permits launch. Use the repository as shared memory and branches as
+> workspaces.
 
-This keeps the workflow compatible with Codex, Gemini CLI, Cursor, Claude Code,
-plain terminal agents, and future tools.
+This keeps the workflow compatible with Codex, Antigravity, Gemini CLI, Cursor,
+Claude Code, plain terminal agents, and future tools.
 
 ## Core Principle
 
@@ -45,6 +47,82 @@ MCP, installed skills, and tool-specific features are useful accelerators, but
 they must be optional. The protocol should still work if an agent only has a
 terminal, a text editor, and git.
 
+## Packet Default, Native Harness When Allowed
+
+Newer AI coding tools can spin up multiple sub-agents from one main chat. The
+office can use that capability when the runtime policy allows it, because it
+reduces manual copy-paste and lets the main chat coordinate work without
+becoming the only context container.
+
+The execution order is:
+
+1. The main chat is involved as CEO, Office Assistant, or the requested role.
+2. It creates a role contract for each specialist.
+3. It prints or records ready-to-paste packets as the portable default.
+4. If native sub-agents are available and allowed, it starts those agents with
+   the role contracts. In Codex, this means calling
+   `multi_agent_v1.spawn_agent` only when the user explicitly asked for
+   sub-agents, delegation, or parallel agent work, or when runtime policy
+   otherwise permits native spawning. **CRITICAL**: Launch each specialist role
+   as a distinct, separate sub-agent. Never collapse or blend multiple roles
+   into a single "Feature Team Sub-agent" or generalist sub-agent.
+5. Every role writes back through branches, commits, handoffs, outboxes, and
+   status files.
+
+The role contract is the portable unit. A native harness receives it as the
+sub-agent prompt. A human receives it as a packet to paste into another tool.
+
+Native sub-agents do not replace the repo protocol:
+
+- The main chat must still show which roles are involved.
+- Each sub-agent must still announce its involvement banner before task work.
+- Each sub-agent must still use the assigned branch and file ownership.
+- Each sub-agent must still write an outbox or handoff when done.
+- Status-only prompts remain read-only, even if the runtime can spawn agents.
+- **Strict Independence**: Sub-agents must never edit overlapping files or cross into other roles' scopes without a documented handoff.
+- Codex agents should prefer repo-visible context and leave `fork_context` off
+  unless the role explicitly needs the main transcript. Hidden chat history is
+  not an office handoff.
+
+Use packets when:
+
+- The current AI service cannot spawn sub-agents.
+- The current runtime policy does not allow native spawning.
+- The user wants to run roles in different tools.
+- The role needs a separate account, model, IDE, emulator, or device.
+- The task is sensitive and the user wants to review every prompt before launch.
+- The native harness cannot guarantee disjoint file ownership.
+- The tool runtime is prone to blending multiple roles into a single generic sub-agent (collapsing UX designer, Product Engineer, and Junior dev into a generic 'Feature Team Sub-agent' is strictly forbidden).
+
+## Autonomous Feature Run
+
+A feature execution prompt means the office should keep moving until the feature
+is release-ready, blocked, or waiting for final approval. Toolchain completions
+are checkpoints, not conversation endings.
+
+The main chat should:
+
+1. Start the required role agents in dependency order when native spawning is
+   allowed, or provide the packets for separate sessions.
+2. Wait for handoffs or tool results.
+3. Read the outbox/status files.
+4. Start the next role or follow-up fix agent when the path is clear.
+5. Run the final release gate, including build and browser checks when
+   available.
+6. Notify the user with the final state and any remaining decisions.
+
+The main chat should interrupt the user only for:
+
+- Product ambiguity that blocks a useful brief.
+- Permission, credential, network, emulator, or device access.
+- Destructive git/file operations.
+- Merge conflicts or overlapping ownership that cannot be resolved safely.
+- Failed quality gates where the next fix is unclear or out of scope.
+- Final release or merge approval.
+
+Otherwise, role progress should be written to `docs/features/<feature-slug>/`,
+`async/outbox/`, commits, and `docs/features/status-index.md`.
+
 ## Async Feature Workspace
 
 Each feature should include an async run folder:
@@ -57,11 +135,12 @@ docs/features/<feature-slug>/
   test-plan.md
   handoff.md
   async/
+    context-summary.md
     runbook.md
     status.md
     ownership.md
     decisions.md
-      packets/
+    packets/
       office-assistant.md
       product-lead.md
       ui-ux-designer.md
@@ -71,7 +150,7 @@ docs/features/<feature-slug>/
       qa-test-engineer.md
       code-reviewer.md
       release-engineer.md
-      outbox/
+    outbox/
       office-assistant.md
       product-lead.md
       ui-ux-designer.md
@@ -83,9 +162,16 @@ docs/features/<feature-slug>/
       release-engineer.md
 ```
 
-`packets/` are the prompts or task contracts given to each role.
+`packets/` are the prompts or task contracts given to each role. They may be
+used directly by a native sub-agent harness or pasted manually into a separate
+agent session.
 
 `outbox/` is where each role writes the result of the session.
+
+`context-summary.md` is the single compressed source of truth for the active
+feature. It should summarize current phase, completed roles, key decisions, file
+ownership, remaining tasks, and reference links. New sub-agents should read it
+before old outbox files whenever it exists.
 
 `status.md`, `ownership.md`, and `decisions.md` are the coordination layer.
 `docs/features/status-index.md` is the cross-feature dashboard that lets the
@@ -93,10 +179,12 @@ Office Assistant answer progress questions without reading the whole app.
 
 ## Agent Session Packet
 
-The Office Assistant generates a ready-to-paste packet for each role session.
-Each packet answers five questions:
+The Office Assistant generates a role contract for each role session. When the
+runtime supports and permits native sub-agents, the contract is used as the
+sub-agent prompt. When it does not, the same contract is printed as a
+ready-to-paste packet. Each contract answers five questions:
 
-1. **Who are you?** (activation banner)
+1. **Who are you?** (involvement banner)
 2. **What is your job?** (mission)
 3. **What branch?** (prevents commit collisions)
 4. **What files are yours and what is off-limits?** (prevents edit collisions)
@@ -104,8 +192,8 @@ Each packet answers five questions:
 
 Example packet:
 
-```text
-Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.
@@ -119,9 +207,9 @@ When done: commit using docs/ai-office/commit-guidelines.md and write summary to
   docs/features/onboarding/async/outbox/senior-flutter-engineer.md
 ```
 
-Packets should be under 200 words when practical. The activation banner remains
-required even in short packets. The agent reads the codebase itself. The packet
-sets boundaries and intent.
+Packets should be under 200 words when practical. The involvement banner remains
+required even in short packets and native sub-agent prompts. The agent reads the
+codebase itself. The packet sets boundaries and intent.
 
 Packets should also tell the role to use `docs/ai-office/commit-guidelines.md`
 for any commit it creates.
@@ -239,6 +327,56 @@ Each branch should merge into `integrate/<feature-slug>`, not directly into
 Exception: company-structure changes should merge into `org/main`, then sync
 into product `main` through an explicit org sync branch.
 
+## Git Worktrees For Parallel Agents
+
+Git worktrees are the recommended isolation primitive for parallel agent
+execution. They allow multiple agents to work on different branches
+simultaneously without branch switching.
+
+This repo already has a `.worktrees/` directory for this purpose.
+
+Create a worktree for a developer agent:
+
+```powershell
+git worktree add .worktrees/feat-sleep-ui feat/sleep-tracker/senior-ui
+```
+
+The agent works in the worktree directory without affecting the main checkout:
+
+```powershell
+Push-Location .worktrees/feat-sleep-ui
+# ... make changes, commit ...
+Pop-Location
+```
+
+Clean up after merge:
+
+```powershell
+git worktree remove .worktrees/feat-sleep-ui
+```
+
+Naming convention:
+
+```text
+.worktrees/
+  feat-sleep-ui/        # Senior Flutter Engineer worktree
+  feat-sleep-widgets/    # Junior Flutter Developer worktree
+  test-sleep/            # QA/Test Engineer worktree
+```
+
+When to use worktrees:
+
+- Two or more developer agents need to work on the same feature simultaneously.
+- The native harness supports parallel agents but not isolated checkouts.
+- Long-running background tasks such as test suites or builds need a stable
+  working directory.
+
+When to skip worktrees:
+
+- The native harness already provides workspace isolation (e.g., Antigravity
+  branched workspaces).
+- Only one agent is active at a time.
+
 ## Context Budgeting
 
 Use small curated context instead of dumping the whole repo into every session.
@@ -282,28 +420,65 @@ everything session.
 Recommended flow:
 
 1. CEO creates `integrate/<feature-slug>`.
-2. CEO creates the feature folder and async packets.
-3. Product Lead runs in its own session and writes outbox.
-4. UI/UX Designer and Product Engineer run in separate sessions.
+2. CEO or Office Assistant creates the feature folder and role contracts.
+3. Print the Product Lead packet. If the current tool supports native
+   sub-agents and launch policy allows it, start the Product Lead sub-agent.
+4. UI/UX Designer and Product Engineer run as permitted native sub-agents or
+   separate packet sessions.
 5. CEO or Product Engineer updates `ownership.md`.
 6. Flutter developers run in parallel on disjoint branches.
 7. QA/Test Engineer runs test planning early and test implementation after code.
 8. Code Reviewer reads diffs, outbox files, and test evidence.
-9. Release Engineer merges the integration branch to `main`.
-10. CEO updates `CEO_OVERVIEW.md` if the office changed.
+9. Release Engineer runs the final release gate: format, analyze, tests, Flutter
+   build, and browser smoke when supported.
+10. Release Engineer prepares the final PR or merge approval request.
+11. CEO updates `CEO_OVERVIEW.md` if the office changed.
 
 ## Compatibility Notes
 
 ### Codex
 
-Use a fresh chat or subtask per role. Give the role packet plus relevant files.
-If MCP is available, use `fvm dart mcp-server --force-roots-fallback`.
+Use native sub-agents when the user has asked to run parallel or delegated role
+work and Codex policy allows spawning. Give each sub-agent one role contract,
+explicit file ownership, and a handoff path. If native sub-agents are not
+available or not allowed, use a fresh chat per role with the packet. If MCP is available, use
+`fvm dart mcp-server --force-roots-fallback`.
+
+In Codex, permitted native execution uses `multi_agent_v1.spawn_agent`. Use one
+call per specialist, set `agent_type` to the matching Codex role type mirrored
+by `.codex/agents/`, pass the role contract as the prompt, and monitor the
+result with `wait_agent` only when the next orchestration step depends on it.
+Review the returned changed paths and the role's outbox before dependent work
+starts.
+
+Codex also supports TOML-based agent definitions in `.codex/agents/` for
+persistent role configurations. See `docs/ai-office/runtime-adapters.md` for
+details.
+
+### Antigravity
+
+Use Antigravity 2.0, Antigravity CLI, or the Antigravity SDK as a runtime
+adapter, not as the office source of truth. The main chat may start dynamic
+sub-agents or managed agents from the same role contracts used elsewhere.
+Antigravity-specific artifacts are useful, but the durable record must still be
+commits, branch diffs, outboxes, and feature status files.
+
+### Claude Code
+
+When Claude Code plugins or sub-agent harnesses are available, start one
+sub-agent per role contract. Keep plugin-specific state optional. If the runtime
+cannot create a sub-agent, print the packet and let the user paste it into a new
+Claude Code session.
+
+Claude Code reads `CLAUDE.md` at the project root for office behavior rules.
+Agent Teams (experimental) enable parallel teammate execution with direct
+Mailbox communication. See `docs/ai-office/runtime-adapters.md` for setup.
 
 ### Gemini CLI
 
-Use the same packet files and branch names. The root `GEMINI.md` file is the
-Gemini-specific instruction shim; it requires activation banners before tool use
-and keeps status prompts on lightweight docs.
+Use the same role contracts, packet files, and branch names. The root
+`GEMINI.md` file is the Gemini-specific instruction shim; it requires activation
+banners before tool use and keeps status prompts on lightweight docs.
 
 The `.gemini/settings.json` MCP config points at FVM for this repo. MCP gives
 Gemini tools, while `GEMINI.md` gives Gemini the office behavior.
@@ -317,6 +492,11 @@ After pulling office-rule changes inside an existing Gemini session, run:
 Use `/memory list` or `/memory show` to verify that the root `GEMINI.md` is
 loaded.
 
+Note: Gemini CLI standard tier reaches end-of-life on June 18, 2026. The
+successor is Antigravity CLI (`agy`). See `docs/ai-office/antigravity-migration.md`
+for migration details. `GEMINI.md` and `.gemini/settings.json` are backward
+compatible with Antigravity CLI.
+
 ### Cursor
 
 Use the packet as the agent prompt and keep the branch ownership map visible.
@@ -324,9 +504,10 @@ The `.cursor/mcp.json` MCP config points at FVM for this repo.
 
 ### Any Other AI Service
 
-Paste the packet, attach or reference the relevant files, and require the agent
-to write its outbox handoff. If the service cannot write files directly, copy the
-handoff into the repo afterward.
+If the service has a native agent harness, start one sub-agent per role contract.
+If it does not, paste the packet, attach or reference the relevant files, and
+require the agent to write its outbox handoff. If the service cannot write files
+directly, copy the handoff into the repo afterward.
 
 ## Rule Of Thumb
 

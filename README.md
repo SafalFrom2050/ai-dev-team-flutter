@@ -1,6 +1,23 @@
 # AI Dev Team Flutter
 
-An experimental Flutter studio where AI agents work like a real product team.
+![AI Dev Team Flutter: from idea to production main](docs/assets/readme/featured.png)
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.38-blue.svg)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.10-blue.svg)](https://dart.dev)
+[![AI agents](https://img.shields.io/badge/AI%20agents-role%20based-purple.svg)](#what-this-project-is)
+[![Quality gates](https://img.shields.io/badge/quality-format%20analyze%20test%20build-informational.svg)](#quality-gates)
+
+AI Dev Team Flutter is an open-source **AI agent team framework for Flutter**
+that turns a product idea into production-ready app code through role-specific
+sub-agents, product/design/architecture contracts, repo-backed memory, MCP
+tooling, and release gates.
+
+Use this repo if you are searching for an AI software team for Flutter, a
+multi-agent coding workflow, a Codex or Claude Code agent setup, a Gemini CLI
+Flutter office, an Antigravity-ready sub-agent harness, or a practical example
+of AI-assisted product engineering with Dart, Flutter, tests, code review, and
+release discipline.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration
 system for taking a rough idea, shaping it through product and design, building
@@ -10,6 +27,111 @@ production-ready work into `main`.
 The ambition is simple and slightly dangerous in the best engineering way:
 build the best Flutter AI dev team in the world.
 
+## Who This Helps
+
+- Flutter developers who want AI coding agents that understand routes, widgets,
+  state, tests, platform builds, and release checks.
+- Product builders who want product, UX, architecture, implementation, QA, code
+  review, and release roles to work from the same repo-backed contracts.
+- Teams experimenting with Codex, Claude Code, Gemini CLI, Cursor, Antigravity,
+  MCP servers, local memory, or parallel sub-agent workflows.
+- Open-source maintainers who want AI-assisted contributions to leave durable
+  handoffs instead of hiding decisions inside chat history.
+
+## What You Get
+
+- A role-based AI office for Flutter product development.
+- Branch, handoff, and PR rules for safe multi-agent work on GitHub.
+- Product brief, design contract, technical plan, QA, and release templates.
+- Codex, Claude, Gemini, Cursor, and MCP configuration examples.
+- Flutter quality gates for format, analyze, tests, web builds, and browser
+  smoke checks.
+- Optional local semantic memory for durable decisions and searchable context.
+
+## GitHub Discovery Signals
+
+Suggested repository description:
+
+```text
+AI agent team framework for Flutter with Codex, Claude, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
+```
+
+Suggested GitHub topics:
+
+```text
+flutter dart ai-agents coding-agents agentic-ai codex claude-code gemini-cli
+cursor antigravity mcp subagents developer-tools mobile-app-development
+flutter-app test-automation product-engineering code-review release-engineering
+open-source
+```
+
+More discoverability notes live in `docs/github-discoverability.md`.
+
+## The Big Idea
+
+This project is not a prompt collection and not a single chatbot with a bigger
+context window. It is an **AI dev office**: one main chat acts like the CEO or
+Office Assistant, then starts distinct specialist agents for product, design,
+architecture, Flutter implementation, QA, code review, and release.
+
+![Native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.png)
+
+The main chat should stay light: it routes work, monitors branch state, reads
+handoffs, and decides when to ask the user. The specialist agents do the deep
+work inside their own context windows and leave durable output in the repo.
+
+| Office Primitive | What It Does |
+|---|---|
+| Main chat | Orchestrates the whole feature run from idea to release-ready handoff. |
+| Role contracts | Give each sub-agent its mission, branch, file ownership, and handoff path. |
+| Native sub-agents | Let supported tools such as Codex or Antigravity run specialists in parallel when the runtime permits it. |
+| Packet fallback | Keeps role contracts portable as the default when native spawning is unavailable or not allowed. |
+| Repo memory | Stores decisions in docs, branches, commits, status files, and outboxes. |
+
+## Why Sub-Agents Are The Headline
+
+Large Flutter projects are too much for one chat to hold cleanly. Product intent,
+screen states, architecture decisions, implementation details, test evidence,
+browser checks, and release risk all compete for context. This office splits that
+work by role.
+
+![Why role-specific sub-agents scale better than one giant chat](docs/assets/readme/agent-context-scaling.png)
+
+Role-specific sub-agents make the office stronger because:
+
+- Product, design, architecture, implementation, QA, and review each get focused
+  context instead of fighting inside one long transcript.
+- Parallel work becomes safer because every agent has explicit branch and file
+  ownership.
+- The main chat can keep moving through the feature loop instead of asking the
+  user to manually trigger each next step.
+- Failed or weak role output can be retried from the same role contract without
+  replaying the whole project.
+- Handoffs and outboxes make progress inspectable by Codex, Antigravity, Claude
+  Code, Gemini, Cursor, or a future tool.
+
+Codex native sub-agent spawning is a first-class path for this office when the
+user asks for sub-agents, delegation, or parallel role work, or when the active
+runtime policy permits it. The main chat can create separate specialist agents
+from the same Markdown role contracts, keep their branches and file ownership
+distinct, and monitor handoffs without cramming every role into one transcript.
+Antigravity, Claude Code, Gemini, Cursor, and future harnesses can use the same
+contract shape when they support native workers. When native spawning is not
+available or not allowed, packet fallback keeps the workflow usable by giving
+each role a ready-to-paste mission, branch, ownership list, and handoff path.
+
+## Open Source
+
+AI Dev Team Flutter is open source under the MIT License.
+
+- License: `LICENSE`
+- Contributing guide: `CONTRIBUTING.md`
+- Code of conduct: `CODE_OF_CONDUCT.md`
+- Security policy: `SECURITY.md`
+
+Contributions are welcome when they make the office clearer, more useful, more
+Flutter-native, or more reliable.
+
 ## What This Project Is
 
 Most AI coding workflows treat the assistant like one very busy developer. This
@@ -18,7 +140,9 @@ project treats AI as a team.
 Each role has a job:
 
 - The CEO keeps the office coherent.
-- The Office Assistant turns unstructured tasks into role packets.
+- The Office Assistant turns unstructured tasks into role contracts, starts
+  native sub-agents when the runtime allows it, including permitted Codex
+  native sub-agent spawning, and prints packets as the portable default.
 - The Product Lead clarifies what is worth building.
 - The UI/UX Designer makes the experience implementable.
 - The Product Engineer turns intent into architecture.
@@ -33,74 +157,30 @@ and when to hand off.
 
 ## Office Entrance
 
-Welcome to the round table. Every feature starts here.
+Welcome to the office architecture. Every feature starts as a conversation in
+the main chat, then becomes native specialist agents or packets, branches,
+handoffs, review, and finally production code.
 
-```mermaid
-flowchart TB
-    Table(("AI Flutter Office\nRound Table"))
+![AI Flutter Office architecture](docs/assets/readme/office-round-table.svg)
 
-    CEO["CEO\nVision, governance,\ndecision history"]
-    Assistant["Office Assistant\nTriage, routing,\nagent packets"]
-    Product["Product Lead\nProblem, users,\nacceptance criteria"]
-    Design["UI/UX Designer\nFlows, states,\ntokens, accessibility"]
-    Architect["Product Engineer\nArchitecture, data flow,\nwork slicing"]
-    Senior["Senior Flutter Engineer\nPatterns, state,\nplatform risk"]
-    Junior["Junior Flutter Developer\nFocused widgets,\nsmall slices, tests"]
-    QA["QA/Test Engineer\nUnit, widget,\nintegration, golden tests"]
-    Review["Code Reviewer\nCorrectness,\nmaintainability, risk"]
-    Release["Release Engineer\nCI, release notes,\nmain branch"]
-    Main["main\nProduction code"]
+The diagram is intentionally simple: prompts enter through the Office Assistant,
+role contracts create scoped branch work through native sub-agents or packet
+fallbacks, the repository preserves memory, and the delivery pipeline protects
+`main`. The important rule is that specialists stay distinct: product and design
+clarify intent, engineering builds, QA and review protect quality, and release
+protects production.
 
-    CEO --- Table
-    Assistant --- Table
-    Product --- Table
-    Design --- Table
-    Architect --- Table
-    Senior --- Table
-    Junior --- Table
-    QA --- Table
-    Review --- Table
-    Release --- Table
-
-    CEO --> Assistant
-    Assistant --> Product
-    Assistant --> Design
-    Assistant --> Architect
-    Assistant --> QA
-    Product --> Design
-    Product --> Architect
-    Design --> Senior
-    Architect --> Senior
-    Architect --> Junior
-    Senior --> QA
-    Junior --> QA
-    QA --> Review
-    Review --> Release
-    Release --> Main
-    CEO -. keeps the office honest .-> Main
-```
-
-The CEO role is us while we build and steer the office. CEO-level decisions live
-in `CEO_OVERVIEW.md`.
+CEO-level decisions live in `CEO_OVERVIEW.md`.
 
 ## The Production Path
 
 The office does not let every agent write straight to `main`.
 
-```mermaid
-flowchart LR
-    Idea["Raw idea"]
-    Brief["Product brief"]
-    Design["Design contract"]
-    Plan["Technical plan"]
-    Build["Flutter implementation"]
-    Test["QA and tests"]
-    Review["Code review"]
-    Release["Release PR"]
-    Main["main"]
+![AI Flutter Office production path](docs/assets/readme/production-path.svg)
 
-    Idea --> Brief --> Design --> Plan --> Build --> Test --> Review --> Release --> Main
-```
+The path is intentionally gated: product, design, and architecture artifacts
+come before implementation; tests and review come before release; only release
+work moves into production `main`.
 
 Work happens through an integration branch:
 
@@ -199,8 +279,11 @@ Current verified local setup:
 - FVM resolves Dart `3.10.7`.
 - `fvm dart mcp-server --help` works.
 
-Project-local MCP configs are included for tools that support them:
+Project-local MCP and agent configs are included for tools that support them:
 
+- `.codex/config.toml`
+- `.mcp.json`
+- `.claude/settings.json`
 - `.cursor/mcp.json`
 - `.gemini/settings.json`
 - `GEMINI.md`
@@ -215,8 +298,29 @@ fvm dart mcp-server --force-roots-fallback
 active role before tools and keeps status prompts on lightweight docs instead of
 scanning app source.
 
+Codex role agents are checked in under `.codex/agents/`, and Claude Code role
+agents are checked in under `.claude/agents/`. Both sets map to the same office
+roles and role contracts, so Codex can run the main-chat orchestrator plus
+separate specialist agents instead of treating the feature team as one generic
+worker.
+
 Official Flutter and Dart agent skills are installed in `.agents/skills`, with
 their hashes recorded in `skills-lock.json`.
+
+Local semantic memory is available as an optional FastEmbed/ONNX recall layer:
+
+```powershell
+python -m pip install -r tools/office-memory/requirements.txt
+python tools/office-memory/index.py --allow-download
+python tools/office-memory/search.py "background timer verification"
+```
+
+The generated index lives in `.agent-memory/`, is pointer-first, and is not
+committed. CI does not run FastEmbed indexing; it only validates the office
+runtime configuration. Agents must ask before the first model
+download/initialization. Durable decision memories are written as Markdown under
+`docs/ai-office/memory-history/` and become searchable after the next approved
+index rebuild.
 
 ## How To Fire Up The Office
 
@@ -235,11 +339,21 @@ fix the timer overflow bug where it shows 61 minutes
 ```
 
 Any unstructured prompt activates the Office Assistant, which reads lightweight
-office and feature docs, determines the role sequence, and outputs
-**ready-to-paste agent packets**.
+office and feature docs, determines the role sequence, and creates
+**role contracts**.
 
-You copy-paste each packet into a separate agent session (Codex, Cursor, Gemini
-CLI, Claude Code, or any AI tool) and the agent works within its defined scope.
+The Assistant prints ready-to-paste packets as the portable default. If the
+current tool supports native sub-agents and the runtime allows launching them,
+the Assistant can start the roles directly. In Codex, that means native spawning
+is used when the user explicitly asks for sub-agents, delegation, or parallel
+work, or when runtime policy permits it. Otherwise, the same role contracts are
+printed as packets for separate sessions in Codex, Cursor, Gemini CLI,
+Antigravity CLI, Claude Code, or any AI tool, and each agent works within its
+defined scope.
+
+For build or fix requests, the office should keep going until the feature is
+release-ready, blocked, or waiting for final approval. You should not have to
+ask it to run the next role after each toolchain checkpoint.
 
 When using Gemini CLI, start it from the repo root so it loads `GEMINI.md`:
 
@@ -270,12 +384,32 @@ Status mode is read-only and branch-aware. The Assistant starts with
 `docs/features/status-index.md`, handoffs, outboxes, and git refs instead of
 crawling app source or generated platform folders.
 
+### Role Involvement In Action
+
+Every role announces itself before work starts. The CEO example shows office
+governance involvement, while the Office Assistant examples show unstructured
+status prompts being routed through a lightweight, read-only status protocol.
+The same contract is portable across tools: Codex gets it through `AGENTS.md`,
+while Gemini CLI gets it through `GEMINI.md`.
+
+**CEO**
+
+![CEO involvement](docs/assets/readme/ceo-activation.png)
+
+**Office Assistant - Codex**
+
+![Office Assistant involvement in Codex](docs/assets/readme/office-assistant-activation.png)
+
+**Office Assistant - Gemini CLI**
+
+![Office Assistant involvement in Gemini CLI](docs/assets/readme/office-assistant-activation-gemini.png)
+
 ### What A Packet Looks Like
 
 The Office Assistant outputs prompts like this for each agent:
 
-```text
-Senior Flutter Engineer Activated: I am your senior Flutter engineer and responsible for complex implementation, shared patterns, state, navigation, and platform risk.
+```markdown
+### 💻 **Senior Flutter Engineer Involved**
 
 You are the Senior Flutter Engineer for this project.
 Read AGENTS.md for team rules.
@@ -302,17 +436,21 @@ fvm flutter pub get
 fvm dart format --set-exit-if-changed .
 fvm flutter analyze
 fvm flutter test
+fvm flutter build web
 Pop-Location
 ```
 
-As the app matures, release candidates should also earn platform checks:
+Release candidates should also earn target platform checks:
 
 ```powershell
 Push-Location work/<app-slug>
-fvm flutter build web
 fvm flutter build apk --debug
 Pop-Location
 ```
+
+For web-capable features, QA or Release Engineering should use browser tools
+when available to open the app and smoke-test the primary user flow. If browser
+automation is unavailable, the handoff should say so plainly.
 
 ## Map Of The Office
 
@@ -324,34 +462,40 @@ Start here if you are visiting:
 - `docs/ai-office/org-branch-model.md`: how the company structure stays stable
   across products.
 - `docs/ai-office/roles.md`: each role and its definition of done.
-- `docs/ai-office/role-activation.md`: visible chat banners for activated
+- `docs/ai-office/role-activation.md`: visible chat banners for involved
   roles.
 - `docs/ai-office/status-protocol.md`: lightweight branch-aware progress checks.
 - `docs/ai-office/commit-guidelines.md`: the office commit message standard.
 - `docs/ai-office/task-triage.md`: which role to call when the task is unclear.
-- `docs/ai-office/user-activation.md`: what to type in a brand-new AI session.
+- `docs/ai-office/user-activation.md`: what to type in a brand-new AI session (User Involvement Contract).
 - `docs/ai-office/workflow.md`: branch and handoff model.
 - `docs/ai-office/async-agent-runtime.md`: parallel multi-session execution.
+- `docs/ai-office/runtime-adapters.md`: native sub-agent harnesses and packet
+  fallback behavior.
 - `docs/ai-office/flutter-specialization.md`: what makes this Flutter-specific.
 - `docs/ai-office/mcp-and-skills.md`: MCP and official skills setup.
+- `docs/ai-office/local-memory.md`: local semantic memory over office docs.
 - `docs/ai-office/gemini-cli.md`: Gemini CLI context loading and status
   guardrails.
 - `docs/features/README.md`: where feature work lives.
 - `work/README.md`: where product app scaffolds live.
+- `docs/github-discoverability.md`: GitHub description, topics, social preview,
+  and release-discovery checklist.
 
 ## Current Status
 
-The office is built. This integration branch contains the first product slice:
-a minimal countdown timer tracked under:
+The README is intentionally branch-neutral and should stay the same across
+`main`, `org/main`, integration branches, and feature branches. Branch-specific
+product state, release evidence, role handoffs, and parallel work notes belong
+under `docs/`, especially:
 
 ```text
-docs/features/minimal-timer-app/
-work/minimal-timer-app/
+docs/features/status-index.md
+docs/features/<feature-slug>/
+docs/features/<feature-slug>/async/
 ```
 
-Current branch state:
-
-1. `minimal-timer-app` is ready for release review.
-2. Interactive emulator/browser QA is still open.
-3. `docs/features/status-index.md` is the lightweight source for progress
-   checks on this branch.
+Use `docs/features/status-index.md` as the lightweight dashboard for active
+branches. Use each feature folder for briefs, design contracts, technical plans,
+QA evidence, outboxes, and handoffs. That keeps parallel work visible without
+turning the README into a branch-specific status report.

@@ -5,8 +5,12 @@ prompt activates it. Users do not need to type `Office Assistant:` or remember
 role names, branch conventions, or workflow steps.
 
 The Office Assistant reads lightweight office and feature docs, determines the
-right role sequence, and outputs ready-to-paste agent packets that the user can
-fire into separate agent sessions.
+right role sequence, and creates role contracts. Ready-to-paste packets are the
+portable default. The Office Assistant starts native sub-agents only when the
+current runtime policy allows it. In Codex, `multi_agent_v1.spawn_agent` is
+allowed only when the user explicitly asks for sub-agents, delegation, or
+parallel agent work, or when runtime metadata otherwise permits native
+spawning.
 
 ## Default Mode Rule
 
@@ -35,9 +39,16 @@ status
 
 ## What The Office Assistant Produces
 
-For any task, the primary output is **ready-to-paste packets**. Not routing
-advice. Not metadata about packets. The actual prompts that the user can
-copy-paste into separate agent sessions.
+For any task, the primary output is a **role contract** per specialist. In a
+native harness, that contract becomes the sub-agent launch prompt. Without a
+native harness, the same contract is printed as a ready-to-paste packet. Not
+routing advice. Not metadata about packets. The actual prompt that starts each
+role.
+
+In Codex, when native spawning is explicitly allowed, the Office Assistant uses
+the matching role-specific `agent_type` mirrored by `.codex/agents/` whenever
+available and passes this exact contract to `spawn_agent`. The packet remains
+the audit trail and fallback for the same work.
 
 ### Packet Output Format
 
@@ -51,9 +62,10 @@ Phase 2 (after Phase 1):
 
 PACKET 1: <Role>
 =================
-Paste this into a new agent session:
+When native spawning is allowed, launch this as a native sub-agent. Otherwise,
+paste it into a new agent session:
 
-<Matching activation banner from docs/ai-office/role-activation.md>
+<Matching involvement banner from docs/ai-office/role-activation.md>
 
 You are the <Role> for this project.
 Read AGENTS.md for team rules.
@@ -74,15 +86,15 @@ PACKET 2: <Role>
 [...]
 ```
 
-Each packet should be under 200 words when practical. The activation banner is
+Each packet should be under 200 words when practical. The involvement banner is
 part of the packet, not optional decoration. The agent will read the codebase
 itself. The packet sets boundaries and intent.
 
 ### Essential Packet Fields
 
-Every packet must answer these five questions:
+Every role contract or fallback packet must answer these five questions:
 
-1. **Who are you?** (activation banner, first line)
+1. **Who are you?** (involvement banner, first line)
 2. **What is your job?** (mission, one to three sentences)
 3. **What branch?** (prevents commit collisions)
 4. **What files are yours and what is off-limits?** (prevents edit collisions)
@@ -93,6 +105,62 @@ Optional fields that help for complex tasks:
 - Context references (brief, design contract, prior outbox)
 - Commands to run (quality gates)
 - Stop conditions (when to pause and write a blocker)
+
+## Native Harness Or Packet Fallback
+
+The Office Assistant should use native sub-agents only when all of these are
+true:
+
+- The user is asking to execute work, not only asking for status.
+- The current AI tool can create sub-agents or delegated worker sessions.
+- The active runtime policy allows native spawning. In Codex, this currently
+  means the user explicitly asked for sub-agents, delegation, or parallel agent
+  work, unless runtime metadata says otherwise.
+- The roles can be given clear branch and file ownership.
+- The main chat can monitor completion through repo files or tool results.
+
+If any condition is missing, output packets instead. The packet fallback is not a
+lesser workflow; it is the compatibility layer that keeps the office portable
+across Codex, Antigravity, Claude Code, Gemini, Cursor, and future tools.
+
+Codex-specific launch rules:
+
+- Use `multi_agent_v1.spawn_agent` only when the Codex tool metadata allows it:
+  the user explicitly asked for sub-agents, delegation, or parallel agent work,
+  or runtime policy otherwise permits native spawning.
+- Make one spawn call per specialist role contract.
+- Use the role-specific `agent_type` (`product-lead`, `ui-ux-designer`,
+  `product-engineer`, `senior-flutter-engineer`,
+  `junior-flutter-developer`, `qa-test-engineer`, `code-reviewer`,
+  `release-engineer`, or `ceo`) instead of generic `worker` when it exists.
+- Pass the complete packet text as the prompt, beginning with the role banner.
+- Keep `fork_context` false unless the role explicitly needs prior hidden chat.
+- If the runtime limit blocks parallel launch, run contracts sequentially in
+  dependency order rather than merging roles.
+
+### CRITICAL: STRICT SUB-AGENT INDEPENDENCE
+- **NEVER collapse multiple specialist roles** (e.g. UX Designer, Product Engineer, Junior Flutter Dev) into a single generic "Feature Team Sub-agent", generalist, or multi-role agent. Doing so violates the office design, leads to context bloat, and defeats the goal of parallel, disjoint workflows.
+- **When spawning is permitted, always spawn separate, independent sub-agents** for each distinct specialist role required in your plan. Each sub-agent must have its own disjoint branch, dedicated file ownership, and clear role contract.
+- If the runtime limit prevents launching the required number of parallel sub-agents, execute them sequentially in order of dependencies (e.g. UX Designer first, then Product Engineer, then Junior Flutter Developer) rather than blending them.
+
+Status-only prompts never spawn implementation sub-agents. They remain
+branch-aware and read-only.
+
+## Execution Prompts Run To A Useful Stop
+
+For build, fix, implement, verify, or release prompts, the Office Assistant
+should plan the full role sequence and keep the main chat moving through it.
+Do not stop after a toolchain command, role handoff, or partial branch update
+just to ask "what next?"
+
+Continue until one of these is true:
+
+- The feature is release-ready and needs final approval.
+- A blocker requires user choice, credentials, network/device access, or
+  destructive permission.
+- A failed gate needs a product or architecture decision.
+- A merge/file-ownership conflict cannot be resolved safely.
+- The task was explicitly scoped to only one role or one step.
 
 ## Routing Rules
 
@@ -196,3 +264,7 @@ Not allowed unless the user explicitly asks after the status report:
 - Final design approval (UI/UX Designer).
 - Merging to `main` (Release Engineer).
 - Any code execution or file modification.
+
+The Office Assistant may launch or monitor native sub-agents when the runtime
+supports and permits it, but it still does not perform specialist implementation
+itself.
