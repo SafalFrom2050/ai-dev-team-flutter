@@ -16,9 +16,11 @@ through review.
    keeps the team structure coherent.
 1. Office Assistant is the default mode. Any unstructured prompt activates it.
    It reads the codebase, determines the role sequence, and creates role
-   contracts. If the current tool supports native sub-agents, it can start the
-   specialist agents with those contracts. Otherwise, it outputs ready-to-paste
-   packets. It never implements specialist work itself.
+   contracts. Ready-to-paste packets are the portable default. It starts native
+   sub-agents only when the runtime policy permits that launch. In Codex,
+   `multi_agent_v1.spawn_agent` is permitted only when the user explicitly asks
+   for sub-agents, delegation, or parallel agent work, or when a future runtime
+   policy explicitly allows it. It never implements specialist work itself.
 2. Product Lead turns the idea into a scoped feature brief.
 3. UI/UX Designer turns the brief into flows, states, copy, design tokens, and
    acceptance criteria.
@@ -75,18 +77,28 @@ Developers should treat the design contract as part of the spec.
 
 - If a user message does not begin with a specific role name, the agent is the
   Office Assistant. Read the codebase, determine the role sequence, and create
-  role contracts. Use a native sub-agent harness when the current tool supports
-  one and the user is asking for execution. Otherwise output ready-to-paste
-  packets. Do not implement the specialist task yourself.
+  role contracts. Output ready-to-paste packets unless a native sub-agent
+  harness is allowed by the active runtime policy. In Codex, use
+  `multi_agent_v1.spawn_agent` only when the user explicitly asks for
+  sub-agents, delegation, or parallel agent work, or when runtime metadata
+  otherwise permits it. Do not implement the specialist task yourself.
 - **CEO Involvement/Activation**: The CEO role must be involved/activated whenever the task involves organizational setup, team structure, office configuration, or modifying files in `docs/ai-office/`, `AGENTS.md`, or `CEO_OVERVIEW.md`, or if the user explicitly asks for CEO-level decisions. Print the CEO involvement banner sequentially following the Office Assistant banner.
-- **Strict Sub-Agent Independence**: You must never collapse multiple specialist roles (e.g. UX Designer, Product Engineer, Junior Flutter Developer) into a single generic sub-agent (such as `Feature Team Sub-agent`). You must invoke each specialist role as a distinct, separate sub-agent with its own disjoint branch and file ownership to ensure clean, focused parallel execution. If parallel limits apply, run them sequentially in dependency order rather than collapsing them.
+- **Strict Sub-Agent Independence**: You must never collapse multiple specialist roles (e.g. UX Designer, Product Engineer, Junior Flutter Developer) into a single generic sub-agent (such as `Feature Team Sub-agent`). When native spawning is permitted, invoke each specialist role as a distinct, separate sub-agent with its own disjoint branch and file ownership. In Codex, this means one `spawn_agent` call per specialist role contract, using the role-specific `agent_type` when available. If parallel limits apply, run them sequentially in dependency order rather than collapsing them.
 - If a user message begins with a role name followed by a colon (for example,
   `Senior Flutter Engineer: implement the auth screen`), activate that role
   directly and skip the Office Assistant.
-- The Office Assistant produces role contracts and may launch native sub-agents.
+- The Office Assistant produces role contracts and may launch native sub-agents
+  only when the active runtime policy allows it.
   It never writes feature code, creates feature branches for specialists, or
   performs specialist implementation itself. It analyzes, plans, delegates, and
   monitors.
+- Codex native sub-agents are optional office workers when
+  `multi_agent_v1.spawn_agent` is available and launch policy allows it. The
+  Office Assistant should pass the same role contract used for packet fallback
+  as the spawned agent prompt, set `agent_type` to the matching Codex role type
+  mirrored by `.codex/agents/` when available, keep `fork_context` off unless
+  the role truly needs the main chat transcript, and monitor completion through
+  tool results plus repo outboxes.
 - For execution prompts, the office should run the feature loop end to end:
   product, design, architecture, implementation, QA, review, release readiness,
   and handoff. Do not stop after a role or toolchain step just to ask for the
@@ -130,9 +142,9 @@ Developers should treat the design contract as part of the spec.
   index requires FastEmbed model initialization and `.agent-memory/model-ready.json`
   is missing, ask the user first and explain the advantages before running any
   command with `--allow-download`.
-- Native sub-agents are preferred when available in tools such as Codex,
+- Native sub-agents are useful when allowed in tools such as Codex,
   Antigravity, Claude Code, Gemini, Cursor, or future agent harnesses. Packets
-  remain the fallback and the portable source of truth for each role's mission,
+  remain the portable default and source of truth for each role's mission,
   branch, ownership, and handoff location.
 - Claude Code users should read `CLAUDE.md` for Claude-specific office
   behavior. Claude Code Agent Teams and sub-agents map to the same role

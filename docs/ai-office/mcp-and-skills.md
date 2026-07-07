@@ -179,6 +179,11 @@ Use the layers like this:
   runtime errors, and widget tree inspection.
 - Native agent harnesses: optional execution engines for launching role
   sub-agents in tools such as Codex, Antigravity, Claude Code, Gemini, or Cursor.
+- Codex native sub-agents: when the user explicitly asks for sub-agents,
+  delegation, or parallel agent work, or runtime policy otherwise permits
+  native spawning, use `multi_agent_v1.spawn_agent` with the role-specific
+  Codex `agent_type` mirrored by `.codex/agents/`, one specialist role per
+  call, and the packet text as the prompt.
 - Browser automation: optional release/QA tooling for web-capable Flutter apps.
   Use it to open the app and exercise the primary user flow after build gates.
 
@@ -192,19 +197,27 @@ Antigravity 2.0, Antigravity CLI/SDK, Claude Code plugins, Claude Code Agent
 Teams, Codex sub-agents, Codex TOML-based agent configs, and future harnesses
 can reduce manual packet passing. They should not replace the repo protocol.
 
-When a native harness is available:
+When a native harness is available and launch policy allows it:
 
 - Use the same role contract that would have been printed as a packet.
 - Give each sub-agent one role, one branch, clear file ownership, and a handoff
   path.
+- For Codex, prefer the matching role-specific `agent_type` mirrored by
+  `.codex/agents/` over generic `worker` or `default` agents.
+- Spawn roles separately. If the runtime cannot run them in parallel, run them
+  sequentially instead of combining responsibilities.
 - Preserve activation banners and status-mode read-only rules.
 - Write durable results back to feature docs, outboxes, commits, and PRs.
 - Claude Code Agent Teams add Mailbox-based inter-agent communication.
   See `docs/ai-office/runtime-adapters.md` for setup and token-cost warnings.
-- Codex TOML configs in `.codex/agents/` allow persistent, repeatable role
-  definitions. See `docs/ai-office/runtime-adapters.md` for details.
+- Codex TOML configs in `.codex/agents/` define persistent role behavior so
+  Codex can expose matching `agent_type` names for repeatable launches. See
+  `docs/ai-office/runtime-adapters.md` for details.
 
 When a native harness is not available, print packets and continue normally.
+In Codex, also print packets when `spawn_agent` exists but the user did not
+explicitly request sub-agents, delegation, or parallel agent work and no runtime
+policy grants spawning.
 
 ## Setup Checklist
 

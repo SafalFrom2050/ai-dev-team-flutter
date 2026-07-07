@@ -6,9 +6,10 @@ coordination.
 
 The best default is simple:
 
-> Use a native agent harness when the current tool has one. Use the repository
-> as shared memory, branches as workspaces, and Markdown packets as the fallback
-> cross-agent protocol.
+> Produce Markdown packets as the portable role contract. Use a native agent
+> harness only when the current tool has one and the active runtime policy
+> permits launch. Use the repository as shared memory and branches as
+> workspaces.
 
 This keeps the workflow compatible with Codex, Antigravity, Gemini CLI, Cursor,
 Claude Code, plain terminal agents, and future tools.
@@ -46,20 +47,25 @@ MCP, installed skills, and tool-specific features are useful accelerators, but
 they must be optional. The protocol should still work if an agent only has a
 terminal, a text editor, and git.
 
-## Native Harness First, Packet Fallback
+## Packet Default, Native Harness When Allowed
 
 Newer AI coding tools can spin up multiple sub-agents from one main chat. The
-office should use that capability when it exists, because it reduces manual
-copy-paste and lets the main chat coordinate work without becoming the only
-context container.
+office can use that capability when the runtime policy allows it, because it
+reduces manual copy-paste and lets the main chat coordinate work without
+becoming the only context container.
 
 The execution order is:
 
 1. The main chat is involved as CEO, Office Assistant, or the requested role.
 2. It creates a role contract for each specialist.
-3. If native sub-agents are available, it starts those agents with the role
-   contracts. **CRITICAL**: Launch each specialist role as a distinct, separate sub-agent. Never collapse or blend multiple roles into a single "Feature Team Sub-agent" or generalist sub-agent.
-4. If native sub-agents are not available, it prints ready-to-paste packets.
+3. It prints or records ready-to-paste packets as the portable default.
+4. If native sub-agents are available and allowed, it starts those agents with
+   the role contracts. In Codex, this means calling
+   `multi_agent_v1.spawn_agent` only when the user explicitly asked for
+   sub-agents, delegation, or parallel agent work, or when runtime policy
+   otherwise permits native spawning. **CRITICAL**: Launch each specialist role
+   as a distinct, separate sub-agent. Never collapse or blend multiple roles
+   into a single "Feature Team Sub-agent" or generalist sub-agent.
 5. Every role writes back through branches, commits, handoffs, outboxes, and
    status files.
 
@@ -74,10 +80,14 @@ Native sub-agents do not replace the repo protocol:
 - Each sub-agent must still write an outbox or handoff when done.
 - Status-only prompts remain read-only, even if the runtime can spawn agents.
 - **Strict Independence**: Sub-agents must never edit overlapping files or cross into other roles' scopes without a documented handoff.
+- Codex agents should prefer repo-visible context and leave `fork_context` off
+  unless the role explicitly needs the main transcript. Hidden chat history is
+  not an office handoff.
 
 Use packets when:
 
 - The current AI service cannot spawn sub-agents.
+- The current runtime policy does not allow native spawning.
 - The user wants to run roles in different tools.
 - The role needs a separate account, model, IDE, emulator, or device.
 - The task is sensitive and the user wants to review every prompt before launch.
@@ -92,7 +102,8 @@ are checkpoints, not conversation endings.
 
 The main chat should:
 
-1. Start the required role agents in dependency order.
+1. Start the required role agents in dependency order when native spawning is
+   allowed, or provide the packets for separate sessions.
 2. Wait for handoffs or tool results.
 3. Read the outbox/status files.
 4. Start the next role or follow-up fix agent when the path is clear.
@@ -169,9 +180,9 @@ Office Assistant answer progress questions without reading the whole app.
 ## Agent Session Packet
 
 The Office Assistant generates a role contract for each role session. When the
-runtime supports native sub-agents, the contract is used as the sub-agent prompt.
-When it does not, the same contract is printed as a ready-to-paste packet. Each
-contract answers five questions:
+runtime supports and permits native sub-agents, the contract is used as the
+sub-agent prompt. When it does not, the same contract is printed as a
+ready-to-paste packet. Each contract answers five questions:
 
 1. **Who are you?** (involvement banner)
 2. **What is your job?** (mission)
@@ -410,10 +421,10 @@ Recommended flow:
 
 1. CEO creates `integrate/<feature-slug>`.
 2. CEO or Office Assistant creates the feature folder and role contracts.
-3. If the current tool supports native sub-agents, start the Product Lead
-   sub-agent. Otherwise print the Product Lead packet.
-4. UI/UX Designer and Product Engineer run as native sub-agents or separate
-   packet sessions.
+3. Print the Product Lead packet. If the current tool supports native
+   sub-agents and launch policy allows it, start the Product Lead sub-agent.
+4. UI/UX Designer and Product Engineer run as permitted native sub-agents or
+   separate packet sessions.
 5. CEO or Product Engineer updates `ownership.md`.
 6. Flutter developers run in parallel on disjoint branches.
 7. QA/Test Engineer runs test planning early and test implementation after code.
@@ -428,10 +439,17 @@ Recommended flow:
 ### Codex
 
 Use native sub-agents when the user has asked to run parallel or delegated role
-work. Give each sub-agent one role contract, explicit file ownership, and a
-handoff path. If native sub-agents are not available, use a fresh chat per role
-with the packet. If MCP is available, use
+work and Codex policy allows spawning. Give each sub-agent one role contract,
+explicit file ownership, and a handoff path. If native sub-agents are not
+available or not allowed, use a fresh chat per role with the packet. If MCP is available, use
 `fvm dart mcp-server --force-roots-fallback`.
+
+In Codex, permitted native execution uses `multi_agent_v1.spawn_agent`. Use one
+call per specialist, set `agent_type` to the matching Codex role type mirrored
+by `.codex/agents/`, pass the role contract as the prompt, and monitor the
+result with `wait_agent` only when the next orchestration step depends on it.
+Review the returned changed paths and the role's outbox before dependent work
+starts.
 
 Codex also supports TOML-based agent definitions in `.codex/agents/` for
 persistent role configurations. See `docs/ai-office/runtime-adapters.md` for
