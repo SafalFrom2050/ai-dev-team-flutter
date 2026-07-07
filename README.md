@@ -14,10 +14,10 @@ sub-agents, product/design/architecture contracts, repo-backed memory, MCP
 tooling, and release gates.
 
 Use this repo if you are searching for an AI software team for Flutter, a
-multi-agent coding workflow, a Codex or Claude Code agent setup, a Gemini CLI
-Flutter office, an Antigravity-ready sub-agent harness, or a practical example
-of AI-assisted product engineering with Dart, Flutter, tests, code review, and
-release discipline.
+multi-agent coding workflow, a runtime-neutral Codex, Claude Code, or
+Antigravity sub-agent setup, a Gemini CLI or Cursor-friendly Flutter office, or
+a practical example of AI-assisted product engineering with Dart, Flutter,
+tests, code review, and release discipline.
 
 This repo is not just a Flutter app. It is an office: a structured collaboration
 system for taking a rough idea, shaping it through product and design, building
@@ -33,7 +33,7 @@ build the best Flutter AI dev team in the world.
   state, tests, platform builds, and release checks.
 - Product builders who want product, UX, architecture, implementation, QA, code
   review, and release roles to work from the same repo-backed contracts.
-- Teams experimenting with Codex, Claude Code, Gemini CLI, Cursor, Antigravity,
+- Teams experimenting with Codex, Claude Code, Antigravity, Gemini CLI, Cursor,
   MCP servers, local memory, or parallel sub-agent workflows.
 - Open-source maintainers who want AI-assisted contributions to leave durable
   handoffs instead of hiding decisions inside chat history.
@@ -43,7 +43,8 @@ build the best Flutter AI dev team in the world.
 - A role-based AI office for Flutter product development.
 - Branch, handoff, and PR rules for safe multi-agent work on GitHub.
 - Product brief, design contract, technical plan, QA, and release templates.
-- Codex, Claude, Gemini, Cursor, and MCP configuration examples.
+- Codex, Claude Code, Antigravity, Gemini, Cursor, and MCP configuration
+  examples.
 - Flutter quality gates for format, analyze, tests, web builds, and browser
   smoke checks.
 - Optional local semantic memory for durable decisions and searchable context.
@@ -53,7 +54,7 @@ build the best Flutter AI dev team in the world.
 Suggested repository description:
 
 ```text
-AI agent team framework for Flutter with Codex, Claude, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
+AI agent team framework for Flutter with Codex, Claude Code, Antigravity, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
 ```
 
 Suggested GitHub topics:
@@ -74,7 +75,7 @@ context window. It is an **AI dev office**: one main chat acts like the CEO or
 Office Assistant, then starts distinct specialist agents for product, design,
 architecture, Flutter implementation, QA, code review, and release.
 
-![Native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.png)
+![Runtime-neutral native sub-agent harness for the AI Flutter office](docs/assets/readme/subagent-harness.png)
 
 The main chat should stay light: it routes work, monitors branch state, reads
 handoffs, and decides when to ask the user. The specialist agents do the deep
@@ -84,7 +85,7 @@ work inside their own context windows and leave durable output in the repo.
 |---|---|
 | Main chat | Orchestrates the whole feature run from idea to release-ready handoff. |
 | Role contracts | Give each sub-agent its mission, branch, file ownership, and handoff path. |
-| Native sub-agents | Let supported tools such as Codex or Antigravity run specialists in parallel when the runtime permits it. |
+| Native sub-agents | Let supported tools such as Codex, Claude Code, Antigravity, Gemini, or Cursor run specialists in parallel when the runtime permits it. |
 | Packet fallback | Keeps role contracts portable as the default when native spawning is unavailable or not allowed. |
 | Repo memory | Stores decisions in docs, branches, commits, status files, and outboxes. |
 
@@ -107,18 +108,18 @@ Role-specific sub-agents make the office stronger because:
   user to manually trigger each next step.
 - Failed or weak role output can be retried from the same role contract without
   replaying the whole project.
-- Handoffs and outboxes make progress inspectable by Codex, Antigravity, Claude
-  Code, Gemini, Cursor, or a future tool.
+- Handoffs and outboxes make progress inspectable by Codex, Claude Code,
+  Antigravity, Gemini, Cursor, or a future tool.
 
-Codex native sub-agent spawning is a first-class path for this office when the
-user asks for sub-agents, delegation, or parallel role work, or when the active
-runtime policy permits it. The main chat can create separate specialist agents
-from the same Markdown role contracts, keep their branches and file ownership
-distinct, and monitor handoffs without cramming every role into one transcript.
-Antigravity, Claude Code, Gemini, Cursor, and future harnesses can use the same
-contract shape when they support native workers. When native spawning is not
-available or not allowed, packet fallback keeps the workflow usable by giving
-each role a ready-to-paste mission, branch, ownership list, and handoff path.
+Native sub-agent spawning is a first-class path for this office when the active
+tool and runtime policy permit it. Codex, Claude Code, and Antigravity can each
+run separate specialist agents from the same Markdown role contracts, keep their
+branches and file ownership distinct, and monitor handoffs without cramming
+every role into one transcript. Gemini, Cursor, and future harnesses can use the
+same contract shape when they support native workers. When native spawning is
+not available or not allowed, packet fallback keeps the workflow usable by
+giving each role a ready-to-paste mission, branch, ownership list, and handoff
+path.
 
 ## Open Source
 
@@ -141,8 +142,9 @@ Each role has a job:
 
 - The CEO keeps the office coherent.
 - The Office Assistant turns unstructured tasks into role contracts, starts
-  native sub-agents when the runtime allows it, including permitted Codex
-  native sub-agent spawning, and prints packets as the portable default.
+  native sub-agents across supported tools when the runtime allows it, including
+  Codex, Claude Code, and Antigravity, and prints packets as the portable
+  default.
 - The Product Lead clarifies what is worth building.
 - The UI/UX Designer makes the experience implementable.
 - The Product Engineer turns intent into architecture.
@@ -300,9 +302,11 @@ scanning app source.
 
 Codex role agents are checked in under `.codex/agents/`, and Claude Code role
 agents are checked in under `.claude/agents/`. Both sets map to the same office
-roles and role contracts, so Codex can run the main-chat orchestrator plus
+roles and role contracts, so those tools can run the main-chat orchestrator plus
 separate specialist agents instead of treating the feature team as one generic
-worker.
+worker. Antigravity uses the same Markdown role contracts, branch rules, and
+repo handoffs, keeping the office model neutral even when each tool exposes
+native spawning differently.
 
 Official Flutter and Dart agent skills are installed in `.agents/skills`, with
 their hashes recorded in `skills-lock.json`.
@@ -344,12 +348,11 @@ office and feature docs, determines the role sequence, and creates
 
 The Assistant prints ready-to-paste packets as the portable default. If the
 current tool supports native sub-agents and the runtime allows launching them,
-the Assistant can start the roles directly. In Codex, that means native spawning
-is used when the user explicitly asks for sub-agents, delegation, or parallel
-work, or when runtime policy permits it. Otherwise, the same role contracts are
-printed as packets for separate sessions in Codex, Cursor, Gemini CLI,
-Antigravity CLI, Claude Code, or any AI tool, and each agent works within its
-defined scope.
+the Assistant can start the roles directly. In Codex, Claude Code, or
+Antigravity, native spawning is used when that tool's active launch policy
+permits it. Otherwise, the same role contracts are printed as packets for
+separate sessions in Codex, Claude Code, Antigravity CLI, Gemini CLI, Cursor, or
+any AI tool, and each agent works within its defined scope.
 
 For build or fix requests, the office should keep going until the feature is
 release-ready, blocked, or waiting for final approval. You should not have to
@@ -390,7 +393,8 @@ Every role announces itself before work starts. The CEO example shows office
 governance involvement, while the Office Assistant examples show unstructured
 status prompts being routed through a lightweight, read-only status protocol.
 The same contract is portable across tools: Codex gets it through `AGENTS.md`,
-while Gemini CLI gets it through `GEMINI.md`.
+Claude Code gets it through `CLAUDE.md` and `.claude/agents/`, and Gemini CLI
+gets it through `GEMINI.md`.
 
 **CEO**
 

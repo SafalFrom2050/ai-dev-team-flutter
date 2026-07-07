@@ -9,7 +9,7 @@ agent team framework for Flutter product development.
 Use this short description in the GitHub repository settings:
 
 ```text
-AI agent team framework for Flutter with Codex, Claude, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
+AI agent team framework for Flutter with Codex, Claude Code, Antigravity, Gemini, MCP, role contracts, QA gates, and repo-backed memory.
 ```
 
 Recommended topics:
@@ -50,7 +50,8 @@ phrases:
 - Codex Flutter workflow
 - Claude Code Flutter agents
 - Gemini CLI Flutter project
-- Antigravity sub-agent harness
+- Antigravity Flutter agents
+- runtime-neutral Flutter sub-agent harness
 - MCP server Flutter workflow
 - repo-backed AI memory
 - AI-assisted product engineering
